@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<script src="scripts/storage.js"></script>
+<script src="scripts/api.js"></script>
+<script src="scripts/initInputs.js"></script>
+<script src="scripts/initTools.js"></script>
+<script src="scripts/main.js"></script>
+
+<body>
+    <div id="modal" class="hide">
+        <img class="modal_image" src="" alt="">
+    </div>
+    <div class="cn-configuration">
+        <label class="cn-configuration_group cn-configuration_group__prompt">
+            <span class="cn-configuration_title">Enter your prompt</span>
+            <textarea class="textarea" id="prompt" name=""></textarea>
+        </label>
+        <label class="cn-configuration_group cn-configuration_group__prompt">
+            <span class="cn-configuration_title">Enter negative prompt</span>
+            <textarea class="textarea" id="negativePrompt" name=""></textarea>
+        </label>
+        <div class="cn-configuration_group cn-configuration_group__misc">
+            <label>
+                <span class="cn-configuration_title">Seed</span>
+                <input class="number_input" type="number" min="-1" name="seed" id="seed" value="-1">
+            </label>
+            <label>
+                <span class="cn-configuration_title">Steps</span>
+                <input class="number_input" type="number" min="1" name="steps" id="steps" value="15">
+            </label>
+            <label>
+                <span class="cn-configuration_title">CFG Scale</span>
+                <input class="number_input" type="number" min="1" name="cfg_scale" id="cfg_scale" value="7">
+            </label>
+            <label>
+                <span class="cn-configuration_title">Batch size</span>
+                <input class="number_input" type="number" min="1" name="batch_size" id="batch_size" value="1">
+            </label>
+            <label>
+                <span class="cn-configuration_title">Module</span>
+                <select class="select_input" name="module" id="module"></select>
+            </label>
+            <label>
+                <span class="cn-configuration_title">Model</span>
+                <select class="select_input" name="model" id="model"></select>
+            </label>
+        </div>
+    </div>
+    <div class="main">
+        <div class="tools">
+            <div>
+                <div class="tools_group">
+                    <label>
+                        <span class="tools_title">Customize brush</span>
+                        <input class="brush_input" id="brushSize" type="range" min="1" max="10" value="2">
+                    </label>
+                    <div class="brush_group">
+                        <label class="checkbox">
+                            <input type="checkbox" name="eraser" id="eraser">
+                            <span>Eraser</span>
+                        </label>
+                        <div id="brushSample">
+                            <div></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tools_group">
+                    <p class="tools_title">Clear canvas</p>
+                    <div class="clear_group">
+                        <button id="clear" class="button">Clear</button>
+                    </div>
+                </div>
+                <button id="downloadImage" class="button">Download image</button>
+            </div>
+            <div>
+                <div class="tools_group">
+                    <label class="checkbox">
+                        <input type="checkbox" checked name="fastMode" id="fastMode">
+                        <span>Powerful GPU mode</span>
+                    </label>
+                </div>
+                <div class="tools_group">
+                    <label class="checkbox">
+                        <input type="checkbox" checked name="syncJSON" id="syncJSON">
+                        <span>Sync with JSON</span>
+                    </label>
+                </div>
+            </div>
+            <button id="generate" class="button">Generate</button>
+        </div>
+        <div class="canvas_base">
+            <div class="canvas_wrapper">
+                <p class="canvas_header">Draw your sketch here</p>
+                <canvas id="paintingArea" height="512" width="512"></canvas>
+                <canvas id="previewActions" height="512" width="512"></canvas>
+            </div>
+        </div>
+        <div class="canvas_base">
+            <div class="canvas_wrapper hide">
+                <p class="canvas_header">Your result here</p>
+                <canvas class="empty" id="result" height="512" width="512"></canvas>
+                <div class="loader"></div>
+                <progress id="cnProgress" max="100" value="0"> 70% </progress>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

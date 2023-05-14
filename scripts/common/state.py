@@ -76,7 +76,7 @@ class State:
         "negative_prompt": "",
     }
     
-    def __init__(self, img2img="#"):
+    def __init__(self, img2img=""):
         self.img2img = img2img
         self.update_config()
         self.update_settings()

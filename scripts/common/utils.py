@@ -236,6 +236,11 @@ def payload_submit(state, image_string):
     if state.render["quick_mode"]:
         json_data['steps'] = json_data.get('quick_steps', json_data['steps'] // 2)  # use quick_steps setting, or halve steps if not set
 
+    if not json_data.get('controlnet_units', None):
+        json_data['controlnet_units'] = [{}]
+    if not json_data['controlnet_units']:
+        json_data['controlnet_units'].append({})
+
     json_data['controlnet_units'][0]['input_image'] = image_string
     json_data['controlnet_units'][0]['model'] = state.control_net["controlnet_model"]
     json_data['controlnet_units'][0]['weight'] = state.control_net["controlnet_weight"]
@@ -355,7 +360,3 @@ def ckpt_name(name, display_dir=False, display_ext=False, display_hash=False):
         replace += r' \g<hash>'
 
     return checkpoint_pattern.sub(replace, name)
-
-
-# Type hinting imports:
-from .state import State

@@ -119,7 +119,8 @@ def post_request(state):
     :param State state: Application state.
     :return: Requested status, image(s), and info.
     """
-    response = requests.post(url=f'{state.server["url"]}/sdapi/v1/{"img2img" if state.img2img else "txt2img"}', json=controlnet_to_sdapi(state["main_json_data"]))
+    endpoint = f'{state.server["url"]}/sdapi/v1/{"img2img" if state.img2img else "txt2img"}'
+    response = requests.post(url=endpoint, json=controlnet_to_sdapi(state["main_json_data"]))
     if response.status_code == 200:
         r = response.json()
 
