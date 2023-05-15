@@ -59,7 +59,19 @@ const onload = async () => {
     context.strokeStyle = state.erasing ? "white" : "black";
     previewContext.clearRect(0, 0, previewCanvas.width, previewCanvas.height);
     previewContext.fillStyle = state.erasing ? "white" : "black";
-    previewContext.strokeStyle = state.erasing ? "black" : "white";
+    if (state.isDrawing) {
+      if (state.erasing) {
+        previewContext.strokeStyle = "#6b8aad";
+      } else {
+        previewContext.strokeStyle = "#d5e3c3";
+      }
+    } else {
+      if (state.erasing) {
+        previewContext.strokeStyle = "black";
+      } else {
+        previewContext.strokeStyle = "white";
+      }
+    }
     previewContext.beginPath();
     previewContext.ellipse(
       state.mouseX,
