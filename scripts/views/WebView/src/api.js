@@ -1,15 +1,21 @@
-const url = "http://127.0.0.1:8000";
+import { getConfig, getSettings } from "./storage";
+export const url = "http://127.0.0.1:8000";
 
-const getModels = () => {
-  return fetch(`${url}/models`);
+export const getModels = () => {
+  return fetch(`${url}/models`)
+    .then((response) => response.json())
+    .then((data) => ({ list: data }));
 };
 
-const getModules = () => fetch(`${url}/modules`);
+export const getModules = () =>
+  fetch(`${url}/modules`)
+    .then((response) => response.json())
+    .then((data) => ({ list: data.module_list, details: data.module_detail }));
 
-const retryRequest = async (func, progressFunc, retries = null) => {
+export const retryRequest = async (func, progressFunc, retries = null) => {
   const result = await fetch(`${url}/server_status`);
   const data = await result.json();
-  progressFunc(data)
+  progressFunc(data);
   if (data) {
     if (!retries) {
       retries = 1;
@@ -23,7 +29,7 @@ const retryRequest = async (func, progressFunc, retries = null) => {
   } else func();
 };
 
-const sendImage = (image) => {
+export const sendImage = (image) => {
   const config = getConfig();
   config.controlnet_units[0].input_image = image;
   const { syncJSON } = getSettings();
@@ -33,7 +39,7 @@ const sendImage = (image) => {
   });
 };
 
-const getImage = async () => {
+export const getImage = async () => {
   const response = await fetch(`${url}/cn_image`);
   const blob = await response.blob();
   const imageBitMap = await createImageBitmap(blob);
