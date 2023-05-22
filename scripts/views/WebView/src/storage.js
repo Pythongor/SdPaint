@@ -1,4 +1,4 @@
-const defaultConfig = {
+export const defaultConfig = {
   enable_hr: false,
   prompt: "dark unexplored dungeon",
   seed: "3456789904",
@@ -19,9 +19,9 @@ const defaultConfig = {
   ],
 };
 
-const defaultSettings = { syncJSON: true, fastMode: true };
+export const defaultSettings = { syncJSON: true, fastMode: true };
 
-const storage = {
+export const storage = {
   set: (key, value) => {
     localStorage.setItem(key, JSON.stringify(value));
   },
@@ -34,12 +34,13 @@ const storage = {
   },
 };
 
-const getConfig = () => storage.get("SdPaint_config", defaultConfig);
+export const getConfig = () => storage.get("SdPaint_config", defaultConfig);
 
-const syncConfig = (config) =>
+export const syncConfig = (config) =>
   storage.set("SdPaint_config", { ...defaultConfig, ...config });
 
-const getSettings = () => storage.get("SdPaint_settings", defaultSettings);
+export const getSettings = () =>
+  storage.get("SdPaint_settings", defaultSettings);
 
-const syncSettings = (settings) =>
+export const syncSettings = (settings) =>
   storage.set("SdPaint_settings", { ...defaultSettings, ...settings });
