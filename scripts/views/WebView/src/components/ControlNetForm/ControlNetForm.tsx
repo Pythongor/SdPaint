@@ -1,12 +1,17 @@
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
+import { StateType } from "store/types";
 import { setCnConfig } from "store/actions";
 import { getModels, getModules } from "../../api";
-import ControlNetInput from "./components/ControlNetInput";
+import ControlNetNumberInput from "./components/ControlNetNumberInput";
 import ControlNetSelect from "./components/ControlNetSelect";
 import { getConfig } from "../../storage";
 
-export const ControlNetForm = ({ setCnConfig, cnConfig }) => {
+type StateProps = ReturnType<typeof MSTP>
+type DispatchProps = typeof MDTP;
+type CnFormProps = StateProps & DispatchProps;
+
+export const ControlNetForm: React.FC<CnFormProps> = ({ setCnConfig, cnConfig }) => {
   useEffect(() => {
     const {
       seed,
@@ -54,32 +59,28 @@ export const ControlNetForm = ({ setCnConfig, cnConfig }) => {
         ></textarea>
       </label>
       <div className="cn-configuration_group cn-configuration_group__misc">
-        <ControlNetInput
+        <ControlNetNumberInput
           title="Seed"
-          inputType="number"
           id="seed"
-          min="-1"
+          min={-1}
           value={cnConfig.seed}
         />
-        <ControlNetInput
+        <ControlNetNumberInput
           title="Steps"
-          inputType="number"
           id="steps"
-          min="1"
+          min={1}
           value={cnConfig.steps}
         />
-        <ControlNetInput
+        <ControlNetNumberInput
           title="CFG Scale"
-          inputType="number"
           id="cfg_scale"
-          min="1"
+          min={1}
           value={cnConfig.cfg_scale}
         />
-        <ControlNetInput
+        <ControlNetNumberInput
           title="Batch size"
-          inputType="number"
           id="batch_size"
-          min="1"
+          min={1}
           value={cnConfig.batch_size}
         />
         <ControlNetSelect
@@ -99,7 +100,7 @@ export const ControlNetForm = ({ setCnConfig, cnConfig }) => {
   );
 };
 
-const MSTP = ({ cnConfig }) => ({ cnConfig });
+const MSTP = ({ cnConfig }: StateType) => ({ cnConfig });
 
 const MDTP = { setCnConfig };
 

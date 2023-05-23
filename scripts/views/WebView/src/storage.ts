@@ -1,7 +1,10 @@
+export type ConfigType = typeof defaultConfig;
+export type SettingsType = typeof defaultSettings;
+
 export const defaultConfig = {
   enable_hr: false,
   prompt: "dark unexplored dungeon",
-  seed: "3456789904",
+  seed: 3456789904,
   sampler_name: "Euler a",
   batch_size: 1,
   steps: 15,
@@ -15,6 +18,7 @@ export const defaultConfig = {
       module: "none",
       model: "control_v11p_sd15_scribble",
       guessmode: false,
+      input_image: "",
     },
   ],
 };
@@ -22,25 +26,26 @@ export const defaultConfig = {
 export const defaultSettings = { syncJSON: true, fastMode: true };
 
 export const storage = {
-  set: (key, value) => {
+  set: (key: string, value: any) => {
     localStorage.setItem(key, JSON.stringify(value));
   },
-  get: (key, defaultValue) => {
+  get: (key: string, defaultValue: any) => {
     const value = localStorage.getItem(key);
     return value ? JSON.parse(value) : defaultValue;
   },
-  remove: (key) => {
+  remove: (key: string) => {
     localStorage.removeItem(key);
   },
 };
 
-export const getConfig = () => storage.get("SdPaint_config", defaultConfig);
+export const getConfig = () =>
+  storage.get("SdPaint_config", defaultConfig) as ConfigType;
 
-export const syncConfig = (config) =>
+export const syncConfig = (config: Partial<ConfigType>) =>
   storage.set("SdPaint_config", { ...defaultConfig, ...config });
 
 export const getSettings = () =>
-  storage.get("SdPaint_settings", defaultSettings);
+  storage.get("SdPaint_settings", defaultSettings) as SettingsType;
 
-export const syncSettings = (settings) =>
+export const syncSettings = (settings: Partial<SettingsType>) =>
   storage.set("SdPaint_settings", { ...defaultSettings, ...settings });

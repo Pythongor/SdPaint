@@ -1,14 +1,25 @@
 import React, { useRef, useCallback, useEffect, useState } from "react";
+import { StateType } from "store/types";
 import { connect } from "react-redux";
 import { setImageViewerActive } from "store/actions";
 
-const ResultCanvas = ({ cnProgress, setImageViewerActive, resultImage }) => {
-  const ref = useRef(null);
-  const [context, setContext] = useState();
+type StateProps = ReturnType<typeof MSTP>;
+type DispatchProps = typeof MDTP;
+type ResultCanvasProps = StateProps & DispatchProps;
+
+const ResultCanvas: React.FC<ResultCanvasProps> = ({
+  cnProgress,
+  setImageViewerActive,
+  resultImage,
+}) => {
+  const ref = useRef<HTMLCanvasElement>(null);
+  const [context, setContext] = useState<CanvasRenderingContext2D>();
 
   useEffect(() => {
     if (!ref?.current) return;
-    setContext(ref?.current.getContext("2d"));
+    const canvasContext = ref?.current.getContext("2d");
+    if (!canvasContext) return;
+    setContext(canvasContext);
   }, [ref?.current]);
 
   useEffect(() => {
@@ -56,7 +67,10 @@ const ResultCanvas = ({ cnProgress, setImageViewerActive, resultImage }) => {
   );
 };
 
-const MSTP = ({ cnProgress, resultImage }) => ({ cnProgress, resultImage });
+const MSTP = ({ cnProgress, resultImage }: StateType) => ({
+  cnProgress,
+  resultImage,
+});
 
 const MDTP = { setImageViewerActive };
 

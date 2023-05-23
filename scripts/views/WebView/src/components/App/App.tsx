@@ -2,12 +2,12 @@ import React from "react";
 import { ImageViewer, ControlNetForm, MainSection } from "components";
 import { connect } from "react-redux";
 import { StateType } from "store/types";
-import { setIsErasing, setBrushWidth } from "store/actions";
-import { syncSettings, getConfig, getSettings } from "../../storage";
 import styles from "./App.module.scss";
 import "../../style.css";
 
-const App = ({ isImageViewerActive }) => {
+type AppProps = ReturnType<typeof MSTP>
+
+const App: React.FC<AppProps> = ({ isImageViewerActive }) => {
   const onload = () => {
     // document.addEventListener("keydown", (event) => {
     //   const { code, ctrlKey, shiftKey, altKey } = event;
@@ -50,8 +50,6 @@ const App = ({ isImageViewerActive }) => {
   );
 };
 
-const MSTP = ({ isImageViewerActive }) => ({ isImageViewerActive });
+const MSTP = ({ isImageViewerActive }: StateType) => ({ isImageViewerActive });
 
-const MDTP = {};
-
-export default connect(MSTP, MDTP)(App);
+export default connect(MSTP)(App);

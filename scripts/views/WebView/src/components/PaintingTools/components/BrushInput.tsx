@@ -1,13 +1,24 @@
 import React from "react";
 import { connect } from "react-redux";
+import { StateType } from "store/types";
 import { setBrushWidth, setIsErasing } from "store/actions";
 import { getRealBrushWidth } from "store/selectors";
 
-const BrushInput = ({ isErasing, setBrushWidth, setIsErasing, brushWidth }) => {
-  const onSliderInput = (event) => setBrushWidth(event.target.value);
+type StateProps = ReturnType<typeof MSTP>;
+type DispatchProps = typeof MDTP;
+type BrushInputProps = StateProps & DispatchProps;
 
-  const onEraserInput = (event) => {
-    if (event.target.checked) {
+const BrushInput: React.FC<BrushInputProps> = ({
+  isErasing,
+  setBrushWidth,
+  setIsErasing,
+  brushWidth,
+}) => {
+  const onSliderInput = (event: React.FormEvent<HTMLInputElement>) =>
+    setBrushWidth(+event.currentTarget.value);
+
+  const onEraserInput = (event: React.FormEvent<HTMLInputElement>) => {
+    if (event.currentTarget.checked) {
       setIsErasing(true);
     } else {
       setIsErasing(false);
@@ -55,7 +66,7 @@ const BrushInput = ({ isErasing, setBrushWidth, setIsErasing, brushWidth }) => {
   );
 };
 
-const MSTP = (state) => {
+const MSTP = (state: StateType) => {
   return {
     isErasing: state.isErasing,
     brushWidth: getRealBrushWidth(state),

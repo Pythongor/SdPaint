@@ -1,11 +1,19 @@
 import React from "react";
 import { connect } from "react-redux";
+import { StateType } from "store/types";
 import { default as BrushInput } from "./components/BrushInput";
 import { ToolsCheckboxes } from "./components/ToolsCheckboxes";
 import { default as GenerateButton } from "./components/GenerateButton";
 import { setPaintImage } from "store/actions";
 
-const PaintingTools = ({ resultImage, setPaintImage }) => {
+type StateProps = ReturnType<typeof MSTP>;
+type DispatchProps = typeof MDTP;
+type PaintingToolsProps = StateProps & DispatchProps;
+
+const PaintingTools: React.FC<PaintingToolsProps> = ({
+  resultImage,
+  setPaintImage,
+}) => {
   const downloadImage = () => {
     if (!resultImage) return;
     const a = document.createElement("a");
@@ -38,7 +46,7 @@ const PaintingTools = ({ resultImage, setPaintImage }) => {
   );
 };
 
-const MSTP = ({ resultImage }) => ({ resultImage });
+const MSTP = ({ resultImage }: StateType) => ({ resultImage });
 
 const MDTP = { setPaintImage };
 

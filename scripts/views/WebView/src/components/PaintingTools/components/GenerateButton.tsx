@@ -1,9 +1,18 @@
 import React from "react";
 import { connect } from "react-redux";
+import { StateType } from "store/types";
 import { sendImage, retryRequest, getImage } from "api";
 import { setResultImage, setCnProgress } from "store/actions";
 
-const GenerateButton = ({ paintImage, setResultImage, setCnProgress }) => {
+type StateProps = ReturnType<typeof MSTP>;
+type DispatchProps = typeof MDTP;
+type GenerateButtonProps = StateProps & DispatchProps;
+
+const GenerateButton: React.FC<GenerateButtonProps> = ({
+  paintImage,
+  setResultImage,
+  setCnProgress,
+}) => {
   const generate = async () => {
     if (!paintImage) return;
     await sendImage(paintImage);
@@ -23,7 +32,7 @@ const GenerateButton = ({ paintImage, setResultImage, setCnProgress }) => {
   );
 };
 
-const MSTP = ({ paintImage }) => ({ paintImage });
+const MSTP = ({ paintImage }: StateType) => ({ paintImage });
 
 const MDTP = { setResultImage, setCnProgress };
 

@@ -1,8 +1,19 @@
 import React, { useEffect, useCallback } from "react";
+import { StateType } from "store/types";
 import { connect } from "react-redux";
 import { setCnConfig } from "store/actions";
 
-const ControlNetSelect = ({
+type OwnProps = {
+  title: string;
+  listName: 'models' | 'modules';
+  unitName: 'model' | 'module';
+  getFunc: () => Promise<{list: string[]}>
+}
+type StateProps = ReturnType<typeof MSTP>
+type DispatchProps = typeof MDTP
+type CnSelectProps = OwnProps & StateProps & DispatchProps
+
+const ControlNetSelect: React.FC<CnSelectProps> = ({
   title,
   listName,
   unitName,
@@ -40,7 +51,7 @@ const ControlNetSelect = ({
   );
 };
 
-const MSTP = ({ cnConfig }) => ({ cnConfig });
+const MSTP = ({ cnConfig }: StateType) => ({ cnConfig });
 
 const MDTP = { setCnConfig };
 

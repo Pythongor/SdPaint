@@ -2,11 +2,20 @@ import React, { useCallback } from "react";
 import { connect } from "react-redux";
 import { setCnConfig } from "store/actions";
 
-const CnInput = ({ title, inputType, id, min, value, setCnConfig }) => {
+type OwnProps = {
+  title: string;
+  id: string;
+  min: number;
+  value: number;
+}
+type DispatchProps = typeof MDTP;
+type CnInputProps = OwnProps & DispatchProps
+
+const ControlNetNumberInput: React.FC<CnInputProps> = ({ title, id, min, value, setCnConfig }) => {
   const onChange = useCallback(
     (event) => {
       setCnConfig({
-        [id]: inputType === "number" ? +event.target.value : event.target.value,
+        [id]: +event.target.value,
       });
     },
     [setCnConfig, id]
@@ -15,8 +24,8 @@ const CnInput = ({ title, inputType, id, min, value, setCnConfig }) => {
     <label>
       <span className="cn-configuration_title">{title}</span>
       <input
-        className={`${inputType}_input`}
-        type={inputType}
+        className="number_input"
+        type="number"
         min={min}
         name={id}
         id={id}
@@ -29,4 +38,4 @@ const CnInput = ({ title, inputType, id, min, value, setCnConfig }) => {
 
 const MDTP = { setCnConfig };
 
-export default connect(null, MDTP)(CnInput);
+export default connect(null, MDTP)(ControlNetNumberInput);

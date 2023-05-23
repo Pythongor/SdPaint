@@ -1,8 +1,13 @@
 import React, { useRef } from "react";
+import { StateType } from "store/types";
 import { connect } from "react-redux";
 import { setImageViewerActive } from "store/actions";
 
-const ImageViewer = ({
+type StateProps = ReturnType<typeof MSTP>
+type DispatchProps = typeof MDTP;
+type ImageViewerProps = StateProps & DispatchProps;
+
+const ImageViewer: React.FC<ImageViewerProps> = ({
   resultImage,
   isImageViewerActive,
   setImageViewerActive,
@@ -23,7 +28,7 @@ const ImageViewer = ({
   );
 };
 
-const MSTP = ({ isImageViewerActive, resultImage }) => ({
+const MSTP = ({ isImageViewerActive, resultImage }: StateType) => ({
   isImageViewerActive,
   resultImage,
 });

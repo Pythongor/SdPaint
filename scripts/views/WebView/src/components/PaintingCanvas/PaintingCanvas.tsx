@@ -2,9 +2,13 @@ import React, { useState, useRef, useEffect, useCallback } from "react";
 import { getRealBrushWidth } from "store/selectors";
 import { setPaintImage } from "store/actions";
 import { connect } from "react-redux";
-// import { getSettings } from "storage";
+import { StateType } from "store/types";
 
-export const PaintingCanvas = ({
+type StateProps = ReturnType<typeof MSTP>
+type DispatchProps = typeof MDTP
+type PaintingCanvasProps = StateProps & DispatchProps
+
+export const PaintingCanvas: React.FC<PaintingCanvasProps> = ({
   isErasing,
   brushWidth,
   setPaintImage,
@@ -13,10 +17,10 @@ export const PaintingCanvas = ({
   const [pos, setPos] = useState({ left: 0, top: 0 });
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const [isDrawing, setIsDrawing] = useState(false);
-  const [context, setContext] = useState(null);
-  const [previewContext, setPreviewContext] = useState(null);
-  const paintingRef = useRef(null);
-  const previewRef = useRef(null);
+  const [context, setContext] = useState<CanvasRenderingContext2D>();
+  const [previewContext, setPreviewContext] = useState<CanvasRenderingContext2D>();
+  const paintingRef = useRef<HTMLCanvasElement>(null);
+  const previewRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
     if (!paintingRef?.current || !context) return;
@@ -40,7 +44,9 @@ export const PaintingCanvas = ({
 
   useEffect(() => {
     if (!paintingRef?.current) return;
-    setContext(paintingRef?.current.getContext("2d"));
+    const canvasContext = paintingRef?.current.getContext("2d")
+    if (!canvasContext) return;
+    setContext(canvasContext);
   }, [paintingRef?.current]);
 
   useEffect(() => {
@@ -50,7 +56,9 @@ export const PaintingCanvas = ({
 
   useEffect(() => {
     if (!previewRef?.current) return;
-    setPreviewContext(previewRef?.current.getContext("2d"));
+    const canvasContext = previewRef?.current.getContext("2d")
+    if (!canvasContext) return;
+    setPreviewContext(canvasContext);
   }, [previewRef?.current]);
 
   useEffect(() => {
@@ -146,13 +154,13 @@ export const PaintingCanvas = ({
       previewContext.stroke();
       previewContext.fill();
 
-      if (isDrawing) {
+      if (isDrawing && context) {
         context.strokeStyle = isErasing ? "white" : "black";
         context.lineTo(mousePos.x, mousePos.y);
         context.stroke();
       }
     },
-    [previewContext, previewRef?.current, setMouseCoordinates]
+    [previewContext, previewRef?.current, setMouseCoordinates, context]
   );
 
   const mouseUp = useCallback(
@@ -189,6 +197,7 @@ export const PaintingCanvas = ({
       previewRef?.current.height
     );
     setIsDrawing(false);
+    if (!paintingRef.current) return;
     setPaintImage(paintingRef.current.toDataURL());
   }, [previewContext, previewRef?.current, paintingRef?.current]);
 
@@ -217,7 +226,7 @@ export const PaintingCanvas = ({
   );
 };
 
-const MSTP = (state) => ({
+const MSTP = (state: StateType) => ({
   isErasing: state.isErasing,
   brushWidth: getRealBrushWidth(state),
   paintImage: state.paintImage,

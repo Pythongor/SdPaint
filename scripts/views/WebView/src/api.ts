@@ -12,7 +12,11 @@ export const getModules = () =>
     .then((response) => response.json())
     .then((data) => ({ list: data.module_list, details: data.module_detail }));
 
-export const retryRequest = async (func, progressFunc, retries = null) => {
+export const retryRequest = async (
+  func: () => void,
+  progressFunc: (data: any) => void,
+  retries: number | null = null
+) => {
   const result = await fetch(`${url}/server_status`);
   const data = await result.json();
   progressFunc(data);
@@ -29,7 +33,7 @@ export const retryRequest = async (func, progressFunc, retries = null) => {
   } else func();
 };
 
-export const sendImage = (image) => {
+export const sendImage = (image: string) => {
   const config = getConfig();
   config.controlnet_units[0].input_image = image;
   const { syncJSON } = getSettings();
