@@ -2,10 +2,10 @@ import React from "react";
 import { ImageViewer, ControlNetForm, MainSection } from "components";
 import { connect } from "react-redux";
 import { StateType } from "store/types";
+import cn from "classnames";
 import styles from "./App.module.scss";
-import "../../style.css";
 
-type AppProps = ReturnType<typeof MSTP>
+type AppProps = ReturnType<typeof MSTP>;
 
 const App: React.FC<AppProps> = ({ isImageViewerActive }) => {
   const onload = () => {
@@ -40,8 +40,10 @@ const App: React.FC<AppProps> = ({ isImageViewerActive }) => {
 
   return (
     <div
-      className={isImageViewerActive ? "scrollLock" : ""}
-      style={{ height: "100vh", overflow: "auto" }}
+      className={cn(
+        styles.base,
+        isImageViewerActive && styles.base__scrollLock
+      )}
     >
       <ImageViewer />
       <ControlNetForm />

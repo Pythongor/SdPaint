@@ -3,6 +3,8 @@ import { connect } from "react-redux";
 import { StateType } from "store/types";
 import { setBrushWidth, setIsErasing } from "store/actions";
 import { getRealBrushWidth } from "store/selectors";
+import cn from "classnames";
+import styles from "../PaintingTools.module.scss";
 
 type StateProps = ReturnType<typeof MSTP>;
 type DispatchProps = typeof MDTP;
@@ -26,12 +28,11 @@ const BrushInput: React.FC<BrushInputProps> = ({
   };
 
   return (
-    <div className="tools_group">
+    <div className={styles.group}>
       <label>
-        <span className="tools_title">Customize brush</span>
+        <span className={styles.title}>Customize brush</span>
         <input
-          className="brush_input"
-          id="brushSize"
+          className={styles.slider}
           type="range"
           min="1"
           max="10"
@@ -39,26 +40,27 @@ const BrushInput: React.FC<BrushInputProps> = ({
           onInput={onSliderInput}
         ></input>
       </label>
-      <div className="brush_group">
-        <label className="checkbox">
+      <div className={styles.brush}>
+        <label className={styles.label}>
           <input
+            className={styles.checkbox}
             type="checkbox"
-            name="eraser"
-            id="eraser"
             onInput={onEraserInput}
           ></input>
           <span>Eraser</span>
         </label>
         <div
-          id="brushSample"
-          style={{ backgroundColor: isErasing ? "black" : "white" }}
+          className={cn(
+            styles.brush_surrounding,
+            isErasing && styles.brush_surrounding__erasing
+          )}
         >
           <div
-            style={{
-              backgroundColor: isErasing ? "white" : "black",
-              width: `${brushWidth}px`,
-              height: `${brushWidth}px`,
-            }}
+            className={cn(
+              styles.brush_sample,
+              isErasing && styles.brush_sample__erasing
+            )}
+            style={{ width: `${brushWidth}px`, height: `${brushWidth}px` }}
           ></div>
         </div>
       </div>

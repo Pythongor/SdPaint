@@ -1,6 +1,15 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  accent-color: #d5e3c3;
+}
+
 body {
   margin: 0;
   accent-color: #d5e3c3;
+  background-color: #00213d;
+  overflow: hidden;
 }
 
 code {
@@ -21,6 +30,12 @@ li {
   list-style: none;
 }
 
+button,
+input[type="range"],
+input[type="color"] {
+  cursor: pointer;
+}
+
 ::-webkit-scrollbar {
   height: 10px;
   width: 10px;
@@ -39,4 +54,8 @@ li {
 
 a {
   text-decoration-skip-ink: auto;
+}
+
+canvas {
+  vertical-align: bottom;
 }

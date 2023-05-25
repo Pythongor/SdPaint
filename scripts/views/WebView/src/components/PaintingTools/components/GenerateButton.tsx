@@ -3,6 +3,8 @@ import { connect } from "react-redux";
 import { StateType } from "store/types";
 import { sendImage, retryRequest, getImage } from "api";
 import { setResultImage, setCnProgress } from "store/actions";
+import cn from "classnames";
+import styles from "../PaintingTools.module.scss";
 
 type StateProps = ReturnType<typeof MSTP>;
 type DispatchProps = typeof MDTP;
@@ -26,7 +28,11 @@ const GenerateButton: React.FC<GenerateButtonProps> = ({
   };
 
   return (
-    <button id="generate" className="button" onClick={generate}>
+    <button
+      id="generate"
+      className={cn(styles.button, styles.button__generate)}
+      onClick={generate}
+    >
       Generate
     </button>
   );

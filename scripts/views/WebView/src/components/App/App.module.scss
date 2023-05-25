@@ -1,0 +1,8 @@
+.base {
+  height: 100vh;
+  overflow: auto;
+
+  &__scrollLock {
+    overflow: hidden;
+  }
+}

@@ -6,12 +6,17 @@ import { getModels, getModules } from "../../api";
 import ControlNetNumberInput from "./components/ControlNetNumberInput";
 import ControlNetSelect from "./components/ControlNetSelect";
 import { getConfig } from "../../storage";
+import cn from "classnames";
+import styles from "./ControlNetForm.module.scss";
 
-type StateProps = ReturnType<typeof MSTP>
+type StateProps = ReturnType<typeof MSTP>;
 type DispatchProps = typeof MDTP;
 type CnFormProps = StateProps & DispatchProps;
 
-export const ControlNetForm: React.FC<CnFormProps> = ({ setCnConfig, cnConfig }) => {
+export const ControlNetForm: React.FC<CnFormProps> = ({
+  setCnConfig,
+  cnConfig,
+}) => {
   useEffect(() => {
     const {
       seed,
@@ -35,30 +40,26 @@ export const ControlNetForm: React.FC<CnFormProps> = ({ setCnConfig, cnConfig })
   }, []);
 
   return (
-    <div className="cn-configuration">
-      <label className="cn-configuration_group cn-configuration_group__prompt">
-        <span className="cn-configuration_title">Enter your prompt</span>
+    <div className={styles.base}>
+      <label className={cn(styles.group, styles.group__prompt)}>
+        <span className={styles.title}>Enter your prompt</span>
         <textarea
-          className="textarea"
-          id="prompt"
-          name=""
+          className={styles.textarea}
           value={cnConfig.prompt}
           onChange={(event) => setCnConfig({ prompt: event.target.value })}
         ></textarea>
       </label>
-      <label className="cn-configuration_group cn-configuration_group__prompt">
-        <span className="cn-configuration_title">Enter negative prompt</span>
+      <label className={cn(styles.group, styles.group__prompt)}>
+        <span className={styles.title}>Enter negative prompt</span>
         <textarea
-          className="textarea"
-          id="negativePrompt"
-          name=""
+          className={styles.textarea}
           value={cnConfig.negative_prompt}
           onChange={(event) =>
             setCnConfig({ negative_prompt: event.target.value })
           }
         ></textarea>
       </label>
-      <div className="cn-configuration_group cn-configuration_group__misc">
+      <div className={cn(styles.group, styles.group__miscellaneous)}>
         <ControlNetNumberInput
           title="Seed"
           id="seed"

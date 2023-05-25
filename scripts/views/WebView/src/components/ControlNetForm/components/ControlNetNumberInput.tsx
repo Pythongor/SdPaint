@@ -1,17 +1,24 @@
 import React, { useCallback } from "react";
 import { connect } from "react-redux";
 import { setCnConfig } from "store/actions";
+import styles from "../ControlNetForm.module.scss";
 
 type OwnProps = {
   title: string;
   id: string;
   min: number;
   value: number;
-}
+};
 type DispatchProps = typeof MDTP;
-type CnInputProps = OwnProps & DispatchProps
+type CnInputProps = OwnProps & DispatchProps;
 
-const ControlNetNumberInput: React.FC<CnInputProps> = ({ title, id, min, value, setCnConfig }) => {
+const ControlNetNumberInput: React.FC<CnInputProps> = ({
+  title,
+  id,
+  min,
+  value,
+  setCnConfig,
+}) => {
   const onChange = useCallback(
     (event) => {
       setCnConfig({
@@ -22,13 +29,11 @@ const ControlNetNumberInput: React.FC<CnInputProps> = ({ title, id, min, value, 
   );
   return (
     <label>
-      <span className="cn-configuration_title">{title}</span>
+      <span className={styles.title}>{title}</span>
       <input
-        className="number_input"
+        className={styles.numberInput}
         type="number"
         min={min}
-        name={id}
-        id={id}
         value={value}
         onChange={onChange}
       ></input>

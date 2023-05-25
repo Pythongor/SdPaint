@@ -3,10 +3,12 @@ import { getRealBrushWidth } from "store/selectors";
 import { setPaintImage } from "store/actions";
 import { connect } from "react-redux";
 import { StateType } from "store/types";
+import cn from "classnames";
+import styles from "./PaintingCanvas.module.scss";
 
-type StateProps = ReturnType<typeof MSTP>
-type DispatchProps = typeof MDTP
-type PaintingCanvasProps = StateProps & DispatchProps
+type StateProps = ReturnType<typeof MSTP>;
+type DispatchProps = typeof MDTP;
+type PaintingCanvasProps = StateProps & DispatchProps;
 
 export const PaintingCanvas: React.FC<PaintingCanvasProps> = ({
   isErasing,
@@ -18,7 +20,8 @@ export const PaintingCanvas: React.FC<PaintingCanvasProps> = ({
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const [isDrawing, setIsDrawing] = useState(false);
   const [context, setContext] = useState<CanvasRenderingContext2D>();
-  const [previewContext, setPreviewContext] = useState<CanvasRenderingContext2D>();
+  const [previewContext, setPreviewContext] =
+    useState<CanvasRenderingContext2D>();
   const paintingRef = useRef<HTMLCanvasElement>(null);
   const previewRef = useRef<HTMLCanvasElement>(null);
 
@@ -44,7 +47,7 @@ export const PaintingCanvas: React.FC<PaintingCanvasProps> = ({
 
   useEffect(() => {
     if (!paintingRef?.current) return;
-    const canvasContext = paintingRef?.current.getContext("2d")
+    const canvasContext = paintingRef?.current.getContext("2d");
     if (!canvasContext) return;
     setContext(canvasContext);
   }, [paintingRef?.current]);
@@ -56,7 +59,7 @@ export const PaintingCanvas: React.FC<PaintingCanvasProps> = ({
 
   useEffect(() => {
     if (!previewRef?.current) return;
-    const canvasContext = previewRef?.current.getContext("2d")
+    const canvasContext = previewRef?.current.getContext("2d");
     if (!canvasContext) return;
     setPreviewContext(canvasContext);
   }, [previewRef?.current]);
@@ -202,26 +205,24 @@ export const PaintingCanvas: React.FC<PaintingCanvasProps> = ({
   }, [previewContext, previewRef?.current, paintingRef?.current]);
 
   return (
-    <div className="canvas_base">
-      <div className="canvas_wrapper">
-        <p className="canvas_header">Draw your sketch here</p>
-        <canvas
-          ref={paintingRef}
-          id="paintingArea"
-          height="512"
-          width="512"
-        ></canvas>
-        <canvas
-          onMouseDown={mouseDown}
-          onMouseMove={mouseMove}
-          onMouseUp={mouseUp}
-          onMouseOut={mouseOut}
-          ref={previewRef}
-          id="previewActions"
-          height="512"
-          width="512"
-        ></canvas>
-      </div>
+    <div className={styles.base}>
+      <p className={styles.title}>Draw your sketch here</p>
+      <canvas
+        ref={paintingRef}
+        className={cn(styles.canvas, styles.canvas__painting)}
+        height="512"
+        width="512"
+      ></canvas>
+      <canvas
+        onMouseDown={mouseDown}
+        onMouseMove={mouseMove}
+        onMouseUp={mouseUp}
+        onMouseOut={mouseOut}
+        ref={previewRef}
+        className={cn(styles.canvas, styles.canvas__preview)}
+        height="512"
+        width="512"
+      ></canvas>
     </div>
   );
 };

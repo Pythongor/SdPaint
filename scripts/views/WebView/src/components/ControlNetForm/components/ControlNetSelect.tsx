@@ -2,16 +2,17 @@ import React, { useEffect, useCallback } from "react";
 import { StateType } from "store/types";
 import { connect } from "react-redux";
 import { setCnConfig } from "store/actions";
+import styles from "../ControlNetForm.module.scss";
 
 type OwnProps = {
   title: string;
-  listName: 'models' | 'modules';
-  unitName: 'model' | 'module';
-  getFunc: () => Promise<{list: string[]}>
-}
-type StateProps = ReturnType<typeof MSTP>
-type DispatchProps = typeof MDTP
-type CnSelectProps = OwnProps & StateProps & DispatchProps
+  listName: "models" | "modules";
+  unitName: "model" | "module";
+  getFunc: () => Promise<{ list: string[] }>;
+};
+type StateProps = ReturnType<typeof MSTP>;
+type DispatchProps = typeof MDTP;
+type CnSelectProps = OwnProps & StateProps & DispatchProps;
 
 const ControlNetSelect: React.FC<CnSelectProps> = ({
   title,
@@ -33,13 +34,8 @@ const ControlNetSelect: React.FC<CnSelectProps> = ({
 
   return (
     <label>
-      <span className="cn-configuration_title">{title}</span>
-      <select
-        className="select_input"
-        name={unitName}
-        id={unitName}
-        onChange={onChange}
-      >
+      <span className={styles.title}>{title}</span>
+      <select className={styles.select} onChange={onChange}>
         {cnConfig[listName] &&
           cnConfig[listName].map((name) => (
             <option key={name} value={name}>

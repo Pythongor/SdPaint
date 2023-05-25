@@ -2,6 +2,8 @@ import React, { useRef, useCallback, useEffect, useState } from "react";
 import { StateType } from "store/types";
 import { connect } from "react-redux";
 import { setImageViewerActive } from "store/actions";
+import cn from "classnames";
+import styles from "./ResultCanvas.module.scss";
 
 type StateProps = ReturnType<typeof MSTP>;
 type DispatchProps = typeof MDTP;
@@ -39,30 +41,28 @@ const ResultCanvas: React.FC<ResultCanvasProps> = ({
     setImageViewerActive(true);
   }, [ref.current, resultImage]);
 
-  const canvasClass =
-    (resultImage ? "" : "empty") + (cnProgress !== 0 ? " progress" : "");
-
   return (
-    <div className="canvas_base">
-      <div className="canvas_wrapper">
-        <p className="canvas_header">Your result here</p>
-        <canvas
-          className={canvasClass}
-          id="result"
-          height="512"
-          width="512"
-          onClick={onClick}
-          ref={ref}
-        ></canvas>
-        {cnProgress !== 0 && (
-          <>
-            <div className="loader"></div>
-            <progress id="cnProgress" max="100" value={cnProgress}>
-              {cnProgress}
-            </progress>
-          </>
+    <div className={styles.base}>
+      <p className={styles.title}>Your result here</p>
+      <canvas
+        className={cn(
+          styles.canvas,
+          cnProgress !== 0 && styles.canvas__waiting,
+          !resultImage && styles.canvas__empty
         )}
-      </div>
+        height="512"
+        width="512"
+        onClick={onClick}
+        ref={ref}
+      ></canvas>
+      {cnProgress !== 0 && (
+        <>
+          <div className={styles.loader}></div>
+          <progress className={styles.progress} max="100" value={cnProgress}>
+            {cnProgress}
+          </progress>
+        </>
+      )}
     </div>
   );
 };
