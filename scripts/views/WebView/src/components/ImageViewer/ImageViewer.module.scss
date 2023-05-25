@@ -1,6 +1,8 @@
+@import "assets/styles/constants";
+
 .base {
   position: fixed;
-  background-color: #00213dee;
+  background-color: $deepBlue;
   top: 0;
   left: 0;
   width: 100%;

@@ -1,9 +1,11 @@
+@import "assets/styles/constants";
+
 .base {
   display: flex;
   justify-content: space-between;
   gap: 10px;
   margin: 20px;
-  background-color: #365a7c;
+  background-color: $blue;
   border-radius: 5px;
   padding: 10px;
 }
@@ -26,7 +28,7 @@
 .title {
   text-align: center;
   display: block;
-  color: #d5e3c3;
+  color: $beige;
 }
 
 .textarea {
@@ -36,11 +38,11 @@
   border-radius: 5px;
   padding: 5px;
   resize: none;
-  border: 1px solid #00213d;
+  border: 1px solid $deepBlue;
 }
 
 .numberInput {
-  border: 1px solid #00213d;
+  border: 1px solid $deepBlue;
   border-radius: 5px;
   padding-inline: 5px;
   text-align: center;
@@ -48,7 +50,7 @@
 }
 
 .select {
-  border: 1px solid #00213d;
+  border: 1px solid $deepBlue;
   border-radius: 5px;
   padding-inline: 5px;
   text-align: center;

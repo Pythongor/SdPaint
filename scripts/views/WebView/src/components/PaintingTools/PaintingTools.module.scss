@@ -1,5 +1,7 @@
+@import "assets/styles/constants";
+
 .base {
-  background-color: #365a7c;
+  background-color: $blue;
   border-radius: 5px;
   padding: 10px;
   display: flex;
@@ -10,8 +12,8 @@
 
 .group {
   margin-top: 5px;
-  background-color: #6b8aad;
-  border: 1px solid #00213d;
+  background-color: $lightBlue;
+  border: 1px solid $deepBlue;
   border-radius: 5px;
   padding: 10px;
   &:first-child {
@@ -42,11 +44,11 @@
 
 .button {
   border-radius: 5px;
-  border: 1px solid #00213d;
-  color: #00213d;
+  border: 1px solid $deepBlue;
+  color: $deepBlue;
   display: block;
   margin: 0 auto;
-  background-color: #d5e3c3;
+  background-color: $beige;
   height: 27px;
   width: 50px;
 
@@ -79,13 +81,13 @@
   margin: 10px auto 0;
   position: relative;
   border-radius: 5px;
-  outline: 1px solid #00213d;
+  outline: 1px solid $deepBlue;
   height: 50px;
   width: 50px;
-  background-color: white;
+  background-color: $white;
 
   &__erasing {
-    background-color: black;
+    background-color: $black;
   }
 }
 
@@ -95,9 +97,9 @@
   left: 50%;
   transform: translate(-50%, -50%);
   border-radius: 50%;
-  background-color: black;
+  background-color: $black;
 
   &__erasing {
-    background-color: white;
+    background-color: $white;
   }
 }

@@ -1,13 +1,14 @@
+@import "assets/styles/constants";
+
 .base {
   padding: 2px;
-  background-color: #365a7c;
-  border: 1px solid grey;
+  background-color: $blue;
   border-radius: 5px;
   position: relative;
 }
 
 .title {
-  color: #d5e3c3;
+  color: $beige;
   text-align: center;
   width: 100%;
 }
@@ -16,7 +17,7 @@
   display: block;
 
   &__painting {
-    background-color: white;
+    background-color: $white;
   }
 
   &__preview {
