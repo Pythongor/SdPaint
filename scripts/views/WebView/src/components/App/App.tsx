@@ -1,13 +1,17 @@
-import React from "react";
+import React, { useRef } from "react";
 import { ImageViewer, ControlNetForm, MainSection } from "components";
 import { connect } from "react-redux";
 import { StateType } from "store/types";
+import { setScrollTop } from "store/actions";
 import cn from "classnames";
 import styles from "./App.module.scss";
 
-type AppProps = ReturnType<typeof MSTP>;
+type StateProps = ReturnType<typeof MSTP>;
+type DispatchProps = typeof MDTP;
+type AppProps = StateProps & DispatchProps;
 
-const App: React.FC<AppProps> = ({ isImageViewerActive }) => {
+const App: React.FC<AppProps> = ({ isImageViewerActive, setScrollTop }) => {
+  const ref = useRef<HTMLDivElement>(null);
   const onload = () => {
     // document.addEventListener("keydown", (event) => {
     //   const { code, ctrlKey, shiftKey, altKey } = event;
@@ -44,6 +48,10 @@ const App: React.FC<AppProps> = ({ isImageViewerActive }) => {
         styles.base,
         isImageViewerActive && styles.base__scrollLock
       )}
+      ref={ref}
+      onScroll={() =>
+        ref.current?.scrollTop && setScrollTop(ref.current?.scrollTop)
+      }
     >
       <ImageViewer />
       <ControlNetForm />
@@ -54,4 +62,6 @@ const App: React.FC<AppProps> = ({ isImageViewerActive }) => {
 
 const MSTP = ({ isImageViewerActive }: StateType) => ({ isImageViewerActive });
 
-export default connect(MSTP)(App);
+const MDTP = { setScrollTop };
+
+export default connect(MSTP, MDTP)(App);

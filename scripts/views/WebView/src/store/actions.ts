@@ -1,6 +1,8 @@
 import { createAction } from "typesafe-actions";
 import { Actions, CnConfigType } from "./types";
 
+export const setScrollTop = createAction(Actions.setScrollTop)<number>();
+
 export const setIsErasing = createAction(Actions.setIsErasing)<boolean>();
 
 export const setBrushWidth = createAction(Actions.setBrushWidth)<number>();

@@ -15,6 +15,7 @@ export type CnConfigType = {
 };
 
 export type StateType = {
+  scrollTop: number;
   isErasing: boolean;
   brushWidth: number;
   cnProgress: number;
@@ -32,6 +33,7 @@ export enum Actions {
   setResultImage = "SET_RESULT_IMAGE",
   setPaintImage = "SET_PAINT_IMAGE",
   setCnConfig = "SET_CONTROL_NET_CONFIG",
+  setScrollTop = "SET_SCROLL_TOP",
 }
 
 export type ActionType = ActType<typeof actions>;

@@ -11,6 +11,7 @@ type DispatchProps = typeof MDTP;
 type PaintingCanvasProps = StateProps & DispatchProps;
 
 export const PaintingCanvas: React.FC<PaintingCanvasProps> = ({
+  scrollTop,
   isErasing,
   brushWidth,
   setPaintImage,
@@ -84,7 +85,7 @@ export const PaintingCanvas: React.FC<PaintingCanvasProps> = ({
 
   useEffect(() => {
     resize();
-  }, [paintingRef?.current]);
+  }, [paintingRef?.current, scrollTop]);
 
   useEffect(() => {
     window.addEventListener("resize", resize);
@@ -231,6 +232,7 @@ const MSTP = (state: StateType) => ({
   isErasing: state.isErasing,
   brushWidth: getRealBrushWidth(state),
   paintImage: state.paintImage,
+  scrollTop: state.scrollTop,
 });
 
 const MDTP = { setPaintImage };

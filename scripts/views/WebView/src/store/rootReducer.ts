@@ -8,9 +8,11 @@ import {
   setResultImage,
   setPaintImage,
   setCnConfig,
+  setScrollTop,
 } from "./actions";
 
 const initialState: Readonly<StateType> = {
+  scrollTop: 0,
   isImageViewerActive: false,
   isErasing: false,
   brushWidth: 2,
@@ -35,6 +37,10 @@ export default createReducer<StateType, ActionType>(initialState)
   .handleAction(setIsErasing, (state, { payload }) => ({
     ...state,
     isErasing: payload,
+  }))
+  .handleAction(setScrollTop, (state, { payload }) => ({
+    ...state,
+    scrollTop: payload,
   }))
   .handleAction(setBrushWidth, (state, { payload }) => ({
     ...state,
