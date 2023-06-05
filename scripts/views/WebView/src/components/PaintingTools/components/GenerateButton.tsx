@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useCallback } from "react";
 import { connect } from "react-redux";
 import { StateType } from "store/types";
-import { sendImage, retryRequest, getImage } from "api";
+import { PayloadActionCreator } from "typesafe-actions";
+import { Actions } from "store/types";
+import { sendImage, retryRequest, getImage, catchError } from "api";
 import { setResultImage, setCnProgress } from "store/actions";
 import cn from "classnames";
 import styles from "../PaintingTools.module.scss";
@@ -10,28 +12,35 @@ type StateProps = ReturnType<typeof MSTP>;
 type DispatchProps = typeof MDTP;
 type GenerateButtonProps = StateProps & DispatchProps;
 
+export const generate = async (
+  paintImage: string,
+  setResultImage: PayloadActionCreator<Actions.setResultImage, string>,
+  setCnProgress: PayloadActionCreator<Actions.setCnProgress, number>
+) => {
+  if (!paintImage) return;
+  await sendImage(paintImage).catch(catchError);
+  await retryRequest(
+    async () => {
+      const { blob } = await getImage();
+      setResultImage(URL.createObjectURL(blob));
+    },
+    (data) => setCnProgress(data * 100)
+  );
+};
+
 const GenerateButton: React.FC<GenerateButtonProps> = ({
   paintImage,
   setResultImage,
   setCnProgress,
 }) => {
-  const generate = async () => {
-    if (!paintImage) return;
-    await sendImage(paintImage);
-    await retryRequest(
-      async () => {
-        const { blob } = await getImage();
-        setResultImage(URL.createObjectURL(blob));
-      },
-      (data) => setCnProgress(data * 100)
-    );
-  };
+  const onClick = useCallback(() => {
+    generate(paintImage, setResultImage, setCnProgress);
+  }, [paintImage, setResultImage, setCnProgress]);
 
   return (
     <button
-      id="generate"
       className={cn(styles.button, styles.button__generate)}
-      onClick={generate}
+      onClick={onClick}
     >
       Generate
     </button>

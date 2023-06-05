@@ -9,6 +9,7 @@ import {
   setPaintImage,
   setCnConfig,
   setScrollTop,
+  setInstantGenerationMode,
 } from "./actions";
 
 const initialState: Readonly<StateType> = {
@@ -19,6 +20,7 @@ const initialState: Readonly<StateType> = {
   cnProgress: 0,
   resultImage: "",
   paintImage: "",
+  instantGenerationMode: true,
   cnConfig: {
     seed: -1,
     prompt: "dark unexplored dungeon",
@@ -65,4 +67,8 @@ export default createReducer<StateType, ActionType>(initialState)
   .handleAction(setCnConfig, (state, { payload }) => ({
     ...state,
     cnConfig: { ...state.cnConfig, ...payload },
+  }))
+  .handleAction(setInstantGenerationMode, (state, { payload }) => ({
+    ...state,
+    instantGenerationMode: payload,
   }));

@@ -20,3 +20,7 @@ export const setPaintImage = createAction(Actions.setPaintImage)<string>();
 export const setCnConfig = createAction(Actions.setCnConfig)<
   Partial<CnConfigType>
 >();
+
+export const setInstantGenerationMode = createAction(
+  Actions.setInstantGenerationMode
+)<boolean>();

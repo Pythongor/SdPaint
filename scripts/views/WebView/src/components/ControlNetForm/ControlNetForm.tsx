@@ -72,18 +72,18 @@ export const ControlNetForm: React.FC<CnFormProps> = ({
           min={1}
           value={cnConfig.steps}
         />
-        <ControlNetNumberInput
+        {/* <ControlNetNumberInput
           title="CFG Scale"
           id="cfg_scale"
           min={1}
           value={cnConfig.cfg_scale}
-        />
-        <ControlNetNumberInput
+        /> */}
+        {/* <ControlNetNumberInput
           title="Batch size"
           id="batch_size"
           min={1}
           value={cnConfig.batch_size}
-        />
+        /> */}
         <ControlNetSelect
           title="Module"
           listName="modules"

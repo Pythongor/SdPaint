@@ -23,6 +23,7 @@ export type StateType = {
   resultImage: string;
   paintImage: string;
   cnConfig: CnConfigType;
+  instantGenerationMode: boolean;
 };
 
 export enum Actions {
@@ -34,6 +35,7 @@ export enum Actions {
   setPaintImage = "SET_PAINT_IMAGE",
   setCnConfig = "SET_CONTROL_NET_CONFIG",
   setScrollTop = "SET_SCROLL_TOP",
+  setInstantGenerationMode = "SET_INSTANT_GENERATION_MODE",
 }
 
 export type ActionType = ActType<typeof actions>;

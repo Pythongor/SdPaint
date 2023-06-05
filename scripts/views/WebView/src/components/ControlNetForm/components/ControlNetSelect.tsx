@@ -8,7 +8,7 @@ type OwnProps = {
   title: string;
   listName: "models" | "modules";
   unitName: "model" | "module";
-  getFunc: () => Promise<{ list: string[] }>;
+  getFunc: () => Promise<{ list: string[] } | { error: Error }>;
 };
 type StateProps = ReturnType<typeof MSTP>;
 type DispatchProps = typeof MDTP;
@@ -24,7 +24,10 @@ const ControlNetSelect: React.FC<CnSelectProps> = ({
 }) => {
   useEffect(() => {
     if (!setCnConfig || !listName || !unitName) return;
-    getFunc().then((data) => setCnConfig({ [listName]: data.list }));
+    getFunc().then((data) => {
+      if ("error" in data) return;
+      setCnConfig({ [listName]: data.list });
+    });
   }, [listName, setCnConfig, unitName]);
 
   const onChange = useCallback(

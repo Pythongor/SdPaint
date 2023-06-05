@@ -1,36 +1,50 @@
 import { getConfig, getSettings } from "./storage";
 export const url = "http://127.0.0.1:8000";
 
+export const catchError = (error: Error) => {
+  const { name, message } = error;
+  console.error(`${name}: ${message}`);
+  return { error };
+};
+
 export const getModels = () => {
-  return fetch(`${url}/models`)
-    .then((response) => response.json())
-    .then((data) => ({ list: data }));
+  return fetch(`${url}/models`).then(
+    (response) => response.json().then((data) => ({ list: data })),
+    catchError
+  );
 };
 
 export const getModules = () =>
-  fetch(`${url}/modules`)
-    .then((response) => response.json())
-    .then((data) => ({ list: data.module_list, details: data.module_detail }));
+  fetch(`${url}/modules`).then(
+    (response) =>
+      response.json().then((data) => ({
+        list: data.module_list,
+        details: data.module_detail,
+      })),
+    catchError
+  );
 
 export const retryRequest = async (
   func: () => void,
   progressFunc: (data: any) => void,
   retries: number | null = null
 ) => {
-  const result = await fetch(`${url}/server_status`);
-  const data = await result.json();
-  progressFunc(data);
-  if (data) {
-    if (!retries) {
-      retries = 1;
-    } else if (retries >= 500) {
-      retries = 500;
-    } else retries = retries * 2;
-    setTimeout(
-      async () => await retryRequest(func, progressFunc, retries),
-      retries
-    );
-  } else func();
+  fetch(`${url}/server_status`).then((result) => {
+    result.json().then((data) => {
+      progressFunc(data);
+      if (data) {
+        if (!retries) {
+          retries = 1;
+        } else if (retries >= 500) {
+          retries = 500;
+        } else retries = retries * 2;
+        setTimeout(
+          async () => await retryRequest(func, progressFunc, retries),
+          retries
+        );
+      } else func();
+    }, catchError);
+  }, catchError);
 };
 
 export const sendImage = (image: string) => {

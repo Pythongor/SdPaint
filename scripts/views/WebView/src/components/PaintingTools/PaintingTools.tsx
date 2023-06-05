@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { StateType } from "store/types";
 import { default as BrushInput } from "./components/BrushInput";
-import { ToolsCheckboxes } from "./components/ToolsCheckboxes";
+import ToolsCheckboxes from "./components/ToolsCheckboxes";
 import { default as GenerateButton } from "./components/GenerateButton";
 import { setPaintImage } from "store/actions";
 import cn from "classnames";

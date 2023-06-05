@@ -1,8 +1,9 @@
 import React, { useState, useRef, useEffect, useCallback } from "react";
 import { getRealBrushWidth } from "store/selectors";
-import { setPaintImage } from "store/actions";
+import { setPaintImage, setResultImage, setCnProgress } from "store/actions";
 import { connect } from "react-redux";
 import { StateType } from "store/types";
+import { generate } from "components/PaintingTools/components/GenerateButton";
 import cn from "classnames";
 import styles from "./PaintingCanvas.module.scss";
 
@@ -14,8 +15,11 @@ export const PaintingCanvas: React.FC<PaintingCanvasProps> = ({
   scrollTop,
   isErasing,
   brushWidth,
-  setPaintImage,
+  instantGenerationMode,
   paintImage,
+  setPaintImage,
+  setResultImage,
+  setCnProgress,
 }) => {
   const [pos, setPos] = useState({ left: 0, top: 0 });
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
@@ -184,12 +188,13 @@ export const PaintingCanvas: React.FC<PaintingCanvasProps> = ({
         2 * Math.PI
       );
       context.fill();
-      // if (getSettings().fastMode) {
-      //   generate();
-      // }
-      setPaintImage(paintingRef.current.toDataURL());
+      const paintImage = paintingRef.current.toDataURL();
+      setPaintImage(paintImage);
+      if (instantGenerationMode) {
+        generate(paintImage, setResultImage, setCnProgress);
+      }
     },
-    [context, setMouseCoordinates, paintingRef?.current]
+    [context, setMouseCoordinates, paintingRef?.current, instantGenerationMode]
   );
 
   const mouseOut = useCallback(() => {
@@ -233,8 +238,9 @@ const MSTP = (state: StateType) => ({
   brushWidth: getRealBrushWidth(state),
   paintImage: state.paintImage,
   scrollTop: state.scrollTop,
+  instantGenerationMode: state.instantGenerationMode,
 });
 
-const MDTP = { setPaintImage };
+const MDTP = { setPaintImage, setResultImage, setCnProgress };
 
 export default connect(MSTP, MDTP)(PaintingCanvas);
