@@ -122,7 +122,7 @@ export const PaintingCanvas: React.FC<PaintingCanvasProps> = ({
       context.moveTo(mousePos.x, mousePos.y);
       setPaintImage(paintingRef.current.toDataURL());
     },
-    [context, setMouseCoordinates, paintingRef?.current]
+    [context, setMouseCoordinates, paintingRef?.current, mousePos]
   );
 
   const mouseMove = useCallback(
@@ -168,7 +168,13 @@ export const PaintingCanvas: React.FC<PaintingCanvasProps> = ({
         context.stroke();
       }
     },
-    [previewContext, previewRef?.current, setMouseCoordinates, context]
+    [
+      previewContext,
+      previewRef?.current,
+      setMouseCoordinates,
+      context,
+      mousePos,
+    ]
   );
 
   const mouseUp = useCallback(
@@ -194,7 +200,13 @@ export const PaintingCanvas: React.FC<PaintingCanvasProps> = ({
         generate(paintImage, setResultImage, setCnProgress);
       }
     },
-    [context, setMouseCoordinates, paintingRef?.current, instantGenerationMode]
+    [
+      context,
+      setMouseCoordinates,
+      paintingRef?.current,
+      instantGenerationMode,
+      mousePos,
+    ]
   );
 
   const mouseOut = useCallback(() => {
@@ -224,6 +236,7 @@ export const PaintingCanvas: React.FC<PaintingCanvasProps> = ({
         onMouseMove={mouseMove}
         onMouseUp={mouseUp}
         onMouseOut={mouseOut}
+        onMouseEnter={resize}
         ref={previewRef}
         className={cn(styles.canvas, styles.canvas__preview)}
         height="512"
