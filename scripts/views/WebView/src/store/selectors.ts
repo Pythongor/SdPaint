@@ -33,3 +33,7 @@ export const state2config = ({
     controlnet_units: [{ ...firstUnit, module, model }],
   };
 };
+
+export const state2settings = ({ instantGenerationMode }: StateType) => ({
+  instantMode: instantGenerationMode,
+});

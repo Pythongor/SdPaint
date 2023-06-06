@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { StateType } from "store/types";
 import { setInstantGenerationMode } from "store/actions";
+import { getSettings } from "storage";
 import cn from "classnames";
 import styles from "../PaintingTools.module.scss";
 
@@ -13,6 +14,10 @@ export const ToolsCheckboxes: React.FC<ToolsCheckboxesProps> = ({
   instantGenerationMode,
   setInstantGenerationMode,
 }) => {
+  useEffect(() => {
+    const { instantMode } = getSettings();
+    setInstantGenerationMode(instantMode);
+  }, []);
   return (
     <div>
       <div className={styles.group}>

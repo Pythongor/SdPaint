@@ -1,16 +1,19 @@
 import { createStore, applyMiddleware, Middleware } from "redux";
 import { StateType, Actions } from "./types";
-import { syncConfig } from "storage";
-import { state2config } from "./selectors";
+import { syncConfig, syncSettings } from "storage";
+import { state2config, state2settings } from "./selectors";
 import reducer from "./rootReducer";
 
 const customMiddleWare: Middleware<{}, StateType> =
   (store) => (dispatch) => (action) => {
     dispatch(action);
+    const currentState = store.getState();
     if (action.type === Actions.setCnConfig) {
-      const currentState = store.getState();
       const config = state2config(currentState);
       syncConfig(config);
+    } else if (action.type === Actions.setInstantGenerationMode) {
+      const settings = state2settings(currentState);
+      syncSettings(settings);
     }
   };
 

@@ -23,7 +23,7 @@ export const defaultConfig = {
   ],
 };
 
-export const defaultSettings = { syncJSON: true, fastMode: true };
+export const defaultSettings = { syncJSON: true, instantMode: true };
 
 export const storage = {
   set: (key: string, value: any) => {
