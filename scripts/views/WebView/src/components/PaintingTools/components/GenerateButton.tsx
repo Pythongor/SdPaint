@@ -19,13 +19,16 @@ export const generate = async (
 ) => {
   if (!paintImage) return;
   await sendImage(paintImage).catch(catchError);
-  await retryRequest(
-    async () => {
+  await retryRequest({
+    finalFunc: async () => {
       const { blob } = await getImage();
       setResultImage(URL.createObjectURL(blob));
     },
-    (data) => setCnProgress(data * 100)
-  );
+    progressFunc: (data) => {
+      setCnProgress(data * 100);
+      return !!data;
+    },
+  });
 };
 
 const GenerateButton: React.FC<GenerateButtonProps> = ({

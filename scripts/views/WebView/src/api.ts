@@ -1,10 +1,15 @@
 import { getConfig, getSettings } from "./storage";
 export const url = "http://127.0.0.1:8000";
 
-export const catchError = (error: Error) => {
+type CustomError = {
+  error: Error;
+  ok: false;
+};
+
+export const catchError = (error: Error): CustomError => {
   const { name, message } = error;
   console.error(`${name}: ${message}`);
-  return { error };
+  return { error, ok: false };
 };
 
 export const getModels = () => {
@@ -24,27 +29,55 @@ export const getModules = () =>
     catchError
   );
 
-export const retryRequest = async (
-  func: () => void,
-  progressFunc: (data: any) => void,
-  retries: number | null = null
-) => {
-  fetch(`${url}/server_status`).then((result) => {
-    result.json().then((data) => {
-      progressFunc(data);
-      if (data) {
-        if (!retries) {
-          retries = 1;
-        } else if (retries >= 500) {
-          retries = 500;
-        } else retries = retries * 2;
-        setTimeout(
-          async () => await retryRequest(func, progressFunc, retries),
-          retries
-        );
-      } else func();
-    }, catchError);
-  }, catchError);
+type RetryRequestConfig = {
+  progressFunc: (data: any) => boolean;
+  retries?: number | null;
+  timeout?: number;
+  finalFunc: (data: any) => void;
+  fetchFunc?: () => Promise<any>;
+};
+
+const retry = ({
+  progressFunc,
+  retries = null,
+  timeout = 1,
+  finalFunc,
+  fetchFunc,
+}: RetryRequestConfig) => {
+  if (timeout >= 500) {
+    timeout = 500;
+  } else timeout = timeout * 2;
+  return new Promise((resolve, reject) => {
+    setTimeout(
+      async () =>
+        resolve(
+          await retryRequest({
+            progressFunc,
+            retries: retries ? retries - 1 : null,
+            timeout,
+            finalFunc,
+            fetchFunc,
+          })
+        ),
+      timeout
+    );
+  });
+};
+
+export const retryRequest = async (config: RetryRequestConfig) => {
+  const {
+    fetchFunc = async () => (await fetch(`${url}/server_status`)).json(),
+  } = config;
+  const result = await fetchFunc().catch((error) => catchError(error));
+  if (config.retries === 0) return config.finalFunc(result);
+  if (result && result?.ok === false) {
+    return retry(config);
+  } else {
+    const needRetry = config.progressFunc(result);
+    if (needRetry) {
+      return retry(config);
+    } else return config.finalFunc(result);
+  }
 };
 
 export const sendImage = (image: string) => {

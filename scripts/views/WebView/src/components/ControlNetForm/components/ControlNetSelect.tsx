@@ -2,6 +2,7 @@ import React, { useEffect, useCallback } from "react";
 import { StateType } from "store/types";
 import { connect } from "react-redux";
 import { setCnConfig } from "store/actions";
+import { retryRequest } from "api";
 import styles from "../ControlNetForm.module.scss";
 
 type OwnProps = {
@@ -24,9 +25,14 @@ const ControlNetSelect: React.FC<CnSelectProps> = ({
 }) => {
   useEffect(() => {
     if (!setCnConfig || !listName || !unitName) return;
-    getFunc().then((data) => {
-      if ("error" in data) return;
-      setCnConfig({ [listName]: data.list });
+    retryRequest({
+      retries: 10,
+      progressFunc: () => false,
+      finalFunc: (data) => {
+        if ("error" in data) return;
+        setCnConfig({ [listName]: data.list });
+      },
+      fetchFunc: () => getFunc(),
     });
   }, [listName, setCnConfig, unitName]);
 

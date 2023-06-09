@@ -39,7 +39,6 @@ def send_request():
     global sd_image
     response = post_request(state)
     if response["status_code"] == 200:
-        print(response.keys(), response["status_code"], response.get("image", None)[:10])
         if response.get("image", None):
             sd_image = response["image"]
         # elif response.get("batch_images", None):
@@ -70,7 +69,8 @@ async def root(data: Request):
     if not state.server["busy"]:
         state.server["busy"] = True
         data = await data.json()
-        payload_submit(state, data["config"]["controlnet_units"][0]["input_image"])
+        payload_submit(state, data["config"]
+                       ["controlnet_units"][0]["input_image"])
         state["main_json_data"]["prompt"] = data["config"]["prompt"]
         state["main_json_data"]["negative_prompt"] = data["config"]["negative_prompt"]
         state["main_json_data"]["seed"] = data["config"]["seed"]
@@ -81,7 +81,7 @@ async def root(data: Request):
 @app.get('/server_status')
 async def root():
     if not state.server["busy"]:
-            return
+        return
 
     progress_json = progress_request(state)
     progress = progress_json.get('progress', None)
