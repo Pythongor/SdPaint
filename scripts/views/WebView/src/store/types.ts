@@ -14,10 +14,14 @@ export type CnConfigType = {
   modules: string[];
 };
 
+export type BrushType = "pencil" | "rectangle" | "ellipse";
+
 export type StateType = {
   scrollTop: number;
   isErasing: boolean;
   brushWidth: number;
+  brushType: BrushType;
+  withBrushFill: boolean;
   cnProgress: number;
   isImageViewerActive: boolean;
   resultImage: string;
@@ -29,6 +33,8 @@ export type StateType = {
 export enum Actions {
   setIsErasing = "SET_IS_ERASING",
   setBrushWidth = "SET_BRUSH_WIDTH",
+  setBrushType = "SET_BRUSH_TYPE",
+  setBrushFilling = "SET_BRUSH_FILLING",
   setCnProgress = "SET_CONTROL_NET_PROGRESS",
   setImageViewerActive = "SET_IMAGE_VIEWER_ACTIVE",
   setResultImage = "SET_RESULT_IMAGE",

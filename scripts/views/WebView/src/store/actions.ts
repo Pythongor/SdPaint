@@ -1,11 +1,15 @@
 import { createAction } from "typesafe-actions";
-import { Actions, CnConfigType } from "./types";
+import { Actions, CnConfigType, BrushType } from "./types";
 
 export const setScrollTop = createAction(Actions.setScrollTop)<number>();
 
 export const setIsErasing = createAction(Actions.setIsErasing)<boolean>();
 
 export const setBrushWidth = createAction(Actions.setBrushWidth)<number>();
+
+export const setBrushType = createAction(Actions.setBrushType)<BrushType>();
+
+export const setBrushFilling = createAction(Actions.setBrushFilling)<boolean>();
 
 export const setCnProgress = createAction(Actions.setCnProgress)<number>();
 
@@ -24,3 +28,17 @@ export const setCnConfig = createAction(Actions.setCnConfig)<
 export const setInstantGenerationMode = createAction(
   Actions.setInstantGenerationMode
 )<boolean>();
+
+export default {
+  setIsErasing,
+  setBrushWidth,
+  setBrushType,
+  setBrushFilling,
+  setCnProgress,
+  setImageViewerActive,
+  setResultImage,
+  setPaintImage,
+  setCnConfig,
+  setScrollTop,
+  setInstantGenerationMode,
+};

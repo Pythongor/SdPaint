@@ -1,7 +1,12 @@
 import React from "react";
 import { connect } from "react-redux";
-import { StateType } from "store/types";
-import { setBrushWidth, setIsErasing } from "store/actions";
+import { StateType, BrushType } from "store/types";
+import {
+  setBrushWidth,
+  setIsErasing,
+  setBrushType,
+  setBrushFilling,
+} from "store/actions";
 import { getRealBrushWidth } from "store/selectors";
 import cn from "classnames";
 import styles from "../PaintingTools.module.scss";
@@ -12,10 +17,15 @@ type BrushInputProps = StateProps & DispatchProps;
 
 const BrushInput: React.FC<BrushInputProps> = ({
   isErasing,
+  brushWidth,
+  brushType,
+  withBrushFill,
   setBrushWidth,
   setIsErasing,
-  brushWidth,
+  setBrushType,
+  setBrushFilling,
 }) => {
+  const sampleWidth = brushType !== "pencil" && withBrushFill ? 10 : brushWidth;
   const onSliderInput = (event: React.FormEvent<HTMLInputElement>) =>
     setBrushWidth(+event.currentTarget.value);
 
@@ -27,11 +37,20 @@ const BrushInput: React.FC<BrushInputProps> = ({
     }
   };
 
+  const onFillInput = (event: React.FormEvent<HTMLInputElement>) => {
+    if (event.currentTarget.checked) {
+      setBrushFilling(true);
+    } else {
+      setBrushFilling(false);
+    }
+  };
+
   return (
     <div className={styles.group}>
       <label>
         <span className={styles.title}>Customize brush</span>
         <input
+          disabled={brushType !== "pencil" && withBrushFill}
           className={styles.slider}
           type="range"
           min="1"
@@ -40,7 +59,30 @@ const BrushInput: React.FC<BrushInputProps> = ({
           onInput={onSliderInput}
         ></input>
       </label>
-      <div className={styles.brush}>
+      <div className={styles.flexGroup}>
+        <select
+          className={styles.select}
+          value={brushType}
+          onChange={(event) =>
+            setBrushType(event.currentTarget.value as BrushType)
+          }
+        >
+          <option value="pencil">Pencil</option>
+          <option value="rectangle">Rectangle</option>
+          <option value="ellipse">Ellipse</option>
+        </select>
+        <label className={styles.label}>
+          <input
+            defaultChecked={withBrushFill}
+            disabled={brushType === "pencil"}
+            className={styles.checkbox}
+            type="checkbox"
+            onInput={onFillInput}
+          ></input>
+          <span>Fill</span>
+        </label>
+      </div>
+      <div className={styles.flexGroup}>
         <label className={styles.label}>
           <input
             className={styles.checkbox}
@@ -58,9 +100,10 @@ const BrushInput: React.FC<BrushInputProps> = ({
           <div
             className={cn(
               styles.brush_sample,
-              isErasing && styles.brush_sample__erasing
+              isErasing && styles.brush_sample__erasing,
+              brushType === "rectangle" && styles.brush_sample__rectangle
             )}
-            style={{ width: `${brushWidth}px`, height: `${brushWidth}px` }}
+            style={{ width: `${sampleWidth}px`, height: `${sampleWidth}px` }}
           ></div>
         </div>
       </div>
@@ -71,10 +114,12 @@ const BrushInput: React.FC<BrushInputProps> = ({
 const MSTP = (state: StateType) => {
   return {
     isErasing: state.isErasing,
+    brushType: state.brushType,
+    withBrushFill: state.withBrushFill,
     brushWidth: getRealBrushWidth(state),
   };
 };
 
-const MDTP = { setBrushWidth, setIsErasing };
+const MDTP = { setBrushWidth, setIsErasing, setBrushType, setBrushFilling };
 
 export default connect(MSTP, MDTP)(BrushInput);

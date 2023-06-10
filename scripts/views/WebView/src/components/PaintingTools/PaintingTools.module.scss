@@ -26,6 +26,13 @@
   text-align: center;
 }
 
+.select {
+  border: 1px solid $deepBlue;
+  border-radius: 5px;
+  padding-inline: 5px;
+  text-align: center;
+}
+
 .label {
   display: flex;
   user-select: none;
@@ -71,11 +78,12 @@
   width: 100%;
 }
 
-.brush {
+.flexGroup {
   margin-top: 10px;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
+  gap: 5px;
 }
 
 .brush_surrounding {
@@ -102,5 +110,9 @@
 
   &__erasing {
     background-color: $white;
+  }
+
+  &__rectangle {
+    border-radius: 0;
   }
 }

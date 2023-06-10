@@ -1,22 +1,14 @@
 import { createReducer } from "typesafe-actions";
 import { ActionType, StateType } from "./types";
-import {
-  setIsErasing,
-  setBrushWidth,
-  setCnProgress,
-  setImageViewerActive,
-  setResultImage,
-  setPaintImage,
-  setCnConfig,
-  setScrollTop,
-  setInstantGenerationMode,
-} from "./actions";
+import actions from "./actions";
 
 const initialState: Readonly<StateType> = {
   scrollTop: 0,
   isImageViewerActive: false,
   isErasing: false,
   brushWidth: 2,
+  brushType: "pencil",
+  withBrushFill: false,
   cnProgress: 0,
   resultImage: "",
   paintImage: "",
@@ -36,39 +28,47 @@ const initialState: Readonly<StateType> = {
 };
 
 export default createReducer<StateType, ActionType>(initialState)
-  .handleAction(setIsErasing, (state, { payload }) => ({
+  .handleAction(actions.setIsErasing, (state, { payload }) => ({
     ...state,
     isErasing: payload,
   }))
-  .handleAction(setScrollTop, (state, { payload }) => ({
+  .handleAction(actions.setScrollTop, (state, { payload }) => ({
     ...state,
     scrollTop: payload,
   }))
-  .handleAction(setBrushWidth, (state, { payload }) => ({
+  .handleAction(actions.setBrushWidth, (state, { payload }) => ({
     ...state,
     brushWidth: payload,
   }))
-  .handleAction(setCnProgress, (state, { payload }) => ({
+  .handleAction(actions.setBrushType, (state, { payload }) => ({
+    ...state,
+    brushType: payload,
+  }))
+  .handleAction(actions.setBrushFilling, (state, { payload }) => ({
+    ...state,
+    withBrushFill: payload,
+  }))
+  .handleAction(actions.setCnProgress, (state, { payload }) => ({
     ...state,
     cnProgress: payload,
   }))
-  .handleAction(setImageViewerActive, (state, { payload }) => ({
+  .handleAction(actions.setImageViewerActive, (state, { payload }) => ({
     ...state,
     isImageViewerActive: payload,
   }))
-  .handleAction(setResultImage, (state, { payload }) => ({
+  .handleAction(actions.setResultImage, (state, { payload }) => ({
     ...state,
     resultImage: payload,
   }))
-  .handleAction(setPaintImage, (state, { payload }) => ({
+  .handleAction(actions.setPaintImage, (state, { payload }) => ({
     ...state,
     paintImage: payload,
   }))
-  .handleAction(setCnConfig, (state, { payload }) => ({
+  .handleAction(actions.setCnConfig, (state, { payload }) => ({
     ...state,
     cnConfig: { ...state.cnConfig, ...payload },
   }))
-  .handleAction(setInstantGenerationMode, (state, { payload }) => ({
+  .handleAction(actions.setInstantGenerationMode, (state, { payload }) => ({
     ...state,
     instantGenerationMode: payload,
   }));
