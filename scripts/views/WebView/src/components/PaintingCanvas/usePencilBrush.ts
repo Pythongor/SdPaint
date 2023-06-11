@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { StateType } from "store/types";
 import { UseBrushProps } from "./types";
@@ -18,9 +18,16 @@ export const usePencilBrush = ({
   setResultImage,
 }: UseBrushProps) => {
   const [isDrawing, setIsDrawing] = useState(false);
-  const { isErasing } = useSelector(({ isErasing }: StateType) => ({
-    isErasing,
-  }));
+  const { isErasing, brushType } = useSelector(
+    ({ isErasing, brushType }: StateType) => ({
+      isErasing,
+      brushType,
+    })
+  );
+
+  useEffect(() => {
+    setIsDrawing(false);
+  }, [brushType]);
 
   const drawCircle = useCallback(
     (context: CanvasRenderingContext2D, withStroke?: boolean) => {
@@ -93,7 +100,7 @@ export const usePencilBrush = ({
   const mouseUp = useCallback(
     (event) => {
       setMouseCoordinates(event);
-      if (!context || !paintingRef.current) return;
+      if (!context || !paintingRef.current || !isDrawing) return;
       setIsDrawing(false);
       context.fillStyle = isErasing ? "white" : "black";
       drawCircle(context);

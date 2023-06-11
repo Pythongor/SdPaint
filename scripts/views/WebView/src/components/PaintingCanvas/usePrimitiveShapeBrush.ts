@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { StateType } from "store/types";
 import { UseBrushProps } from "./types";
@@ -39,13 +39,20 @@ const usePrimitiveShapeBrush = ({
 }: PrimitiveShapeProps) => {
   const [isDrawing, setIsDrawing] = useState(false);
   const [startPos, setStartPos] = useState({ x: 0, y: 0 });
-  const { isErasing, withBrushFill } = useSelector(
-    ({ isErasing, withBrushFill }: StateType) => ({
+  const { isErasing, withBrushFill, brushType } = useSelector(
+    ({ isErasing, withBrushFill, brushType }: StateType) => ({
       isErasing,
       withBrushFill,
+      brushType,
     })
   );
   const { drawFunc, getRect } = shapeMap[kind];
+
+  useEffect(() => {
+    setIsDrawing(false);
+    setStartPos({ x: 0, y: 0 });
+  }, [brushType]);
+
   const mouseDown = useCallback(
     (event) => {
       setMouseCoordinates(event);
@@ -137,7 +144,7 @@ const usePrimitiveShapeBrush = ({
 
   const mouseOut = useCallback(() => {
     clear(previewRef, previewContext);
-    setIsDrawing(false);
+    // setIsDrawing(false);
     if (!paintingRef.current) return;
     setPaintImage(paintingRef.current.toDataURL());
   }, [previewContext, previewRef?.current, paintingRef?.current]);

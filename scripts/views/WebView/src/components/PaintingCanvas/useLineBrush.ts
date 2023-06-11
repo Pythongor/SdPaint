@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { StateType } from "store/types";
 import { UseBrushProps } from "./types";
@@ -19,9 +19,17 @@ export const useLineBrush = ({
 }: UseBrushProps) => {
   const [isDrawing, setIsDrawing] = useState(false);
   const [startPos, setStartPos] = useState({ x: 0, y: 0 });
-  const { isErasing } = useSelector(({ isErasing }: StateType) => ({
-    isErasing,
-  }));
+  const { isErasing, brushType } = useSelector(
+    ({ isErasing, brushType }: StateType) => ({
+      isErasing,
+      brushType,
+    })
+  );
+
+  useEffect(() => {
+    setIsDrawing(false);
+    setStartPos({ x: 0, y: 0 });
+  }, [brushType]);
 
   const drawCircle = useCallback(
     (
@@ -120,7 +128,6 @@ export const useLineBrush = ({
 
   const mouseOut = useCallback(() => {
     clear(previewRef, previewContext);
-    setIsDrawing(false);
     if (!paintingRef.current) return;
     setPaintImage(paintingRef.current.toDataURL());
   }, [previewContext, previewRef?.current, paintingRef?.current]);
