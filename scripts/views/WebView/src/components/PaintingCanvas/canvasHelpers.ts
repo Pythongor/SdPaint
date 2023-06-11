@@ -107,6 +107,17 @@ export const drawRectangle = ({
   context.beginPath();
 };
 
+export const drawLine = (
+  context: CanvasRenderingContext2D,
+  point1: PointType,
+  point2: PointType
+) => {
+  context.beginPath();
+  context.moveTo(point1.x, point1.y);
+  context.lineTo(point2.x, point2.y);
+  context.stroke();
+};
+
 export const getRectangleFrom2Points = (
   point1: PointType,
   point2: PointType

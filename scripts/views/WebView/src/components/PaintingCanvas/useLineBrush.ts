@@ -3,9 +3,9 @@ import { useSelector } from "react-redux";
 import { StateType } from "store/types";
 import { UseBrushProps } from "./types";
 import { generate } from "components/PaintingTools/components/GenerateButton";
-import { drawEllipse, clear } from "./canvasHelpers";
+import { drawEllipse, drawLine, clear } from "./canvasHelpers";
 
-export const usePencilBrush = ({
+export const useLineBrush = ({
   paintingRef,
   previewRef,
   context,
@@ -18,16 +18,21 @@ export const usePencilBrush = ({
   setResultImage,
 }: UseBrushProps) => {
   const [isDrawing, setIsDrawing] = useState(false);
+  const [startPos, setStartPos] = useState({ x: 0, y: 0 });
   const { isErasing } = useSelector(({ isErasing }: StateType) => ({
     isErasing,
   }));
 
   const drawCircle = useCallback(
-    (context: CanvasRenderingContext2D, withStroke?: boolean) => {
+    (
+      context: CanvasRenderingContext2D,
+      withStroke?: boolean,
+      pos = mousePos
+    ) => {
       if (!context) return;
       drawEllipse({
         context,
-        ...mousePos,
+        ...pos,
         width: context.lineWidth / 2,
         height: context.lineWidth / 2,
         withStroke,
@@ -42,7 +47,7 @@ export const usePencilBrush = ({
       if (!context || !paintingRef.current) return;
       context.fillStyle = isErasing ? "white" : "black";
       setIsDrawing(true);
-      drawCircle(context);
+      setStartPos(mousePos);
       context.beginPath();
       setPaintImage(paintingRef.current.toDataURL());
     },
@@ -73,12 +78,13 @@ export const usePencilBrush = ({
       clear(previewRef, previewContext);
       previewContext.fillStyle = isErasing ? "white" : "black";
       switchBrushStyle();
-      drawCircle(previewContext, true);
-
       if (isDrawing && context) {
         context.strokeStyle = isErasing ? "white" : "black";
-        context.lineTo(mousePos.x, mousePos.y);
-        context.stroke();
+        drawCircle(previewContext, false, startPos);
+        drawCircle(previewContext);
+        drawLine(previewContext, startPos, mousePos);
+      } else {
+        drawCircle(previewContext, true);
       }
     },
     [
@@ -95,8 +101,8 @@ export const usePencilBrush = ({
       setMouseCoordinates(event);
       if (!context || !paintingRef.current) return;
       setIsDrawing(false);
-      context.fillStyle = isErasing ? "white" : "black";
-      drawCircle(context);
+      context.strokeStyle = isErasing ? "white" : "black";
+      drawLine(context, startPos, mousePos);
       const paintImage = paintingRef.current.toDataURL();
       setPaintImage(paintImage);
       if (instantGenerationMode) {

@@ -4,6 +4,7 @@ import { connect, useSelector } from "react-redux";
 import { StateType } from "store/types";
 import { UseBrushProps } from "./types";
 import { usePencilBrush } from "./usePencilBrush";
+import { useLineBrush } from "./useLineBrush";
 import { useRectangleBrush, useEllipseBrush } from "./usePrimitiveShapeBrush";
 import { useCanvas, clear } from "./canvasHelpers";
 import cn from "classnames";
@@ -12,10 +13,13 @@ import styles from "./PaintingCanvas.module.scss";
 const useBrush = (props: UseBrushProps) => {
   const brushType = useSelector(({ brushType }: StateType) => brushType);
   const pencilProps = usePencilBrush(props);
+  const lineProps = useLineBrush(props);
   const rectangleProps = useRectangleBrush(props);
   const ellipseProps = useEllipseBrush(props);
   if (brushType === "pencil") {
     return pencilProps;
+  } else if (brushType === "line") {
+    return lineProps;
   } else if (brushType === "rectangle") {
     return rectangleProps;
   } else {

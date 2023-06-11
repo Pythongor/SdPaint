@@ -14,7 +14,7 @@ export type CnConfigType = {
   modules: string[];
 };
 
-export type BrushType = "pencil" | "rectangle" | "ellipse";
+export type BrushType = "pencil" | "line" | "rectangle" | "ellipse";
 
 export type StateType = {
   scrollTop: number;

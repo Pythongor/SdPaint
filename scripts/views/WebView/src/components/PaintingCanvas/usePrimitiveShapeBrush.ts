@@ -52,14 +52,6 @@ const usePrimitiveShapeBrush = ({
       if (!previewContext || !previewRef.current) return;
       previewContext.fillStyle = isErasing ? "white" : "black";
       setIsDrawing(true);
-      switchBrushStyle();
-      drawFunc({
-        context: previewContext,
-        x: mousePos.x - previewContext.lineWidth / 2,
-        y: mousePos.y - previewContext.lineWidth / 2,
-        withStroke: true,
-      });
-      previewContext.beginPath();
       setStartPos(mousePos);
       setPaintImage(previewRef.current.toDataURL());
     },
@@ -89,6 +81,7 @@ const usePrimitiveShapeBrush = ({
       if (!previewContext || !previewRef?.current) return;
       clear(previewRef, previewContext);
       switchBrushStyle();
+      previewContext.fillStyle = isErasing ? "white" : "black";
       if (isDrawing) {
         const rect = getRect(mousePos, startPos);
         drawFunc({
@@ -103,7 +96,10 @@ const usePrimitiveShapeBrush = ({
           context: previewContext,
           x: mousePos.x - shift,
           y: mousePos.y - shift,
+          width: previewContext.lineWidth,
+          height: previewContext.lineWidth,
           withFill: true,
+          withStroke: true,
         });
       }
     },

@@ -25,7 +25,8 @@ const BrushInput: React.FC<BrushInputProps> = ({
   setBrushType,
   setBrushFilling,
 }) => {
-  const sampleWidth = brushType !== "pencil" && withBrushFill ? 10 : brushWidth;
+  const isPrimitiveShape = ["ellipose", "rectangle"].includes(brushType);
+  const sampleWidth = isPrimitiveShape && withBrushFill ? 10 : brushWidth;
   const onSliderInput = (event: React.FormEvent<HTMLInputElement>) =>
     setBrushWidth(+event.currentTarget.value);
 
@@ -50,7 +51,7 @@ const BrushInput: React.FC<BrushInputProps> = ({
       <label>
         <span className={styles.title}>Customize brush</span>
         <input
-          disabled={brushType !== "pencil" && withBrushFill}
+          disabled={isPrimitiveShape && withBrushFill}
           className={styles.slider}
           type="range"
           min="1"
@@ -68,29 +69,32 @@ const BrushInput: React.FC<BrushInputProps> = ({
           }
         >
           <option value="pencil">Pencil</option>
+          <option value="line">Line</option>
           <option value="rectangle">Rectangle</option>
           <option value="ellipse">Ellipse</option>
         </select>
-        <label className={styles.label}>
-          <input
-            defaultChecked={withBrushFill}
-            disabled={brushType === "pencil"}
-            className={styles.checkbox}
-            type="checkbox"
-            onInput={onFillInput}
-          ></input>
-          <span>Fill</span>
-        </label>
       </div>
       <div className={styles.flexGroup}>
-        <label className={styles.label}>
-          <input
-            className={styles.checkbox}
-            type="checkbox"
-            onInput={onEraserInput}
-          ></input>
-          <span>Eraser</span>
-        </label>
+        <div>
+          <label className={styles.label}>
+            <input
+              className={styles.checkbox}
+              type="checkbox"
+              onInput={onEraserInput}
+            ></input>
+            <span>Eraser</span>
+          </label>
+          <label className={styles.label}>
+            <input
+              defaultChecked={withBrushFill}
+              disabled={!isPrimitiveShape}
+              className={styles.checkbox}
+              type="checkbox"
+              onInput={onFillInput}
+            ></input>
+            <span>Fill</span>
+          </label>
+        </div>
         <div
           className={cn(
             styles.brush_surrounding,
