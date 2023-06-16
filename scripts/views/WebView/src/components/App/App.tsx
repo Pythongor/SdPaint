@@ -1,41 +1,98 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useCallback } from "react";
 import { ImageViewer, ControlNetForm, MainSection } from "components";
 import { connect } from "react-redux";
 import { StateType } from "store/types";
-import { setScrollTop } from "store/actions";
+import {
+  setScrollTop,
+  decreasePaintImageIndex,
+  increasePaintImageIndex,
+  setPaintImage,
+  setBrushWidth,
+  setBrushType,
+  setIsErasing,
+  setInstantGenerationMode,
+  setResultImage,
+  setCnProgress,
+  setCnConfig,
+  setBrushFilling,
+} from "store/actions";
+import { useHotKeys } from "hooks";
+import { downloadImage } from "components/PaintingTools/PaintingTools";
+import { getPaintImage } from "store/selectors";
+import { generate } from "components/PaintingTools/components/GenerateButton";
 import cn from "classnames";
 import styles from "./App.module.scss";
+
+type HotKeyModificators = {
+  ctrlKey: boolean;
+  shiftKey: boolean;
+  altKey: boolean;
+};
 
 type StateProps = ReturnType<typeof MSTP>;
 type DispatchProps = typeof MDTP;
 type AppProps = StateProps & DispatchProps;
 
-const App: React.FC<AppProps> = ({ isImageViewerActive, setScrollTop }) => {
+const App: React.FC<AppProps> = ({
+  isImageViewerActive,
+  resultImage,
+  paintImage,
+  seed,
+  setScrollTop,
+  decreasePaintImageIndex,
+  increasePaintImageIndex,
+  setPaintImage,
+  setBrushWidth,
+  setBrushType,
+  setBrushFilling,
+  setIsErasing,
+  setInstantGenerationMode,
+  setResultImage,
+  setCnProgress,
+  setCnConfig,
+}) => {
   const ref = useRef<HTMLDivElement>(null);
-  // const onload = () => {
-  //   document.addEventListener("keydown", (event) => {
-  //     const { code, ctrlKey, shiftKey, altKey } = event;
-  //     const { brushSlider } = getBrushElements();
-  //     const hotkeyMap = {
-  //       Enter: () => generate(),
-  //       Equal: () => {
-  //         if (+brushWidth < brushWidthMap.length) {
-  //           setWidth(+brushWidth + 1);
-  //         }
-  //         brushSlider.value = +brushWidth;
-  //       },
-  //       Minus: () => {
-  //         if (+brushWidth > 0) {
-  //           setWidth(+brushWidth - 1);
-  //         }
-  //         brushSlider.value = +brushWidth;
-  //       },
-  //       Backspace: ({ shiftKey }) => shiftKey && clearCanvas(),
-  //       KeyD: ({ shiftKey }) => shiftKey && downloadImage(),
-  //     };
-  //     hotkeyMap[code] && hotkeyMap[code]({ ctrlKey, shiftKey, altKey });
-  //   });
-  // };
+
+  const changeSeed = useCallback(
+    (ascend?: boolean) => {
+      if (ascend) {
+        setCnConfig({ seed: seed + 1 });
+      } else setCnConfig({ seed: seed - 1 });
+    },
+    [seed]
+  );
+
+  const memoizedGenerate = useCallback(() => {
+    generate(paintImage, setResultImage, setCnProgress);
+  }, [paintImage, setResultImage, setCnProgress]);
+
+  const memoizedDownload = useCallback(
+    () => downloadImage(resultImage),
+    [resultImage]
+  );
+
+  useHotKeys(
+    {
+      Enter: memoizedGenerate,
+      Equal: () => setBrushWidth("+"),
+      Minus: () => setBrushWidth("-"),
+      Delete: () => setPaintImage(""),
+      KeyD: memoizedDownload,
+      KeyE: () => setBrushType("ellipse"),
+      KeyE_c: () => setIsErasing("switch"),
+      KeyF: () => setBrushFilling("switch"),
+      KeyI: () => setInstantGenerationMode("switch"),
+      KeyL: () => setBrushType("line"),
+      KeyP: () => setBrushType("pencil"),
+      KeyR: () => setBrushType("rectangle"),
+      KeyS: () => changeSeed(true),
+      KeyS_s: () => changeSeed(),
+      KeyY_c: () => increasePaintImageIndex(),
+      KeyZ_c: () => decreasePaintImageIndex(),
+      KeyZ_cs: () => increasePaintImageIndex(),
+    },
+    [seed, paintImage, resultImage]
+  );
 
   return (
     <div
@@ -55,8 +112,26 @@ const App: React.FC<AppProps> = ({ isImageViewerActive, setScrollTop }) => {
   );
 };
 
-const MSTP = ({ isImageViewerActive }: StateType) => ({ isImageViewerActive });
+const MSTP = (state: StateType) => ({
+  isImageViewerActive: state.isImageViewerActive,
+  resultImage: state.resultImage,
+  paintImage: getPaintImage(state),
+  seed: state.cnConfig.seed,
+});
 
-const MDTP = { setScrollTop };
+const MDTP = {
+  setScrollTop,
+  decreasePaintImageIndex,
+  increasePaintImageIndex,
+  setPaintImage,
+  setBrushWidth,
+  setBrushFilling,
+  setBrushType,
+  setIsErasing,
+  setInstantGenerationMode,
+  setResultImage,
+  setCnProgress,
+  setCnConfig,
+};
 
 export default connect(MSTP, MDTP)(App);

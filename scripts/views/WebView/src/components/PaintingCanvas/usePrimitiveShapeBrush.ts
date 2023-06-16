@@ -60,7 +60,6 @@ const usePrimitiveShapeBrush = ({
       previewContext.fillStyle = isErasing ? "white" : "black";
       setIsDrawing(true);
       setStartPos(mousePos);
-      setPaintImage(previewRef.current.toDataURL());
     },
     [previewContext, setMouseCoordinates, previewRef?.current, mousePos]
   );
@@ -142,12 +141,10 @@ const usePrimitiveShapeBrush = ({
     ]
   );
 
-  const mouseOut = useCallback(() => {
-    clear(previewRef, previewContext);
-    // setIsDrawing(false);
-    if (!paintingRef.current) return;
-    setPaintImage(paintingRef.current.toDataURL());
-  }, [previewContext, previewRef?.current, paintingRef?.current]);
+  const mouseOut = useCallback(
+    () => clear(previewRef, previewContext),
+    [previewContext, previewRef?.current]
+  );
 
   return { mouseDown, mouseMove, mouseUp, mouseOut };
 };

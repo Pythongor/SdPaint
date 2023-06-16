@@ -4,6 +4,7 @@ import { StateType } from "store/types";
 import { PayloadActionCreator } from "typesafe-actions";
 import { Actions } from "store/types";
 import { sendImage, retryRequest, getImage, catchError } from "api";
+import { getPaintImage } from "store/selectors";
 import { setResultImage, setCnProgress } from "store/actions";
 import cn from "classnames";
 import styles from "../PaintingTools.module.scss";
@@ -50,7 +51,7 @@ const GenerateButton: React.FC<GenerateButtonProps> = ({
   );
 };
 
-const MSTP = ({ paintImage }: StateType) => ({ paintImage });
+const MSTP = (state: StateType) => ({ paintImage: getPaintImage(state) });
 
 const MDTP = { setResultImage, setCnProgress };
 

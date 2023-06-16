@@ -51,7 +51,6 @@ export const usePencilBrush = ({
       setIsDrawing(true);
       drawCircle(context);
       context.beginPath();
-      setPaintImage(paintingRef.current.toDataURL());
     },
     [context, setMouseCoordinates, paintingRef?.current, mousePos]
   );
@@ -104,6 +103,7 @@ export const usePencilBrush = ({
       setIsDrawing(false);
       context.fillStyle = isErasing ? "white" : "black";
       drawCircle(context);
+      context.beginPath();
       const paintImage = paintingRef.current.toDataURL();
       setPaintImage(paintImage);
       if (instantGenerationMode) {
@@ -123,7 +123,6 @@ export const usePencilBrush = ({
     clear(previewRef, previewContext);
     setIsDrawing(false);
     if (!paintingRef.current) return;
-    setPaintImage(paintingRef.current.toDataURL());
   }, [previewContext, previewRef?.current, paintingRef?.current]);
 
   return { mouseDown, mouseMove, mouseUp, mouseOut };

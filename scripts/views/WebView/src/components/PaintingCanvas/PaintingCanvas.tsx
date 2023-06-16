@@ -1,5 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { setPaintImage, setResultImage, setCnProgress } from "store/actions";
+import {
+  setPaintImage,
+  setResultImage,
+  setCnProgress,
+  setEmptyImage,
+} from "store/actions";
 import { connect, useSelector } from "react-redux";
 import { StateType } from "store/types";
 import { UseBrushProps } from "./types";
@@ -9,6 +14,7 @@ import { useRectangleBrush, useEllipseBrush } from "./usePrimitiveShapeBrush";
 import { useCanvas, clear } from "./canvasHelpers";
 import cn from "classnames";
 import styles from "./PaintingCanvas.module.scss";
+import { getPaintImage } from "store/selectors";
 
 const useBrush = (props: UseBrushProps) => {
   const brushType = useSelector(({ brushType }: StateType) => brushType);
@@ -35,9 +41,11 @@ export const PaintingCanvas: React.FC<PaintingCanvasProps> = ({
   scrollTop,
   paintImage,
   instantGenerationMode,
+  paintImagesStack,
   setPaintImage,
   setCnProgress,
   setResultImage,
+  setEmptyImage,
 }) => {
   const {
     ref: paintingRef,
@@ -50,11 +58,24 @@ export const PaintingCanvas: React.FC<PaintingCanvasProps> = ({
 
   useEffect(() => {
     if (!paintingRef?.current || !context) return;
+    if (!paintImagesStack.length) {
+      const image = paintingRef.current.toDataURL();
+      setEmptyImage(image);
+    }
+  }, [paintingRef?.current, context, paintImagesStack]);
+
+  useEffect(() => {
+    if (!paintingRef?.current || !context) return;
     const currentImage = paintingRef.current.toDataURL();
     if (paintImage === "") {
       clear(paintingRef, context);
     } else if (currentImage !== paintImage) {
-      console.log("not same", currentImage, paintImage);
+      const image = new Image();
+      image.src = paintImage;
+      image.onload = function () {
+        clear(paintingRef, context);
+        context.drawImage(image, 0, 0);
+      };
     }
   }, [paintImage, paintingRef?.current, context]);
 
@@ -99,18 +120,14 @@ export const PaintingCanvas: React.FC<PaintingCanvasProps> = ({
   );
 };
 
-const MSTP = ({
-  paintImage,
-  scrollTop,
-  instantGenerationMode,
-  brushType,
-}: StateType) => ({
-  paintImage,
-  scrollTop,
-  instantGenerationMode,
-  brushType,
+const MSTP = (state: StateType) => ({
+  paintImage: getPaintImage(state),
+  paintImagesStack: state.paintImagesStack,
+  scrollTop: state.scrollTop,
+  instantGenerationMode: state.instantGenerationMode,
+  brushType: state.brushType,
 });
 
-const MDTP = { setPaintImage, setCnProgress, setResultImage };
+const MDTP = { setPaintImage, setCnProgress, setResultImage, setEmptyImage };
 
 export default connect(MSTP, MDTP)(PaintingCanvas);

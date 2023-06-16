@@ -3,8 +3,14 @@ import { getConfig } from "storage";
 
 const brushWidthMap = [1, 2, 3, 5, 10, 15, 20, 30, 40, 50];
 
-export const getRealBrushWidth = ({ brushWidth }: StateType) => {
-  return brushWidthMap[brushWidth - 1];
+export const getRealBrushWidth = ({ brushWidth }: StateType) =>
+  brushWidthMap[brushWidth - 1];
+
+export const getPaintImage = ({
+  currentPaintImageIndex,
+  paintImagesStack,
+}: StateType) => {
+  return paintImagesStack[currentPaintImageIndex];
 };
 
 export const state2config = ({

@@ -1,7 +1,7 @@
 import React, { useRef, useCallback, useEffect, useState } from "react";
 import { StateType } from "store/types";
 import { connect } from "react-redux";
-import { setImageViewerActive } from "store/actions";
+import { setImageViewerActive, setPaintImage } from "store/actions";
 import cn from "classnames";
 import styles from "./ResultCanvas.module.scss";
 
@@ -25,7 +25,7 @@ const ResultCanvas: React.FC<ResultCanvasProps> = ({
   }, [ref?.current]);
 
   useEffect(() => {
-    if (!context) return;
+    if (!context || !ref.current) return;
     if (resultImage === "") {
       context.clearRect(0, 0, 512, 512);
     } else {
@@ -34,7 +34,7 @@ const ResultCanvas: React.FC<ResultCanvasProps> = ({
         .then((blob) => createImageBitmap(blob))
         .then((imageBitMap) => context.drawImage(imageBitMap, 0, 0, 512, 512));
     }
-  }, [resultImage, context]);
+  }, [resultImage, context, ref.current]);
 
   const onClick = useCallback(() => {
     if (!ref.current || !resultImage) return;

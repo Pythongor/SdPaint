@@ -25,7 +25,9 @@ export type StateType = {
   cnProgress: number;
   isImageViewerActive: boolean;
   resultImage: string;
-  paintImage: string;
+  paintImagesStack: string[];
+  emptyImage: string;
+  currentPaintImageIndex: number;
   cnConfig: CnConfigType;
   instantGenerationMode: boolean;
 };
@@ -39,6 +41,9 @@ export enum Actions {
   setImageViewerActive = "SET_IMAGE_VIEWER_ACTIVE",
   setResultImage = "SET_RESULT_IMAGE",
   setPaintImage = "SET_PAINT_IMAGE",
+  setEmptyImage = "SET_EMPTY_IMAGE",
+  increasePaintImageIndex = "INCREASE_PAINT_IMAGE_INDEX",
+  decreasePaintImageIndex = "DECREASE_PAINT_IMAGE_INDEX",
   setCnConfig = "SET_CONTROL_NET_CONFIG",
   setScrollTop = "SET_SCROLL_TOP",
   setInstantGenerationMode = "SET_INSTANT_GENERATION_MODE",

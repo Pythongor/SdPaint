@@ -18,6 +18,7 @@ type BrushInputProps = StateProps & DispatchProps;
 const BrushInput: React.FC<BrushInputProps> = ({
   isErasing,
   brushWidth,
+  realBrushWidth,
   brushType,
   withBrushFill,
   setBrushWidth,
@@ -26,7 +27,7 @@ const BrushInput: React.FC<BrushInputProps> = ({
   setBrushFilling,
 }) => {
   const isPrimitiveShape = ["ellipse", "rectangle"].includes(brushType);
-  const sampleWidth = isPrimitiveShape && withBrushFill ? 10 : brushWidth;
+  const sampleWidth = isPrimitiveShape && withBrushFill ? 10 : realBrushWidth;
   const onSliderInput = (event: React.FormEvent<HTMLInputElement>) =>
     setBrushWidth(+event.currentTarget.value);
 
@@ -56,8 +57,8 @@ const BrushInput: React.FC<BrushInputProps> = ({
           type="range"
           min="1"
           max="10"
-          defaultValue="2"
-          onInput={onSliderInput}
+          value={brushWidth}
+          onChange={onSliderInput}
         ></input>
       </label>
       <div className={styles.flexGroup}>
@@ -80,17 +81,18 @@ const BrushInput: React.FC<BrushInputProps> = ({
             <input
               className={styles.checkbox}
               type="checkbox"
-              onInput={onEraserInput}
+              checked={isErasing}
+              onChange={onEraserInput}
             ></input>
             <span>Eraser</span>
           </label>
           <label className={styles.label}>
             <input
-              defaultChecked={withBrushFill}
-              disabled={!isPrimitiveShape}
+              disabled={!isPrimitiveShape || isErasing}
               className={styles.checkbox}
               type="checkbox"
-              onInput={onFillInput}
+              checked={withBrushFill || !isPrimitiveShape || isErasing}
+              onChange={onFillInput}
             ></input>
             <span>Fill</span>
           </label>
@@ -120,7 +122,8 @@ const MSTP = (state: StateType) => {
     isErasing: state.isErasing,
     brushType: state.brushType,
     withBrushFill: state.withBrushFill,
-    brushWidth: getRealBrushWidth(state),
+    realBrushWidth: getRealBrushWidth(state),
+    brushWidth: state.brushWidth,
   };
 };
 

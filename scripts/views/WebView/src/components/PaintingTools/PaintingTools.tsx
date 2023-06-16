@@ -12,20 +12,18 @@ type StateProps = ReturnType<typeof MSTP>;
 type DispatchProps = typeof MDTP;
 type PaintingToolsProps = StateProps & DispatchProps;
 
+export const downloadImage = (image: string) => {
+  if (!image) return;
+  const a = document.createElement("a");
+  a.href = image;
+  a.download = `sd_gen_${new Date().toJSON()}.png`;
+  a.click();
+};
+
 const PaintingTools: React.FC<PaintingToolsProps> = ({
   resultImage,
   setPaintImage,
 }) => {
-  const downloadImage = () => {
-    if (!resultImage) return;
-    const a = document.createElement("a");
-    a.href = resultImage;
-    a.download = `sd_gen_${new Date().toJSON()}.png`;
-    a.click();
-  };
-
-  const clearCanvas = () => setPaintImage("");
-
   return (
     <div className={styles.base}>
       <div>
@@ -33,14 +31,14 @@ const PaintingTools: React.FC<PaintingToolsProps> = ({
         <div className={styles.group}>
           <p className={styles.title}>Clear canvas</p>
           <div className={styles.clear}>
-            <button className={styles.button} onClick={clearCanvas}>
+            <button className={styles.button} onClick={() => setPaintImage("")}>
               Clear
             </button>
           </div>
         </div>
         <button
           className={cn(styles.button, styles.button__download)}
-          onClick={downloadImage}
+          onClick={() => downloadImage(resultImage)}
         >
           Download image
         </button>

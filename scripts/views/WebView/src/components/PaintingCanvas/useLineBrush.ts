@@ -126,11 +126,10 @@ export const useLineBrush = ({
     ]
   );
 
-  const mouseOut = useCallback(() => {
-    clear(previewRef, previewContext);
-    if (!paintingRef.current) return;
-    setPaintImage(paintingRef.current.toDataURL());
-  }, [previewContext, previewRef?.current, paintingRef?.current]);
+  const mouseOut = useCallback(
+    () => clear(previewRef, previewContext),
+    [previewContext, previewRef?.current]
+  );
 
   return { mouseDown, mouseMove, mouseUp, mouseOut };
 };
