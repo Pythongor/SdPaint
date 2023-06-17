@@ -5,6 +5,7 @@ import actions from "./actions";
 const initialState: Readonly<StateType> = {
   scrollTop: 0,
   isImageViewerActive: false,
+  isZenModeOn: false,
   isErasing: false,
   brushWidth: 2,
   brushType: "pencil",
@@ -67,10 +68,17 @@ export default createReducer<StateType, ActionType>(initialState)
     ...state,
     cnProgress: payload,
   }))
-  .handleAction(actions.setImageViewerActive, (state, { payload }) => ({
-    ...state,
-    isImageViewerActive: payload,
-  }))
+  .handleAction(actions.setImageViewerActive, (state, { payload }) => {
+    if (!state.resultImage) return state;
+    if (payload === "switch")
+      return { ...state, isImageViewerActive: !state.isImageViewerActive };
+    return { ...state, isImageViewerActive: payload };
+  })
+  .handleAction(actions.setZenMode, (state, { payload }) => {
+    if (payload === "switch")
+      return { ...state, isZenModeOn: !state.isZenModeOn };
+    return { ...state, isZenModeOn: payload };
+  })
   .handleAction(actions.setResultImage, (state, { payload }) => ({
     ...state,
     resultImage: payload,

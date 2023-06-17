@@ -19,9 +19,13 @@ export const setBrushFilling = createAction(Actions.setBrushFilling)<
 
 export const setCnProgress = createAction(Actions.setCnProgress)<number>();
 
-export const setImageViewerActive = createAction(
-  Actions.setImageViewerActive
-)<boolean>();
+export const setZenMode = createAction(Actions.setZenMode)<
+  boolean | "switch"
+>();
+
+export const setImageViewerActive = createAction(Actions.setImageViewerActive)<
+  boolean | "switch"
+>();
 
 export const setResultImage = createAction(Actions.setResultImage)<string>();
 
@@ -51,6 +55,7 @@ export default {
   setBrushFilling,
   setCnProgress,
   setImageViewerActive,
+  setZenMode,
   setResultImage,
   setPaintImage,
   setEmptyImage,

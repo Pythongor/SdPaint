@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { StateType } from "store/types";
-import { setInstantGenerationMode } from "store/actions";
+import { setInstantGenerationMode, setZenMode } from "store/actions";
 import { getSettings } from "storage";
 import cn from "classnames";
 import styles from "../PaintingTools.module.scss";
@@ -12,7 +12,9 @@ type ToolsCheckboxesProps = StateProps & DispatchProps;
 
 export const ToolsCheckboxes: React.FC<ToolsCheckboxesProps> = ({
   instantGenerationMode,
+  isZenModeOn,
   setInstantGenerationMode,
+  setZenMode,
 }) => {
   useEffect(() => {
     const { instantMode } = getSettings();
@@ -34,6 +36,20 @@ export const ToolsCheckboxes: React.FC<ToolsCheckboxesProps> = ({
           <span>Instant mode</span>
         </label>
       </div>
+      <div className={styles.group}>
+        <label className={styles.label}>
+          <input
+            className={styles.checkbox}
+            type="checkbox"
+            checked={isZenModeOn}
+            onChange={(event) => {
+              event.currentTarget.checked = !isZenModeOn;
+              setZenMode(!isZenModeOn);
+            }}
+          ></input>
+          <span>Zen mode</span>
+        </label>
+      </div>
       {/* <div className={styles.group}>
         <label className={styles.label}>
           <input
@@ -48,10 +64,11 @@ export const ToolsCheckboxes: React.FC<ToolsCheckboxesProps> = ({
   );
 };
 
-const MSTP = ({ instantGenerationMode }: StateType) => ({
+const MSTP = ({ instantGenerationMode, isZenModeOn }: StateType) => ({
   instantGenerationMode,
+  isZenModeOn,
 });
 
-const MDTP = { setInstantGenerationMode };
+const MDTP = { setInstantGenerationMode, setZenMode };
 
 export default connect(MSTP, MDTP)(ToolsCheckboxes);

@@ -24,6 +24,7 @@ export type StateType = {
   withBrushFill: boolean;
   cnProgress: number;
   isImageViewerActive: boolean;
+  isZenModeOn: boolean;
   resultImage: string;
   paintImagesStack: string[];
   emptyImage: string;
@@ -39,6 +40,7 @@ export enum Actions {
   setBrushFilling = "SET_BRUSH_FILLING",
   setCnProgress = "SET_CONTROL_NET_PROGRESS",
   setImageViewerActive = "SET_IMAGE_VIEWER_ACTIVE",
+  setZenMode = "SET_ZEN_MODE",
   setResultImage = "SET_RESULT_IMAGE",
   setPaintImage = "SET_PAINT_IMAGE",
   setEmptyImage = "SET_EMPTY_IMAGE",

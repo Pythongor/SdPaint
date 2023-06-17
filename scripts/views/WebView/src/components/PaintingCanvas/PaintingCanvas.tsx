@@ -42,6 +42,7 @@ export const PaintingCanvas: React.FC<PaintingCanvasProps> = ({
   paintImage,
   instantGenerationMode,
   paintImagesStack,
+  isZenModeOn,
   setPaintImage,
   setCnProgress,
   setResultImage,
@@ -98,7 +99,9 @@ export const PaintingCanvas: React.FC<PaintingCanvasProps> = ({
 
   return (
     <div className={styles.base}>
-      <p className={styles.title}>Draw your sketch here</p>
+      {!isZenModeOn && (
+        <div className={styles.title}>Draw your sketch here</div>
+      )}
       <canvas
         ref={paintingRef}
         className={cn(styles.canvas, styles.canvas__painting)}
@@ -126,6 +129,7 @@ const MSTP = (state: StateType) => ({
   scrollTop: state.scrollTop,
   instantGenerationMode: state.instantGenerationMode,
   brushType: state.brushType,
+  isZenModeOn: state.isZenModeOn,
 });
 
 const MDTP = { setPaintImage, setCnProgress, setResultImage, setEmptyImage };

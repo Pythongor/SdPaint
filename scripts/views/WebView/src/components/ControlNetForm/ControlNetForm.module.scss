@@ -1,13 +1,30 @@
 @import "assets/styles/constants";
 
 .base {
+  position: relative;
   display: flex;
   justify-content: space-between;
   gap: 10px;
-  margin: 20px;
+  margin: 20px 20px 0;
   background-color: $blue;
   border-radius: 5px;
   padding: 10px;
+  transition: margin 0.3s, transform 0.5s;
+  z-index: 1;
+  border: 1px solid $deepBlue;
+  top: 0;
+  width: calc(100% - 40px);
+
+  &__zen {
+    position: absolute;
+    margin-top: -1px;
+    border-radius: 0 0 5px 5px;
+    transform: translateY(0%);
+  }
+
+  &__hidden {
+    transform: translateY(-100%);
+  }
 }
 
 .group {
@@ -55,4 +72,41 @@
   padding-inline: 5px;
   text-align: center;
   margin-top: 5px;
+}
+
+.arrow {
+  position: absolute;
+  border-radius: 0 0 5px 5px;
+  bottom: -20px;
+  left: 50%;
+  height: 20px;
+  width: 100px;
+  background-color: $blue;
+  transform: translateX(-50%);
+  border: 1px solid $deepBlue;
+  border-top: none;
+  z-index: 1;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s;
+
+  .base__zen & {
+    opacity: 1;
+    pointer-events: all;
+    cursor: pointer;
+  }
+
+  &::after {
+    content: ">";
+    display: block;
+    color: $beige;
+    text-align: center;
+    width: 100%;
+    transform: rotate(-90deg);
+    transition: transform 0.3s;
+  }
+
+  &__hidden::after {
+    transform: rotate(90deg);
+  }
 }

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { StateType } from "store/types";
 import { setCnConfig } from "store/actions";
@@ -14,9 +14,17 @@ type DispatchProps = typeof MDTP;
 type CnFormProps = StateProps & DispatchProps;
 
 export const ControlNetForm: React.FC<CnFormProps> = ({
-  setCnConfig,
   cnConfig,
+  isZenModeOn,
+  setCnConfig,
 }) => {
+  const [isHide, setIsHide] = useState(isZenModeOn);
+
+  useEffect(() => {
+    if (isZenModeOn) {
+      setIsHide(true);
+    } else setIsHide(false);
+  }, [isZenModeOn]);
   useEffect(() => {
     const {
       seed,
@@ -40,7 +48,13 @@ export const ControlNetForm: React.FC<CnFormProps> = ({
   }, []);
 
   return (
-    <div className={styles.base}>
+    <div
+      className={cn(
+        styles.base,
+        isZenModeOn && styles.base__zen,
+        isHide && styles.base__hidden
+      )}
+    >
       <label className={cn(styles.group, styles.group__prompt)}>
         <span className={styles.title}>Enter your prompt</span>
         <textarea
@@ -97,11 +111,18 @@ export const ControlNetForm: React.FC<CnFormProps> = ({
           getFunc={getModels}
         />
       </div>
+      <div
+        className={cn(styles.arrow, isHide && styles.arrow__hidden)}
+        onClick={() => setIsHide((value) => !value)}
+      ></div>
     </div>
   );
 };
 
-const MSTP = ({ cnConfig }: StateType) => ({ cnConfig });
+const MSTP = ({ cnConfig, isZenModeOn }: StateType) => ({
+  cnConfig,
+  isZenModeOn,
+});
 
 const MDTP = { setCnConfig };
 

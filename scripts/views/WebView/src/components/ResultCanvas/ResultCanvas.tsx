@@ -13,6 +13,7 @@ const ResultCanvas: React.FC<ResultCanvasProps> = ({
   cnProgress,
   setImageViewerActive,
   resultImage,
+  isZenModeOn,
 }) => {
   const ref = useRef<HTMLCanvasElement>(null);
   const [context, setContext] = useState<CanvasRenderingContext2D>();
@@ -43,11 +44,11 @@ const ResultCanvas: React.FC<ResultCanvasProps> = ({
 
   return (
     <div className={styles.base}>
-      <p className={styles.title}>Your result here</p>
+      {!isZenModeOn && <div className={styles.title}>Your result here</div>}
       <canvas
         className={cn(
           styles.canvas,
-          cnProgress !== 0 && styles.canvas__waiting,
+          cnProgress !== 0 && !isZenModeOn && styles.canvas__waiting,
           !resultImage && styles.canvas__empty
         )}
         height="512"
@@ -57,7 +58,7 @@ const ResultCanvas: React.FC<ResultCanvasProps> = ({
       ></canvas>
       {cnProgress !== 0 && (
         <>
-          <div className={styles.loader}></div>
+          {!isZenModeOn && <div className={styles.loader}></div>}
           <progress className={styles.progress} max="100" value={cnProgress}>
             {cnProgress}
           </progress>
@@ -67,9 +68,10 @@ const ResultCanvas: React.FC<ResultCanvasProps> = ({
   );
 };
 
-const MSTP = ({ cnProgress, resultImage }: StateType) => ({
+const MSTP = ({ cnProgress, resultImage, isZenModeOn }: StateType) => ({
   cnProgress,
   resultImage,
+  isZenModeOn,
 });
 
 const MDTP = { setImageViewerActive };

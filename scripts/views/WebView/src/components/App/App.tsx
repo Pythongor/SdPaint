@@ -15,6 +15,8 @@ import {
   setCnProgress,
   setCnConfig,
   setBrushFilling,
+  setZenMode,
+  setImageViewerActive,
 } from "store/actions";
 import { useHotKeys } from "hooks";
 import { downloadImage } from "components/PaintingTools/PaintingTools";
@@ -38,6 +40,7 @@ const App: React.FC<AppProps> = ({
   resultImage,
   paintImage,
   seed,
+  isZenModeOn,
   setScrollTop,
   decreasePaintImageIndex,
   increasePaintImageIndex,
@@ -50,6 +53,8 @@ const App: React.FC<AppProps> = ({
   setResultImage,
   setCnProgress,
   setCnConfig,
+  setZenMode,
+  setImageViewerActive,
 }) => {
   const ref = useRef<HTMLDivElement>(null);
 
@@ -71,8 +76,15 @@ const App: React.FC<AppProps> = ({
     [resultImage]
   );
 
+  const handleEscape = useCallback(() => {
+    if (isImageViewerActive) {
+      setImageViewerActive(false);
+    } else if (isZenModeOn) setZenMode(false);
+  }, [isZenModeOn, isImageViewerActive]);
+
   useHotKeys(
     {
+      Escape: handleEscape,
       Enter: memoizedGenerate,
       Equal: () => setBrushWidth("+"),
       Minus: () => setBrushWidth("-"),
@@ -87,11 +99,13 @@ const App: React.FC<AppProps> = ({
       KeyR: () => setBrushType("rectangle"),
       KeyS: () => changeSeed(true),
       KeyS_s: () => changeSeed(),
+      KeyV: () => setImageViewerActive("switch"),
       KeyY_c: () => increasePaintImageIndex(),
+      KeyZ: () => setZenMode("switch"),
       KeyZ_c: () => decreasePaintImageIndex(),
       KeyZ_cs: () => increasePaintImageIndex(),
     },
-    [seed, paintImage, resultImage]
+    [seed, paintImage, resultImage, isZenModeOn, isImageViewerActive]
   );
 
   return (
@@ -117,6 +131,7 @@ const MSTP = (state: StateType) => ({
   resultImage: state.resultImage,
   paintImage: getPaintImage(state),
   seed: state.cnConfig.seed,
+  isZenModeOn: state.isZenModeOn,
 });
 
 const MDTP = {
@@ -132,6 +147,8 @@ const MDTP = {
   setResultImage,
   setCnProgress,
   setCnConfig,
+  setZenMode,
+  setImageViewerActive,
 };
 
 export default connect(MSTP, MDTP)(App);
