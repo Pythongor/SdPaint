@@ -10,7 +10,7 @@ export type UseBrushProps = {
   previewContext: CanvasRenderingContext2D | undefined;
   mousePos: PointType;
   instantGenerationMode: boolean;
-  setMouseCoordinates: (event: any) => void;
+  setMouseCoordinates: (event: any) => PointType;
   setPaintImage: PayloadActionCreator<Actions.setPaintImage, string>;
   setCnProgress: PayloadActionCreator<Actions.setCnProgress, number>;
   setResultImage: PayloadActionCreator<Actions.setResultImage, string>;

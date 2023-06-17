@@ -55,7 +55,12 @@ export const useCanvas = () => {
 
   const setMouseCoordinates = useCallback(
     (event) => {
-      setMousePos({ x: event.clientX - pos.left, y: event.clientY - pos.top });
+      const newPos = {
+        x: event.clientX - pos.left,
+        y: event.clientY - pos.top,
+      };
+      setMousePos(newPos);
+      return newPos;
     },
     [pos, mousePos]
   );

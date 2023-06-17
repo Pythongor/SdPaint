@@ -84,7 +84,7 @@ export const PaintingCanvas: React.FC<PaintingCanvasProps> = ({
     resize();
   }, [paintingRef?.current, scrollTop]);
 
-  const { mouseDown, mouseMove, mouseUp, mouseOut } = useBrush({
+  const { onPointerDown, onPointerMove, onPointerUp, onPointerOut } = useBrush({
     paintingRef,
     previewRef,
     context,
@@ -109,11 +109,11 @@ export const PaintingCanvas: React.FC<PaintingCanvasProps> = ({
         width="512"
       ></canvas>
       <canvas
-        onMouseDown={mouseDown}
-        onMouseMove={mouseMove}
-        onMouseUp={mouseUp}
-        onMouseOut={mouseOut}
-        onMouseEnter={resize}
+        onPointerDown={onPointerDown}
+        onPointerMove={onPointerMove}
+        onPointerUp={onPointerUp}
+        onPointerOut={onPointerOut}
+        onPointerEnter={resize}
         ref={previewRef}
         className={cn(styles.canvas, styles.canvas__preview)}
         height="512"

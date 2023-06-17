@@ -30,7 +30,7 @@ const initialState: Readonly<StateType> = {
   },
 };
 
-const IMAGES_CLIP_BUFFER_OVERFLOW = 10;
+const IMAGES_CLIP_BUFFER_OVERFLOW = 20;
 
 export default createReducer<StateType, ActionType>(initialState)
   .handleAction(actions.setIsErasing, (state, { payload }) => {

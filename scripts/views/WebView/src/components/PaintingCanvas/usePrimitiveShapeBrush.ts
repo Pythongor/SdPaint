@@ -53,16 +53,17 @@ const usePrimitiveShapeBrush = ({
     setStartPos({ x: 0, y: 0 });
   }, [brushType]);
 
-  const mouseDown = useCallback(
-    (event) => {
-      setMouseCoordinates(event);
-      if (!previewContext || !previewRef.current) return;
-      previewContext.fillStyle = isErasing ? "white" : "black";
-      setIsDrawing(true);
-      setStartPos(mousePos);
-    },
-    [previewContext, setMouseCoordinates, previewRef?.current, mousePos]
-  );
+  const onPointerDown: React.PointerEventHandler<HTMLCanvasElement> =
+    useCallback(
+      (event) => {
+        const pos = setMouseCoordinates(event);
+        if (!previewContext || !previewRef.current) return;
+        previewContext.fillStyle = isErasing ? "white" : "black";
+        setStartPos(pos);
+        setIsDrawing(true);
+      },
+      [previewContext, setMouseCoordinates, previewRef?.current]
+    );
 
   const switchBrushStyle = useCallback(() => {
     if (!previewContext || !previewRef?.current) return;
@@ -81,38 +82,39 @@ const usePrimitiveShapeBrush = ({
     }
   }, [previewContext, isDrawing, isErasing]);
 
-  const mouseMove = useCallback(
-    (event) => {
-      setMouseCoordinates(event);
-      if (!previewContext || !previewRef?.current) return;
-      clear(previewRef, previewContext);
-      switchBrushStyle();
-      previewContext.fillStyle = isErasing ? "white" : "black";
-      if (isDrawing) {
-        const rect = getRect(mousePos, startPos);
-        drawFunc({
-          context: previewContext,
-          withStroke: true,
-          ...rect,
-          withFill: isErasing || withBrushFill,
-        });
-      } else {
-        const shift = kind === "rectangle" ? previewContext.lineWidth / 2 : 0;
-        drawFunc({
-          context: previewContext,
-          x: mousePos.x - shift,
-          y: mousePos.y - shift,
-          width: previewContext.lineWidth,
-          height: previewContext.lineWidth,
-          withFill: true,
-          withStroke: true,
-        });
-      }
-    },
-    [previewContext, previewRef?.current, setMouseCoordinates, mousePos]
-  );
+  const onPointerMove: React.PointerEventHandler<HTMLCanvasElement> =
+    useCallback(
+      (event) => {
+        setMouseCoordinates(event);
+        if (!previewContext || !previewRef?.current) return;
+        clear(previewRef, previewContext);
+        switchBrushStyle();
+        previewContext.fillStyle = isErasing ? "white" : "black";
+        if (isDrawing) {
+          const rect = getRect(mousePos, startPos);
+          drawFunc({
+            context: previewContext,
+            withStroke: true,
+            ...rect,
+            withFill: isErasing || withBrushFill,
+          });
+        } else {
+          const shift = kind === "rectangle" ? previewContext.lineWidth / 2 : 0;
+          drawFunc({
+            context: previewContext,
+            x: mousePos.x - shift,
+            y: mousePos.y - shift,
+            width: previewContext.lineWidth,
+            height: previewContext.lineWidth,
+            withFill: true,
+            withStroke: true,
+          });
+        }
+      },
+      [previewContext, previewRef?.current, setMouseCoordinates, mousePos]
+    );
 
-  const mouseUp = useCallback(
+  const onPointerUp: React.PointerEventHandler<HTMLCanvasElement> = useCallback(
     (event) => {
       setMouseCoordinates(event);
       if (!context || !paintingRef.current || !isDrawing) return;
@@ -126,6 +128,7 @@ const usePrimitiveShapeBrush = ({
         ...rect,
         withFill: isErasing || withBrushFill,
       });
+      if (event.pointerType !== "mouse") context.closePath();
       const paintImage = paintingRef.current.toDataURL();
       setPaintImage(paintImage);
       if (instantGenerationMode) {
@@ -141,12 +144,13 @@ const usePrimitiveShapeBrush = ({
     ]
   );
 
-  const mouseOut = useCallback(
-    () => clear(previewRef, previewContext),
-    [previewContext, previewRef?.current]
-  );
+  const onPointerOut: React.PointerEventHandler<HTMLCanvasElement> =
+    useCallback(
+      () => clear(previewRef, previewContext),
+      [previewContext, previewRef?.current]
+    );
 
-  return { mouseDown, mouseMove, mouseUp, mouseOut };
+  return { onPointerDown, onPointerMove, onPointerUp, onPointerOut };
 };
 
 export const useRectangleBrush = (props: UseBrushProps) =>

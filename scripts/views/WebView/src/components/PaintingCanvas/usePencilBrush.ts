@@ -43,17 +43,18 @@ export const usePencilBrush = ({
     [mousePos]
   );
 
-  const mouseDown = useCallback(
-    (event) => {
-      setMouseCoordinates(event);
-      if (!context || !paintingRef.current) return;
-      context.fillStyle = isErasing ? "white" : "black";
-      setIsDrawing(true);
-      drawCircle(context);
-      context.beginPath();
-    },
-    [context, setMouseCoordinates, paintingRef?.current, mousePos]
-  );
+  const onPointerDown: React.PointerEventHandler<HTMLCanvasElement> =
+    useCallback(
+      (event) => {
+        setMouseCoordinates(event);
+        if (!context || !paintingRef.current) return;
+        context.fillStyle = isErasing ? "white" : "black";
+        setIsDrawing(true);
+        drawCircle(context);
+        context.beginPath();
+      },
+      [context, setMouseCoordinates, paintingRef?.current, mousePos]
+    );
 
   const switchBrushStyle = useCallback(() => {
     if (!previewContext || !previewRef?.current) return;
@@ -72,31 +73,32 @@ export const usePencilBrush = ({
     }
   }, [previewContext, isDrawing, isErasing]);
 
-  const mouseMove = useCallback(
-    (event) => {
-      setMouseCoordinates(event);
-      if (!previewContext || !previewRef?.current) return;
-      clear(previewRef, previewContext);
-      previewContext.fillStyle = isErasing ? "white" : "black";
-      switchBrushStyle();
-      drawCircle(previewContext, true);
+  const onPointerMove: React.PointerEventHandler<HTMLCanvasElement> =
+    useCallback(
+      (event) => {
+        setMouseCoordinates(event);
+        if (!previewContext || !previewRef?.current) return;
+        clear(previewRef, previewContext);
+        previewContext.fillStyle = isErasing ? "white" : "black";
+        switchBrushStyle();
+        drawCircle(previewContext, true);
 
-      if (isDrawing && context) {
-        context.strokeStyle = isErasing ? "white" : "black";
-        context.lineTo(mousePos.x, mousePos.y);
-        context.stroke();
-      }
-    },
-    [
-      previewContext,
-      previewRef?.current,
-      setMouseCoordinates,
-      context,
-      mousePos,
-    ]
-  );
+        if (isDrawing && context) {
+          context.strokeStyle = isErasing ? "white" : "black";
+          context.lineTo(mousePos.x, mousePos.y);
+          context.stroke();
+        }
+      },
+      [
+        previewContext,
+        previewRef?.current,
+        setMouseCoordinates,
+        context,
+        mousePos,
+      ]
+    );
 
-  const mouseUp = useCallback(
+  const onPointerUp: React.PointerEventHandler<HTMLCanvasElement> = useCallback(
     (event) => {
       setMouseCoordinates(event);
       if (!context || !paintingRef.current || !isDrawing) return;
@@ -119,11 +121,12 @@ export const usePencilBrush = ({
     ]
   );
 
-  const mouseOut = useCallback(() => {
-    clear(previewRef, previewContext);
-    setIsDrawing(false);
-    if (!paintingRef.current) return;
-  }, [previewContext, previewRef?.current, paintingRef?.current]);
+  const onPointerOut: React.PointerEventHandler<HTMLCanvasElement> =
+    useCallback(() => {
+      clear(previewRef, previewContext);
+      setIsDrawing(false);
+      if (!paintingRef.current) return;
+    }, [previewContext, previewRef?.current, paintingRef?.current]);
 
-  return { mouseDown, mouseMove, mouseUp, mouseOut };
+  return { onPointerDown, onPointerMove, onPointerUp, onPointerOut };
 };
