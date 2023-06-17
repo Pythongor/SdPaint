@@ -16,10 +16,6 @@ export const ToolsCheckboxes: React.FC<ToolsCheckboxesProps> = ({
   setInstantGenerationMode,
   setZenMode,
 }) => {
-  useEffect(() => {
-    const { instantMode } = getSettings();
-    setInstantGenerationMode(instantMode);
-  }, []);
   return (
     <div>
       <div className={styles.group}>

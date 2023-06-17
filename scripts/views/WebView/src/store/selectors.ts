@@ -40,6 +40,10 @@ export const state2config = ({
   };
 };
 
-export const state2settings = ({ instantGenerationMode }: StateType) => ({
+export const state2settings = ({
+  instantGenerationMode,
+  isZenModeOn,
+}: StateType) => ({
   instantMode: instantGenerationMode,
+  zenMode: isZenModeOn,
 });

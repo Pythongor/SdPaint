@@ -11,7 +11,11 @@ const customMiddleWare: Middleware<{}, StateType> =
     if (action.type === Actions.setCnConfig) {
       const config = state2config(currentState);
       syncConfig(config);
-    } else if (action.type === Actions.setInstantGenerationMode) {
+    } else if (
+      [Actions.setInstantGenerationMode, Actions.setZenMode].includes(
+        action.type
+      )
+    ) {
       const settings = state2settings(currentState);
       syncSettings(settings);
     }

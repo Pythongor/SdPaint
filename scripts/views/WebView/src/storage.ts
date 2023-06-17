@@ -23,7 +23,11 @@ export const defaultConfig = {
   ],
 };
 
-export const defaultSettings = { syncJSON: true, instantMode: true };
+export const defaultSettings = {
+  syncJSON: true,
+  instantMode: true,
+  zenMode: false,
+};
 
 export const storage = {
   set: (key: string, value: any) => {
