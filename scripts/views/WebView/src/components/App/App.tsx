@@ -1,5 +1,10 @@
 import React, { useEffect, useRef } from "react";
-import { ImageViewer, ControlNetForm, MainSection } from "components";
+import {
+  ImageViewer,
+  ControlNetForm,
+  MainSection,
+  ZenControls,
+} from "components";
 import { connect } from "react-redux";
 import { StateType } from "store/types";
 import { getSettings } from "storage";
@@ -45,6 +50,7 @@ const App: React.FC<AppProps> = ({
         <ImageViewer />
         <ControlNetForm />
         <MainSection />
+        <ZenControls />
       </div>
     </HotkeyWrapper>
   );

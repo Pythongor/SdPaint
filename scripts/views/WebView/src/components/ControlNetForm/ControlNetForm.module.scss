@@ -98,10 +98,10 @@
 
   &::after {
     content: ">";
+    width: fit-content;
+    margin: 0 auto;
     display: block;
     color: $beige;
-    text-align: center;
-    width: 100%;
     transform: rotate(-90deg);
     transition: transform 0.3s;
   }

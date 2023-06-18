@@ -57,7 +57,7 @@ const BrushInput: React.FC<BrushInputProps> = ({
           type="range"
           min="1"
           max="10"
-          value={brushWidth}
+          value={isPrimitiveShape && withBrushFill ? 1 : brushWidth}
           onChange={onSliderInput}
         ></input>
       </label>

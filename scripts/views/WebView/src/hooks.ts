@@ -1,4 +1,4 @@
-import { useEffect, useCallback } from "react";
+import { useEffect, useCallback, RefObject } from "react";
 
 type KeyCallback = (
   event: KeyboardEvent,
@@ -54,4 +54,30 @@ export const useHotKeys = (hotkeyMap: HotkeyMapType, deps: any[]) => {
     window.addEventListener("keydown", callback);
     return () => window.removeEventListener("keydown", callback);
   });
+};
+
+export const useClickOutside = <T extends HTMLElement, T2 extends HTMLElement>(
+  handler: (event: PointerEvent) => void,
+  ref: RefObject<T>,
+  ref2?: RefObject<T2>
+) => {
+  const callback = useCallback(
+    (event: PointerEvent) => {
+      if (!ref.current || ref.current.contains(event.target as Node)) {
+        return;
+      }
+      if (
+        ref2 &&
+        (!ref2?.current || ref2?.current.contains(event.target as Node))
+      )
+        return;
+      event.stopPropagation();
+      handler(event);
+    },
+    [ref, ref2, ref2?.current]
+  );
+  useEffect(() => {
+    window.addEventListener("pointerdown", callback);
+    return () => window.removeEventListener("pointerdown", callback);
+  }, [ref.current, ref2, ref2?.current]);
 };
