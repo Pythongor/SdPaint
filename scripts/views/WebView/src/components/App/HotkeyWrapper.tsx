@@ -2,7 +2,6 @@ import React, { useCallback } from "react";
 import { connect } from "react-redux";
 import { StateType } from "store/types";
 import {
-  setScrollTop,
   decreasePaintImageIndex,
   increasePaintImageIndex,
   setPaintImage,
@@ -109,7 +108,6 @@ const MSTP = (state: StateType) => ({
 });
 
 const MDTP = {
-  setScrollTop,
   decreasePaintImageIndex,
   increasePaintImageIndex,
   setPaintImage,

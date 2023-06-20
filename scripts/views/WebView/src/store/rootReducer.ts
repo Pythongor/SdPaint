@@ -76,8 +76,16 @@ export default createReducer<StateType, ActionType>(initialState)
   })
   .handleAction(actions.setZenMode, (state, { payload }) => {
     if (payload === "switch")
-      return { ...state, isZenModeOn: !state.isZenModeOn };
-    return { ...state, isZenModeOn: payload };
+      return {
+        ...state,
+        isZenModeOn: !state.isZenModeOn,
+        scrollTop: state.scrollTop + 0.01,
+      };
+    return {
+      ...state,
+      isZenModeOn: payload,
+      scrollTop: state.scrollTop + 0.01,
+    };
   })
   .handleAction(actions.setResultImage, (state, { payload }) => ({
     ...state,

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { StateType } from "store/types";
-import { setCnConfig } from "store/actions";
+import { setCnConfig, setScrollTop } from "store/actions";
 import { getModels, getModules } from "../../api";
 import ControlNetNumberInput from "./components/ControlNetNumberInput";
 import ControlNetSelect from "./components/ControlNetSelect";
@@ -17,6 +17,7 @@ export const ControlNetForm: React.FC<CnFormProps> = ({
   cnConfig,
   isZenModeOn,
   setCnConfig,
+  setScrollTop,
 }) => {
   const [isHide, setIsHide] = useState(isZenModeOn);
 
@@ -54,6 +55,7 @@ export const ControlNetForm: React.FC<CnFormProps> = ({
         isZenModeOn && styles.base__zen,
         isHide && styles.base__hidden
       )}
+      onTransitionEnd={() => setScrollTop(0)}
     >
       <label className={cn(styles.group, styles.group__prompt)}>
         <span className={styles.title}>Enter your prompt</span>
@@ -124,6 +126,6 @@ const MSTP = ({ cnConfig, isZenModeOn }: StateType) => ({
   isZenModeOn,
 });
 
-const MDTP = { setCnConfig };
+const MDTP = { setCnConfig, setScrollTop };
 
 export default connect(MSTP, MDTP)(ControlNetForm);
