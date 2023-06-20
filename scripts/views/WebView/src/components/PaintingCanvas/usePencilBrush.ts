@@ -80,14 +80,19 @@ export const usePencilBrush = ({
         if (!previewContext || !previewRef?.current) return;
         clear(previewRef, previewContext);
         previewContext.fillStyle = isErasing ? "white" : "black";
+        const lineWidth = previewContext.lineWidth;
+        previewContext.lineWidth = isErasing ? lineWidth * 2 : lineWidth;
         switchBrushStyle();
         drawCircle(previewContext, true);
 
         if (isDrawing && context) {
           context.strokeStyle = isErasing ? "white" : "black";
+          context.lineWidth = isErasing ? lineWidth * 2 : lineWidth;
           context.lineTo(mousePos.x, mousePos.y);
           context.stroke();
+          context.lineWidth = lineWidth;
         }
+        previewContext.lineWidth = lineWidth;
       },
       [
         previewContext,

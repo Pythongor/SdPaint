@@ -38,15 +38,10 @@ export const useLineBrush = ({
       pos = mousePos
     ) => {
       if (!context) return;
-      drawEllipse({
-        context,
-        ...pos,
-        width: context.lineWidth / 2,
-        height: context.lineWidth / 2,
-        withStroke,
-      });
+      const size = context.lineWidth / (isErasing ? 1 : 2);
+      drawEllipse({ context, ...pos, width: size, height: size, withStroke });
     },
-    [mousePos]
+    [mousePos, isErasing]
   );
 
   const onPointerDown: React.PointerEventHandler<HTMLCanvasElement> =
@@ -92,7 +87,10 @@ export const useLineBrush = ({
           context.strokeStyle = isErasing ? "white" : "black";
           drawCircle(previewContext, false, startPos);
           drawCircle(previewContext);
+          const lineWidth = previewContext.lineWidth;
+          previewContext.lineWidth = isErasing ? lineWidth * 2 : lineWidth;
           drawLine(previewContext, startPos, mousePos);
+          previewContext.lineWidth = lineWidth;
         } else {
           drawCircle(previewContext, true);
         }
@@ -112,7 +110,10 @@ export const useLineBrush = ({
       if (!context || !paintingRef.current) return;
       setIsDrawing(false);
       context.strokeStyle = isErasing ? "white" : "black";
+      const lineWidth = context.lineWidth;
+      context.lineWidth = isErasing ? lineWidth * 2 : lineWidth;
       drawLine(context, startPos, mousePos);
+      context.lineWidth = lineWidth;
       const paintImage = paintingRef.current.toDataURL();
       setPaintImage(paintImage);
       if (instantGenerationMode) {
