@@ -1,5 +1,5 @@
 import { StateType } from "./types";
-import { getConfig } from "storage";
+import { getStorageConfig } from "storage";
 
 const brushWidthMap = [1, 2, 3, 5, 10, 15, 20, 30, 40, 50];
 
@@ -25,7 +25,7 @@ export const state2config = ({
     model,
   },
 }: StateType) => {
-  const config = getConfig();
+  const config = getStorageConfig();
   const firstUnit = config.controlnet_units[0];
 
   return {

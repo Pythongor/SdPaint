@@ -48,8 +48,25 @@ def send_request():
 
 @app.get('/config')
 async def root():
-    with open('../controlnet.json', 'r') as f:
+    with open('./controlnet.json', 'r') as f:
         return json.load(f)
+
+
+@app.post('/config')
+async def root(data: Request):
+    data = await data.json()
+    with open('./controlnet.json', 'r') as f:
+        json_data = json.load(f)
+    json_data["prompt"] = data["prompt"]
+    json_data["negative_prompt"] = data["negative_prompt"]
+    json_data["seed"] = data["seed"]
+    json_data["steps"] = data["steps"]
+    json_data["cfg_scale"] = data["cfg_scale"]
+    json_data["batch_size"] = data["batch_size"]
+    json_data["controlnet_units"][0]["module"] = data["module"]
+    json_data["controlnet_units"][0]["model"] = data["model"]
+    with open('./controlnet.json', 'w') as f:
+        f.write(json.dumps(json_data, indent=4))
 
 
 @app.get('/models')

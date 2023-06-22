@@ -5,7 +5,6 @@ import { setCnConfig, setScrollTop } from "store/actions";
 import { getModels, getModules } from "../../api";
 import ControlNetNumberInput from "./components/ControlNetNumberInput";
 import ControlNetSelect from "./components/ControlNetSelect";
-import { getConfig } from "../../storage";
 import cn from "classnames";
 import styles from "./ControlNetForm.module.scss";
 
@@ -26,27 +25,6 @@ export const ControlNetForm: React.FC<CnFormProps> = ({
       setIsHide(true);
     } else setIsHide(false);
   }, [isZenModeOn]);
-  useEffect(() => {
-    const {
-      seed,
-      steps,
-      batch_size,
-      cfg_scale,
-      prompt,
-      negative_prompt,
-      controlnet_units: [{ module, model }],
-    } = getConfig();
-    setCnConfig({
-      seed,
-      steps,
-      cfg_scale,
-      negative_prompt,
-      prompt,
-      module,
-      model,
-      batch_size,
-    });
-  }, []);
 
   return (
     <div
@@ -88,12 +66,12 @@ export const ControlNetForm: React.FC<CnFormProps> = ({
           min={1}
           value={cnConfig.steps}
         />
-        {/* <ControlNetNumberInput
+        <ControlNetNumberInput
           title="CFG Scale"
           id="cfg_scale"
           min={1}
           value={cnConfig.cfg_scale}
-        /> */}
+        />
         {/* <ControlNetNumberInput
           title="Batch size"
           id="batch_size"

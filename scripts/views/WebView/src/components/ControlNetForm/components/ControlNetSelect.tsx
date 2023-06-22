@@ -44,7 +44,11 @@ const ControlNetSelect: React.FC<CnSelectProps> = ({
   return (
     <label>
       <span className={styles.title}>{title}</span>
-      <select className={styles.select} onChange={onChange}>
+      <select
+        className={styles.select}
+        onChange={onChange}
+        value={cnConfig[unitName]}
+      >
         {cnConfig[listName] &&
           cnConfig[listName].map((name) => (
             <option key={name} value={name}>

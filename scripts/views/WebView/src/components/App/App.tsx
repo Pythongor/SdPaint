@@ -7,11 +7,14 @@ import {
 } from "components";
 import { connect } from "react-redux";
 import { StateType } from "store/types";
-import { getSettings } from "storage";
+import { getSettings, getStorageConfig, ConfigType } from "storage";
+import { extractDataFromConfig } from "helpers";
+import { getCnConfig } from "api";
 import {
   setScrollTop,
   setInstantGenerationMode,
   setZenMode,
+  setCnConfig,
 } from "store/actions";
 import HotkeyWrapper from "./HotkeyWrapper";
 import cn from "classnames";
@@ -26,6 +29,7 @@ const App: React.FC<AppProps> = ({
   setScrollTop,
   setInstantGenerationMode,
   setZenMode,
+  setCnConfig,
 }) => {
   const ref = useRef<HTMLDivElement>(null);
 
@@ -33,6 +37,14 @@ const App: React.FC<AppProps> = ({
     const { instantMode, zenMode } = getSettings();
     setInstantGenerationMode(instantMode);
     setZenMode(zenMode);
+  }, []);
+
+  useEffect(() => {
+    const storageConfig = extractDataFromConfig(getStorageConfig());
+    setCnConfig(storageConfig);
+    getCnConfig().then((fileConfig) => {
+      setCnConfig(extractDataFromConfig(fileConfig));
+    });
   }, []);
 
   return (
@@ -64,6 +76,7 @@ const MDTP = {
   setScrollTop,
   setInstantGenerationMode,
   setZenMode,
+  setCnConfig,
 };
 
 export default connect(MSTP, MDTP)(App);

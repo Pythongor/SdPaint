@@ -1,4 +1,5 @@
-import { getConfig, getSettings } from "./storage";
+import { getStorageConfig, getSettings } from "./storage";
+import { CnConfigType } from "store/types";
 export const url = "http://127.0.0.1:8000";
 
 type CustomError = {
@@ -28,6 +29,25 @@ export const getModules = () =>
       })),
     catchError
   );
+
+export const getCnConfig = () => {
+  return fetch(`${url}/config`).then(
+    (response) => response.json().then((data) => data),
+    catchError
+  );
+};
+
+export const sendCnConfig = async (config: CnConfigType) => {
+  const { modules, models, ...cleanConfig } = config;
+  try {
+    return await fetch(`${url}/config`, {
+      method: "post",
+      body: JSON.stringify(cleanConfig),
+    });
+  } catch (error) {
+    return catchError(error as Error);
+  }
+};
 
 type RetryRequestConfig = {
   progressFunc: (data: any) => boolean;
@@ -81,7 +101,7 @@ export const retryRequest = async (config: RetryRequestConfig) => {
 };
 
 export const sendImage = (image: string) => {
-  const config = getConfig();
+  const config = getStorageConfig();
   config.controlnet_units[0].input_image = image;
   const { syncJSON } = getSettings();
   return fetch(`${url}/paint_image`, {

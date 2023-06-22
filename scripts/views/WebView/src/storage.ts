@@ -42,10 +42,10 @@ export const storage = {
   },
 };
 
-export const getConfig = () =>
+export const getStorageConfig = () =>
   storage.get("SdPaint_config", defaultConfig) as ConfigType;
 
-export const syncConfig = (config: Partial<ConfigType>) =>
+export const syncStorageConfig = (config: Partial<ConfigType>) =>
   storage.set("SdPaint_config", { ...defaultConfig, ...config });
 
 export const getSettings = () =>
