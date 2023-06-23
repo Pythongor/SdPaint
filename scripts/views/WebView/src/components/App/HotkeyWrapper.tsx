@@ -20,6 +20,7 @@ import { useHotKeys } from "hooks";
 import { downloadImage } from "components/PaintingTools/PaintingTools";
 import { getPaintImage } from "store/selectors";
 import { generate } from "components/PaintingTools/components/GenerateButton";
+import { getCnConfig, sendCnConfig } from "api";
 
 type StateProps = ReturnType<typeof MSTP>;
 type DispatchProps = typeof MDTP;
@@ -31,7 +32,7 @@ const HotkeyWrapper: React.FC<HotkeyWrapperProps> = ({
   isImageViewerActive,
   resultImage,
   paintImage,
-  seed,
+  cnConfig,
   isZenModeOn,
   decreasePaintImageIndex,
   increasePaintImageIndex,
@@ -50,10 +51,10 @@ const HotkeyWrapper: React.FC<HotkeyWrapperProps> = ({
   const changeSeed = useCallback(
     (ascend?: boolean) => {
       if (ascend) {
-        setCnConfig({ seed: seed + 1 });
-      } else setCnConfig({ seed: seed - 1 });
+        setCnConfig({ seed: cnConfig.seed + 1 });
+      } else setCnConfig({ seed: cnConfig.seed - 1 });
     },
-    [seed]
+    [cnConfig.seed]
   );
 
   const memoizedGenerate = useCallback(() => {
@@ -71,6 +72,15 @@ const HotkeyWrapper: React.FC<HotkeyWrapperProps> = ({
     } else if (isZenModeOn) setZenMode(false);
   }, [isZenModeOn, isImageViewerActive]);
 
+  const loadConfig = () => {
+    getCnConfig().then((fileConfig) => {
+      if ("error" in fileConfig) return;
+      setCnConfig(fileConfig);
+    });
+  };
+
+  const saveConfig = useCallback(() => sendCnConfig(cnConfig), [cnConfig]);
+
   useHotKeys(
     {
       Escape: handleEscape,
@@ -78,6 +88,8 @@ const HotkeyWrapper: React.FC<HotkeyWrapperProps> = ({
       Equal: () => setBrushWidth("+"),
       Minus: () => setBrushWidth("-"),
       Delete: () => setPaintImage(""),
+      KeyC: loadConfig,
+      KeyC_s: saveConfig,
       KeyD: memoizedDownload,
       KeyE: () => setBrushType("ellipse"),
       KeyE_c: () => setIsErasing("switch"),
@@ -94,7 +106,7 @@ const HotkeyWrapper: React.FC<HotkeyWrapperProps> = ({
       KeyZ_c: () => decreasePaintImageIndex(),
       KeyZ_cs: () => increasePaintImageIndex(),
     },
-    [seed, paintImage, resultImage, isZenModeOn, isImageViewerActive]
+    [cnConfig.seed, paintImage, resultImage, isZenModeOn, isImageViewerActive]
   );
   return <>{children}</>;
 };
@@ -103,7 +115,7 @@ const MSTP = (state: StateType) => ({
   isImageViewerActive: state.isImageViewerActive,
   resultImage: state.resultImage,
   paintImage: getPaintImage(state),
-  seed: state.cnConfig.seed,
+  cnConfig: state.cnConfig,
   isZenModeOn: state.isZenModeOn,
 });
 

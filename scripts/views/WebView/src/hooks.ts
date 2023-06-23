@@ -21,15 +21,8 @@ const getMapKey = (event: KeyboardEvent) => {
   return `${code}_${keyPostfix}`;
 };
 
-const isTextInputActive = () => {
-  if (document.activeElement?.tagName === "TEXTAREA") return true;
-  if (document.activeElement?.tagName === "INPUT") {
-    const input = document.activeElement as HTMLInputElement;
-    if (["number", "text"].includes(input.type)) return true;
-    return false;
-  }
-  return false;
-};
+const isTextInputActive = () =>
+  ["TEXTAREA", "INPUT"].includes(document.activeElement?.tagName || "");
 
 export const useHotKeys = (hotkeyMap: HotkeyMapType, deps: any[]) => {
   const callback = useCallback(

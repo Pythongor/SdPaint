@@ -2,7 +2,6 @@ import React, { useCallback } from "react";
 import { connect } from "react-redux";
 import { StateType } from "store/types";
 import { getCnConfig, sendCnConfig } from "api";
-import { extractDataFromConfig } from "helpers";
 import { default as BrushInput } from "./components/BrushInput";
 import ToolsCheckboxes from "./components/ToolsCheckboxes";
 import { default as GenerateButton } from "./components/GenerateButton";
@@ -30,7 +29,8 @@ const PaintingTools: React.FC<PaintingToolsProps> = ({
 }) => {
   const loadConfig = () =>
     getCnConfig().then((fileConfig) => {
-      setCnConfig(extractDataFromConfig(fileConfig));
+      if ("error" in fileConfig) return;
+      setCnConfig(fileConfig);
     });
 
   const saveConfig = useCallback(() => sendCnConfig(cnConfig), [cnConfig]);

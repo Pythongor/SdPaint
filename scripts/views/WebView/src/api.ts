@@ -1,3 +1,4 @@
+import { extractDataFromConfig } from "helpers";
 import { getStorageConfig, getSettings } from "./storage";
 import { CnConfigType } from "store/types";
 export const url = "http://127.0.0.1:8000";
@@ -32,7 +33,7 @@ export const getModules = () =>
 
 export const getCnConfig = () => {
   return fetch(`${url}/config`).then(
-    (response) => response.json().then((data) => data),
+    (response) => response.json().then((data) => extractDataFromConfig(data)),
     catchError
   );
 };

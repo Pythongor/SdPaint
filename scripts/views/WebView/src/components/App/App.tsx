@@ -43,7 +43,8 @@ const App: React.FC<AppProps> = ({
     const storageConfig = extractDataFromConfig(getStorageConfig());
     setCnConfig(storageConfig);
     getCnConfig().then((fileConfig) => {
-      setCnConfig(extractDataFromConfig(fileConfig));
+      if ("error" in fileConfig) return;
+      setCnConfig(fileConfig);
     });
   }, []);
 
