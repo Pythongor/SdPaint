@@ -28,6 +28,7 @@ const BrushInput: React.FC<BrushInputProps> = ({
 }) => {
   const isPrimitiveShape = ["ellipse", "rectangle"].includes(brushType);
   const sampleWidth = isPrimitiveShape && withBrushFill ? 10 : realBrushWidth;
+  const fixedBrushWidth = sampleWidth === 50 ? 51 : sampleWidth;
   const onSliderInput = (event: React.FormEvent<HTMLInputElement>) =>
     setBrushWidth(+event.currentTarget.value);
 
@@ -94,7 +95,13 @@ const BrushInput: React.FC<BrushInputProps> = ({
               checked={withBrushFill || !isPrimitiveShape || isErasing}
               onChange={onFillInput}
             ></input>
-            <span>Fill</span>
+            <span
+              className={cn(
+                (!isPrimitiveShape || isErasing) && styles.label_span__disabled
+              )}
+            >
+              Fill
+            </span>
           </label>
         </div>
         <div
@@ -109,7 +116,10 @@ const BrushInput: React.FC<BrushInputProps> = ({
               isErasing && styles.brush_sample__erasing,
               brushType === "rectangle" && styles.brush_sample__rectangle
             )}
-            style={{ width: `${sampleWidth}px`, height: `${sampleWidth}px` }}
+            style={{
+              width: `${fixedBrushWidth}px`,
+              height: `${fixedBrushWidth}px`,
+            }}
           ></div>
         </div>
       </div>

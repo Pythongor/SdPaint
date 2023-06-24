@@ -41,10 +41,20 @@
   cursor: pointer;
   user-select: none;
   font-family: monospace;
+  transition: border-color 0.1s, background-color 0.1s, color 0.1s;
+
+  &:hover {
+    border-color: $beige;
+    color: $black;
+  }
 
   &__inactive {
     background-color: $deepBlue;
     border-color: $blue;
+
+    &:hover {
+      color: $beige;
+    }
   }
 
   &:disabled {
@@ -52,18 +62,35 @@
     border-color: $darkGray;
     color: $darkGray;
     cursor: not-allowed;
+
+    &:hover {
+      border-color: $darkGray;
+      color: $darkGray;
+      background-color: $gray;
+    }
   }
 
   &__fill {
     color: $beige;
     background-color: $black;
     border-color: $beige;
+
+    &:hover {
+      border-color: $white;
+      color: $white;
+      background-color: $blue;
+    }
   }
 
   &__eraser {
     color: $beige;
     background-color: $red;
     border-color: $beige;
+
+    &:hover {
+      border-color: $lightBlue;
+      color: $lightBlue;
+    }
   }
 
   &__instant {
@@ -75,6 +102,12 @@
     color: $white;
     background-color: $black;
     border-color: $white;
+
+    &:hover {
+      // border-color: $lightBlue;
+      color: $white;
+      background-color: $blue;
+    }
   }
 }
 

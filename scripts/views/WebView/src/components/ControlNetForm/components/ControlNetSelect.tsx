@@ -51,7 +51,7 @@ const ControlNetSelect: React.FC<CnSelectProps> = ({
       >
         {cnConfig[listName] &&
           cnConfig[listName].map((name) => (
-            <option key={name} value={name}>
+            <option key={name} value={name} className={styles.option}>
               {name}
             </option>
           ))}

@@ -56,6 +56,19 @@
   padding: 5px;
   resize: none;
   border: 1px solid $deepBlue;
+  transition: color 0.2s, outline-color 0.2s;
+
+  &:hover {
+    color: $lightBlue;
+
+    &:focus {
+      color: $black;
+    }
+  }
+
+  &:focus {
+    outline-color: $lightBlue;
+  }
 }
 
 .numberInput {
@@ -64,6 +77,19 @@
   padding-inline: 5px;
   text-align: center;
   margin-top: 5px;
+  transition: color 0.2s, outline-color 0.2s;
+
+  &:hover {
+    color: $lightBlue;
+
+    &:focus {
+      color: $black;
+    }
+  }
+
+  &:focus {
+    outline-color: $lightBlue;
+  }
 }
 
 .select {
@@ -72,6 +98,19 @@
   padding-inline: 5px;
   text-align: center;
   margin-top: 5px;
+  transition: color 0.2s, outline-color 0.2s;
+
+  &:hover {
+    color: $lightBlue;
+
+    &:focus {
+      color: $black;
+    }
+  }
+
+  &:focus {
+    outline-color: $lightBlue;
+  }
 }
 
 .arrow {

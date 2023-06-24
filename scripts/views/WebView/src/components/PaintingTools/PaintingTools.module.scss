@@ -16,8 +16,14 @@
   border: 1px solid $deepBlue;
   border-radius: 5px;
   padding: 10px;
+  transition: border-color 0.2s, background-color 0.2s, color 0.2s;
   &:first-child {
     margin-top: 0;
+  }
+
+  &__checkbox:hover {
+    border-color: $beige;
+    color: $beige;
   }
 }
 
@@ -31,12 +37,38 @@
   border-radius: 5px;
   padding-inline: 5px;
   text-align: center;
+  transition: background-color 0.2s, color 0.2s;
+
+  &:hover {
+    color: $lightBlue;
+
+    &:focus {
+      color: $black;
+    }
+  }
+
+  &:focus {
+    outline-color: $lightBlue;
+  }
 }
 
 .label {
   display: flex;
   user-select: none;
   cursor: pointer;
+  transition: color 0.2s;
+
+  &:hover {
+    color: $beige;
+  }
+
+  .label_span__disabled {
+    color: $gray;
+    cursor: not-allowed;
+    &:hover {
+      color: $gray;
+    }
+  }
 }
 
 .clear {
@@ -59,6 +91,11 @@
   background-color: $beige;
   height: 27px;
   width: 50px;
+  transition: border-color 0.2s, background-color 0.2s, color 0.2s;
+
+  &:hover {
+    background-color: $lightBlue;
+  }
 
   &__single {
     margin-top: 5px;
@@ -68,6 +105,11 @@
   &__clear {
     background-color: $red;
     color: $white;
+
+    &:hover {
+      background-color: $beige;
+      color: $red;
+    }
   }
 
   &__generate {
@@ -111,6 +153,7 @@
   height: 50px;
   width: 50px;
   background-color: $white;
+  overflow: hidden;
 
   &__erasing {
     background-color: $black;
