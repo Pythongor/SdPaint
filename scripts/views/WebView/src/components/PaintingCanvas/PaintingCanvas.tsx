@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import {
   setPaintImage,
   setResultImage,
   setCnProgress,
   setEmptyImage,
+  setErasingByMouse,
 } from "store/actions";
 import { connect, useSelector } from "react-redux";
 import { StateType } from "store/types";
@@ -47,6 +48,7 @@ export const PaintingCanvas: React.FC<PaintingCanvasProps> = ({
   setCnProgress,
   setResultImage,
   setEmptyImage,
+  setErasingByMouse,
 }) => {
   const {
     ref: paintingRef,
@@ -95,6 +97,7 @@ export const PaintingCanvas: React.FC<PaintingCanvasProps> = ({
     setPaintImage,
     setCnProgress,
     setResultImage,
+    setErasingByMouse,
   });
 
   return (
@@ -114,6 +117,7 @@ export const PaintingCanvas: React.FC<PaintingCanvasProps> = ({
         onPointerUp={onPointerUp}
         onPointerOut={onPointerOut}
         onPointerEnter={resize}
+        onContextMenu={(ev) => ev.preventDefault()}
         ref={previewRef}
         className={cn(styles.canvas, styles.canvas__preview)}
         height="512"
@@ -132,6 +136,12 @@ const MSTP = (state: StateType) => ({
   isZenModeOn: state.isZenModeOn,
 });
 
-const MDTP = { setPaintImage, setCnProgress, setResultImage, setEmptyImage };
+const MDTP = {
+  setPaintImage,
+  setCnProgress,
+  setResultImage,
+  setEmptyImage,
+  setErasingByMouse,
+};
 
 export default connect(MSTP, MDTP)(PaintingCanvas);

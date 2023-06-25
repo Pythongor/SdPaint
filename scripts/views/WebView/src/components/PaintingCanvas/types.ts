@@ -14,6 +14,7 @@ export type UseBrushProps = {
   setPaintImage: PayloadActionCreator<Actions.setPaintImage, string>;
   setCnProgress: PayloadActionCreator<Actions.setCnProgress, number>;
   setResultImage: PayloadActionCreator<Actions.setResultImage, string>;
+  setErasingByMouse: PayloadActionCreator<Actions.setErasingByMouse, boolean>;
 };
 
 export type CanvasInstructionProps = PointType & {

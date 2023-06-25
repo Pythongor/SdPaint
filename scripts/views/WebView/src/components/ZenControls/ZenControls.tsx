@@ -6,10 +6,11 @@ import {
   setBrushWidth,
   setBrushFilling,
   setBrushType,
-  setIsErasing,
+  setErasingBySwitch,
   setInstantGenerationMode,
   setZenMode,
 } from "store/actions";
+import { getErasingState } from "store/selectors";
 import cn from "classnames";
 import styles from "./ZenControls.module.scss";
 
@@ -27,7 +28,7 @@ const ZenIndicator: React.FC<ResultCanvasProps> = ({
   setBrushWidth,
   setBrushFilling,
   setBrushType,
-  setIsErasing,
+  setErasingBySwitch,
   setInstantGenerationMode,
   setZenMode,
 }) => {
@@ -69,7 +70,7 @@ const ZenIndicator: React.FC<ResultCanvasProps> = ({
             styles.indicator,
             isErasing ? styles.indicator__eraser : styles.indicator__inactive
           )}
-          onClick={() => setIsErasing("switch")}
+          onClick={() => setErasingBySwitch("switch")}
         >
           E
         </button>
@@ -101,27 +102,20 @@ const ZenIndicator: React.FC<ResultCanvasProps> = ({
   );
 };
 
-const MSTP = ({
-  brushType,
-  brushWidth,
-  withBrushFill,
-  isZenModeOn,
-  isErasing,
-  instantGenerationMode,
-}: StateType) => ({
-  brushType,
-  brushWidth,
-  withBrushFill,
-  isZenModeOn,
-  isErasing,
-  instantGenerationMode,
+const MSTP = (state: StateType) => ({
+  brushType: state.brushType,
+  brushWidth: state.brushWidth,
+  withBrushFill: state.withBrushFill,
+  isZenModeOn: state.isZenModeOn,
+  isErasing: getErasingState(state),
+  instantGenerationMode: state.instantGenerationMode,
 });
 
 const MDTP = {
   setBrushWidth,
   setBrushFilling,
   setBrushType,
-  setIsErasing,
+  setErasingBySwitch,
   setInstantGenerationMode,
   setZenMode,
 };

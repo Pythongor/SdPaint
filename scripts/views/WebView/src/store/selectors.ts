@@ -9,9 +9,12 @@ export const getRealBrushWidth = ({ brushWidth }: StateType) =>
 export const getPaintImage = ({
   currentPaintImageIndex,
   paintImagesStack,
-}: StateType) => {
-  return paintImagesStack[currentPaintImageIndex];
-};
+}: StateType) => paintImagesStack[currentPaintImageIndex];
+
+export const getErasingState = ({
+  isErasingByMouse,
+  isErasingBySwitch,
+}: StateType) => isErasingByMouse || isErasingBySwitch;
 
 export const state2config = ({
   cnConfig: {

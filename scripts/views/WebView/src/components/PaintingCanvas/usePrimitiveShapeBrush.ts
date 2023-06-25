@@ -1,6 +1,7 @@
 import React, { useState, useCallback, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { StateType } from "store/types";
+import { getErasingState } from "store/selectors";
 import { UseBrushProps } from "./types";
 import { generate } from "components/PaintingTools/components/GenerateButton";
 import {
@@ -35,15 +36,16 @@ const usePrimitiveShapeBrush = ({
   setPaintImage,
   setCnProgress,
   setResultImage,
+  setErasingByMouse,
   kind,
 }: PrimitiveShapeProps) => {
   const [isDrawing, setIsDrawing] = useState(false);
   const [startPos, setStartPos] = useState({ x: 0, y: 0 });
-  const { isErasing, withBrushFill, brushType } = useSelector(
-    ({ isErasing, withBrushFill, brushType }: StateType) => ({
-      isErasing,
-      withBrushFill,
-      brushType,
+  const { isErasing, brushType, withBrushFill } = useSelector(
+    (state: StateType) => ({
+      withBrushFill: state.withBrushFill,
+      isErasing: getErasingState(state),
+      brushType: state.brushType,
     })
   );
   const { drawFunc, getRect } = shapeMap[kind];
@@ -56,13 +58,17 @@ const usePrimitiveShapeBrush = ({
   const onPointerDown: React.PointerEventHandler<HTMLCanvasElement> =
     useCallback(
       (event) => {
+        if (event.buttons == 2) {
+          setErasingByMouse(true);
+        } else setErasingByMouse(false);
         const pos = setMouseCoordinates(event);
         if (!previewContext || !previewRef.current) return;
-        previewContext.fillStyle = isErasing ? "white" : "black";
+        previewContext.fillStyle =
+          isErasing || event.buttons == 2 ? "white" : "black";
         setStartPos(pos);
         setIsDrawing(true);
       },
-      [previewContext, setMouseCoordinates, previewRef?.current]
+      [previewContext, setMouseCoordinates, previewRef?.current, isErasing]
     );
 
   const switchBrushStyle = useCallback(() => {
@@ -134,6 +140,7 @@ const usePrimitiveShapeBrush = ({
       if (instantGenerationMode) {
         generate(paintImage, setResultImage, setCnProgress);
       }
+      setErasingByMouse(false);
     },
     [
       context,

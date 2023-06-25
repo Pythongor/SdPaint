@@ -18,7 +18,8 @@ export type BrushType = "pencil" | "line" | "rectangle" | "ellipse";
 
 export type StateType = {
   scrollTop: number;
-  isErasing: boolean;
+  isErasingBySwitch: boolean;
+  isErasingByMouse: boolean;
   brushWidth: number;
   brushType: BrushType;
   withBrushFill: boolean;
@@ -34,7 +35,8 @@ export type StateType = {
 };
 
 export enum Actions {
-  setIsErasing = "SET_IS_ERASING",
+  setErasingBySwitch = "SET_ERASING_BY_SWITCH",
+  setErasingByMouse = "SET_ERASING_BY_MOUSE",
   setBrushWidth = "SET_BRUSH_WIDTH",
   setBrushType = "SET_BRUSH_TYPE",
   setBrushFilling = "SET_BRUSH_FILLING",

@@ -3,9 +3,13 @@ import { Actions, CnConfigType, BrushType } from "./types";
 
 export const setScrollTop = createAction(Actions.setScrollTop)<number>();
 
-export const setIsErasing = createAction(Actions.setIsErasing)<
+export const setErasingBySwitch = createAction(Actions.setErasingBySwitch)<
   boolean | "switch"
 >();
+
+export const setErasingByMouse = createAction(
+  Actions.setErasingByMouse
+)<boolean>();
 
 export const setBrushWidth = createAction(Actions.setBrushWidth)<
   number | "-" | "+"
@@ -49,7 +53,8 @@ export const setInstantGenerationMode = createAction(
 )<boolean | "switch">();
 
 export default {
-  setIsErasing,
+  setErasingBySwitch,
+  setErasingByMouse,
   setBrushWidth,
   setBrushType,
   setBrushFilling,

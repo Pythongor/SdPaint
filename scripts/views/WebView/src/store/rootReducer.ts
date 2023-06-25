@@ -6,7 +6,8 @@ const initialState: Readonly<StateType> = {
   scrollTop: 0,
   isImageViewerActive: false,
   isZenModeOn: false,
-  isErasing: false,
+  isErasingByMouse: false,
+  isErasingBySwitch: false,
   brushWidth: 2,
   brushType: "pencil",
   withBrushFill: false,
@@ -33,9 +34,13 @@ const initialState: Readonly<StateType> = {
 const IMAGES_CLIP_BUFFER_OVERFLOW = 20;
 
 export default createReducer<StateType, ActionType>(initialState)
-  .handleAction(actions.setIsErasing, (state, { payload }) => {
-    if (payload === "switch") return { ...state, isErasing: !state.isErasing };
-    return { ...state, isErasing: payload };
+  .handleAction(actions.setErasingBySwitch, (state, { payload }) => {
+    if (payload === "switch")
+      return { ...state, isErasingBySwitch: !state.isErasingBySwitch };
+    return { ...state, isErasingBySwitch: payload };
+  })
+  .handleAction(actions.setErasingByMouse, (state, { payload }) => {
+    return { ...state, isErasingByMouse: payload };
   })
   .handleAction(actions.setScrollTop, (state, { payload }) => ({
     ...state,
@@ -58,7 +63,11 @@ export default createReducer<StateType, ActionType>(initialState)
     brushType: payload,
   }))
   .handleAction(actions.setBrushFilling, (state, { payload }) => {
-    if (!["ellipse", "rectangle"].includes(state.brushType) || state.isErasing)
+    if (
+      !["ellipse", "rectangle"].includes(state.brushType) ||
+      state.isErasingBySwitch ||
+      state.isErasingByMouse
+    )
       return state;
     if (payload === "switch")
       return { ...state, withBrushFill: !state.withBrushFill };

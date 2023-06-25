@@ -3,11 +3,11 @@ import { connect } from "react-redux";
 import { StateType, BrushType } from "store/types";
 import {
   setBrushWidth,
-  setIsErasing,
+  setErasingBySwitch,
   setBrushType,
   setBrushFilling,
 } from "store/actions";
-import { getRealBrushWidth } from "store/selectors";
+import { getErasingState, getRealBrushWidth } from "store/selectors";
 import cn from "classnames";
 import styles from "../PaintingTools.module.scss";
 
@@ -22,7 +22,7 @@ const BrushInput: React.FC<BrushInputProps> = ({
   brushType,
   withBrushFill,
   setBrushWidth,
-  setIsErasing,
+  setErasingBySwitch,
   setBrushType,
   setBrushFilling,
 }) => {
@@ -34,9 +34,9 @@ const BrushInput: React.FC<BrushInputProps> = ({
 
   const onEraserInput = (event: React.FormEvent<HTMLInputElement>) => {
     if (event.currentTarget.checked) {
-      setIsErasing(true);
+      setErasingBySwitch(true);
     } else {
-      setIsErasing(false);
+      setErasingBySwitch(false);
     }
   };
 
@@ -129,7 +129,7 @@ const BrushInput: React.FC<BrushInputProps> = ({
 
 const MSTP = (state: StateType) => {
   return {
-    isErasing: state.isErasing,
+    isErasing: getErasingState(state),
     brushType: state.brushType,
     withBrushFill: state.withBrushFill,
     realBrushWidth: getRealBrushWidth(state),
@@ -137,6 +137,11 @@ const MSTP = (state: StateType) => {
   };
 };
 
-const MDTP = { setBrushWidth, setIsErasing, setBrushType, setBrushFilling };
+const MDTP = {
+  setBrushWidth,
+  setErasingBySwitch,
+  setBrushType,
+  setBrushFilling,
+};
 
 export default connect(MSTP, MDTP)(BrushInput);

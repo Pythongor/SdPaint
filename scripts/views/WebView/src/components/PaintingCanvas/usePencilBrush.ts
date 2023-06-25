@@ -1,6 +1,7 @@
 import { useState, useCallback, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { StateType } from "store/types";
+import { getErasingState } from "store/selectors";
 import { UseBrushProps } from "./types";
 import { generate } from "components/PaintingTools/components/GenerateButton";
 import { drawEllipse, clear } from "./canvasHelpers";
@@ -16,14 +17,13 @@ export const usePencilBrush = ({
   setPaintImage,
   setCnProgress,
   setResultImage,
+  setErasingByMouse,
 }: UseBrushProps) => {
   const [isDrawing, setIsDrawing] = useState(false);
-  const { isErasing, brushType } = useSelector(
-    ({ isErasing, brushType }: StateType) => ({
-      isErasing,
-      brushType,
-    })
-  );
+  const { isErasing, brushType } = useSelector((state: StateType) => ({
+    isErasing: getErasingState(state),
+    brushType: state.brushType,
+  }));
 
   useEffect(() => {
     setIsDrawing(false);
@@ -46,14 +46,17 @@ export const usePencilBrush = ({
   const onPointerDown: React.PointerEventHandler<HTMLCanvasElement> =
     useCallback(
       (event) => {
+        if (event.buttons == 2) {
+          setErasingByMouse(true);
+        } else setErasingByMouse(false);
         setMouseCoordinates(event);
         if (!context || !paintingRef.current) return;
-        context.fillStyle = isErasing ? "white" : "black";
+        context.fillStyle = isErasing || event.buttons == 2 ? "white" : "black";
         setIsDrawing(true);
         drawCircle(context);
         context.beginPath();
       },
-      [context, setMouseCoordinates, paintingRef?.current, mousePos]
+      [context, setMouseCoordinates, paintingRef?.current, mousePos, isErasing]
     );
 
   const switchBrushStyle = useCallback(() => {
@@ -116,6 +119,7 @@ export const usePencilBrush = ({
       if (instantGenerationMode) {
         generate(paintImage, setResultImage, setCnProgress);
       }
+      setErasingByMouse(false);
     },
     [
       context,
