@@ -23,7 +23,7 @@
 
   &__checkbox:hover {
     border-color: $beige;
-    color: $beige;
+    color: $blue;
   }
 }
 
@@ -59,11 +59,11 @@
   transition: color 0.2s;
 
   &:hover {
-    color: $beige;
+    color: $blue;
   }
 
   .label_span__disabled {
-    color: $gray;
+    color: $blue;
     cursor: not-allowed;
     &:hover {
       color: $gray;
