@@ -58,13 +58,14 @@ const usePrimitiveShapeBrush = ({
   const onPointerDown: React.PointerEventHandler<HTMLCanvasElement> =
     useCallback(
       (event) => {
-        if (event.buttons == 2) {
+        event.preventDefault();
+        if (event.buttons === 4) {
           setErasingByMouse(true);
         } else setErasingByMouse(false);
         const pos = setMouseCoordinates(event);
         if (!previewContext || !previewRef.current) return;
         previewContext.fillStyle =
-          isErasing || event.buttons == 2 ? "white" : "black";
+          isErasing || event.buttons === 4 ? "white" : "black";
         setStartPos(pos);
         setIsDrawing(true);
       },
@@ -148,6 +149,7 @@ const usePrimitiveShapeBrush = ({
       paintingRef?.current,
       instantGenerationMode,
       mousePos,
+      isErasing,
     ]
   );
 

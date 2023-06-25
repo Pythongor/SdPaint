@@ -117,7 +117,6 @@ export const PaintingCanvas: React.FC<PaintingCanvasProps> = ({
         onPointerUp={onPointerUp}
         onPointerOut={onPointerOut}
         onPointerEnter={resize}
-        onContextMenu={(ev) => ev.preventDefault()}
         ref={previewRef}
         className={cn(styles.canvas, styles.canvas__preview)}
         height="512"

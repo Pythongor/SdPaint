@@ -47,12 +47,14 @@ export const useLineBrush = ({
   const onPointerDown: React.PointerEventHandler<HTMLCanvasElement> =
     useCallback(
       (event) => {
-        if (event.buttons == 2) {
+        event.preventDefault();
+        if (event.buttons === 4) {
           setErasingByMouse(true);
         } else setErasingByMouse(false);
         const pos = setMouseCoordinates(event);
         if (!context || !paintingRef.current) return;
-        context.fillStyle = isErasing || event.buttons == 2 ? "white" : "black";
+        context.fillStyle =
+          isErasing || event.buttons === 4 ? "white" : "black";
         setIsDrawing(true);
         setStartPos(pos);
         context.beginPath();
