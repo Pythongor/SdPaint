@@ -13,7 +13,7 @@ REM Install required packages
 pip install -r requirements.txt
 
 REM open view in default browser
-start "" "scripts/views/WebView/build/index.html"
+start cmd /k "cd scripts/views/WebView & npm install & npm start"
 
 REM start server
 uvicorn --host "0.0.0.0" scripts.views.WebView.app:app --reload
