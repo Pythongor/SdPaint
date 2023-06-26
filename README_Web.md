@@ -98,7 +98,7 @@ Zen mode is more simplified interface mode. Only `painting canvas` and `result a
 
 Pull requests are welcome. Development brunch is https://github.com/Pythongor/SdPaint/tree/web-view.
 
-To run in development mode first you need to install `npm`. If you're done with it run `StartWeb.bat` or `start-web.sh` depending on your OS. There can be alert, ignore it. In separated terminal run `cd scripts\views\WebView; npm start` from project root. Your default browser will open http://localhost:3000/ with app. Now all your changes in `scripts\views\WebView\src` will renew page.
+To run in development mode first you need to install `npm`. If you're done with it run `StartWeb.bat` or `start-web.sh` depending on your OS. Your default browser will open http://localhost:3000/ with app. Now all your changes in `scripts\views\WebView\src` will renew page.
 
 ## License
 
