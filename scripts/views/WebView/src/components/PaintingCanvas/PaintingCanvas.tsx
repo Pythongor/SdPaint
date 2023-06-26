@@ -6,33 +6,13 @@ import {
   setEmptyImage,
   setErasingByMouse,
 } from "store/actions";
-import { connect, useSelector } from "react-redux";
+import { connect } from "react-redux";
 import { StateType } from "store/types";
-import { UseBrushProps } from "./types";
-import { usePencilBrush } from "./usePencilBrush";
-import { useLineBrush } from "./useLineBrush";
-import { useRectangleBrush, useEllipseBrush } from "./usePrimitiveShapeBrush";
+import { useBrushes } from "./hooks/useBrushes";
 import { useCanvas, clear } from "./canvasHelpers";
 import cn from "classnames";
 import styles from "./PaintingCanvas.module.scss";
 import { getPaintImage } from "store/selectors";
-
-const useBrush = (props: UseBrushProps) => {
-  const brushType = useSelector(({ brushType }: StateType) => brushType);
-  const pencilProps = usePencilBrush(props);
-  const lineProps = useLineBrush(props);
-  const rectangleProps = useRectangleBrush(props);
-  const ellipseProps = useEllipseBrush(props);
-  if (brushType === "pencil") {
-    return pencilProps;
-  } else if (brushType === "line") {
-    return lineProps;
-  } else if (brushType === "rectangle") {
-    return rectangleProps;
-  } else {
-    return ellipseProps;
-  }
-};
 
 type StateProps = ReturnType<typeof MSTP>;
 type DispatchProps = typeof MDTP;
@@ -86,19 +66,20 @@ export const PaintingCanvas: React.FC<PaintingCanvasProps> = ({
     resize();
   }, [paintingRef?.current, scrollTop]);
 
-  const { onPointerDown, onPointerMove, onPointerUp, onPointerOut } = useBrush({
-    paintingRef,
-    previewRef,
-    context,
-    previewContext,
-    mousePos,
-    instantGenerationMode,
-    setMouseCoordinates,
-    setPaintImage,
-    setCnProgress,
-    setResultImage,
-    setErasingByMouse,
-  });
+  const { onPointerDown, onPointerMove, onPointerUp, onPointerOut } =
+    useBrushes({
+      paintingRef,
+      previewRef,
+      context,
+      previewContext,
+      mousePos,
+      instantGenerationMode,
+      setMouseCoordinates,
+      setPaintImage,
+      setCnProgress,
+      setResultImage,
+      setErasingByMouse,
+    });
 
   return (
     <div className={styles.base}>
