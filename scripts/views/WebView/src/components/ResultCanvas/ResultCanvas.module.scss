@@ -17,9 +17,13 @@
   display: block;
   background-color: $blue;
   cursor: pointer;
+  transition: opacity 0.3s;
 
   &__waiting {
     opacity: 0.5;
+    &:hover {
+      opacity: 1;
+    }
   }
 
   &__empty {
@@ -40,28 +44,69 @@
   left: 50%;
   transform: translate(-50%, -50%);
   opacity: 0.3;
+  overflow: hidden;
   width: 80px;
   height: 80px;
+  transition: all 0.3s;
+  animation: loading 1.2s linear infinite;
+  cursor: pointer;
+  &:hover {
+    opacity: 0.8;
+    animation-delay: $never;
+    transform: translate(-50%, -50%) rotate(-45deg);
+    &:before,
+    &:after {
+      border-radius: 0;
+      width: 50px;
+      height: 50px;
+    }
+    &:before {
+      border-color: transparent transparent $red $red;
+      transform: translate(calc(0% - 3px), calc(-100% + 3px));
+    }
+    &:after {
+      border-color: $red $red transparent transparent;
+      transform: translate(calc(-100% + 3px), calc(0% - 3px));
+    }
+  }
+}
+
+.loader:before {
+  content: " ";
+  position: absolute;
+  display: block;
+  width: 69px;
+  height: 69px;
+  border-radius: 50%;
+  border: 6px solid;
+  border-color: transparent transparent $deepBlue transparent;
+  transition: all 0.3s;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .loader:after {
   content: " ";
+  position: absolute;
   display: block;
   width: 69px;
   height: 69px;
-  margin: 8px;
   border-radius: 50%;
   border: 6px solid;
-  border-color: $beige transparent $deepBlue transparent;
-  animation: loading 1.2s linear infinite;
+  border-color: $beige transparent transparent transparent;
+  transition: all 0.3s;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 @keyframes loading {
   0% {
-    transform: rotate(0deg);
+    transform: translate(-50%, -50%) rotate(45deg);
   }
 
   100% {
-    transform: rotate(360deg);
+    transform: translate(-50%, -50%) rotate(405deg);
   }
 }
