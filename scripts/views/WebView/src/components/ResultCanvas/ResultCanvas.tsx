@@ -1,7 +1,8 @@
 import React, { useRef, useCallback, useEffect, useState } from "react";
 import { StateType } from "store/types";
 import { connect } from "react-redux";
-import { setImageViewerActive, setPaintImage } from "store/actions";
+import { setImageViewerActive } from "store/actions";
+import { skipRendering } from "api";
 import cn from "classnames";
 import styles from "./ResultCanvas.module.scss";
 
@@ -58,7 +59,12 @@ const ResultCanvas: React.FC<ResultCanvasProps> = ({
       ></canvas>
       {cnProgress !== 0 && (
         <>
-          {!isZenModeOn && <div className={styles.loader}></div>}
+          {!isZenModeOn && (
+            <div
+              className={styles.loader}
+              onClick={() => skipRendering()}
+            ></div>
+          )}
           <progress className={styles.progress} max="100" value={cnProgress}>
             {cnProgress}
           </progress>

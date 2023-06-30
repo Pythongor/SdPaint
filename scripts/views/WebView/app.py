@@ -52,6 +52,14 @@ async def root():
         return json.load(f)
 
 
+@app.post('/skip')
+async def root():
+    response = api.skip_rendering()
+    if response.ok:
+        state.server["busy"] = False
+        return response.json()
+
+
 @app.post('/config')
 async def root(data: Request):
     data = await data.json()

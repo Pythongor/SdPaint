@@ -20,7 +20,7 @@ import { useHotKeys } from "hooks";
 import { downloadImage } from "components/PaintingTools/PaintingTools";
 import { getPaintImage } from "store/selectors";
 import { generate } from "components/PaintingTools/components/GenerateButton";
-import { getCnConfig, sendCnConfig } from "api";
+import { getCnConfig, sendCnConfig, skipRendering } from "api";
 
 type StateProps = ReturnType<typeof MSTP>;
 type DispatchProps = typeof MDTP;
@@ -88,6 +88,7 @@ const HotkeyWrapper: React.FC<HotkeyWrapperProps> = ({
       Equal: () => setBrushWidth("+"),
       Minus: () => setBrushWidth("-"),
       Delete: () => setPaintImage(""),
+      Backspace: () => skipRendering(),
       KeyC: loadConfig,
       KeyC_s: saveConfig,
       KeyD: memoizedDownload,

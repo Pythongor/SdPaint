@@ -1,5 +1,7 @@
 import { useEffect, useCallback, RefObject } from "react";
 
+const inputTags = ["TEXTAREA", "INPUT", "BUTTON"];
+
 type KeyCallback = (
   event: KeyboardEvent,
   options?: { blockInputs?: boolean }
@@ -22,7 +24,7 @@ const getMapKey = (event: KeyboardEvent) => {
 };
 
 const isTextInputActive = () =>
-  ["TEXTAREA", "INPUT"].includes(document.activeElement?.tagName || "");
+  inputTags.includes(document.activeElement?.tagName || "");
 
 export const useHotKeys = (hotkeyMap: HotkeyMapType, deps: any[]) => {
   const callback = useCallback(

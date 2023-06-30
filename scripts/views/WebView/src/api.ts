@@ -38,6 +38,13 @@ export const getCnConfig = () => {
   );
 };
 
+export const skipRendering = () => {
+  return fetch(`${url}/skip`, { method: "post" }).then(
+    (response) => response.json(),
+    catchError
+  );
+};
+
 export const sendCnConfig = async (config: CnConfigType) => {
   const { modules, models, ...cleanConfig } = config;
   try {
