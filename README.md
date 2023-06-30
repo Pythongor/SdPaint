@@ -6,7 +6,7 @@ the canvas when the image is generated.
 ## Controls
 
 | Key / Mouse button            | Control                                         |
-|-------------------------------|-------------------------------------------------|
+| ----------------------------- | ----------------------------------------------- |
 | Left button                   | Draw with the current brush size                |
 | Middle button                 | Draw with a white color brush                   |
 | `e` + Left button             | Eraser brush (bigger)                           |
@@ -146,11 +146,14 @@ are applied by default : the settings that are applied are determined respective
 and `cn_preset_fields` entries of the `config.json` file. For example, if you
 want to also apply the sampler value of the preset on recall, add `'sampler'` to your `preset_fields` list.
 
+## Web interface
+
+Alternatively, you can use web interface. Just run `SdPaint\StartWeb.bat`. After creating virtual environment and installing packages it will open interface in your default browser. More in [this instruction](README_Web.md)
+
 ## Img2img Experimental mode
 
-Launch the program with `--img2img <image_file_path>` to watch an image file for changes, and use it as img2img source.
-If the script is launched
-with an empty image file path, a loading file dialog will be displayed.
+Launch the program with `--img2img --source <image_file_path>` to watch an image file for changes, and use it as img2img source.
+If the script is launched without `--source` argument, a loading file dialog will be displayed.
 The `img2img.json` file is used in this mode.
 
 ## Contributing

@@ -79,7 +79,8 @@ def controlnet_to_sdapi(json_data):
     :return: The converted payload content.
     """
 
-    json_data = copy.deepcopy(json_data)  # ensure main_json_data is left untouched
+    # ensure main_json_data is left untouched
+    json_data = copy.deepcopy(json_data)
 
     if json_data.get('alwayson_scripts', None) is None:
         json_data['alwayson_scripts'] = {}
@@ -234,7 +235,13 @@ def payload_submit(state, image_string):
         json_data = json.load(f)
 
     if state.render["quick_mode"]:
-        json_data['steps'] = json_data.get('quick_steps', json_data['steps'] // 2)  # use quick_steps setting, or halve steps if not set
+        # use quick_steps setting, or halve steps if not set
+        json_data['steps'] = json_data.get('quick_steps', json_data['steps'] // 2)
+
+    if not json_data.get('controlnet_units', None):
+        json_data['controlnet_units'] = [{}]
+    if not json_data['controlnet_units']:
+        json_data['controlnet_units'].append({})
 
     if not json_data.get('controlnet_units', None):
         json_data['controlnet_units'] = [{}]
@@ -316,22 +323,9 @@ def get_img2img_json(state):
     json_data['override_settings'][state.render['clip_skip_setting']] = state.render["clip_skip"]
 
     if state.render["quick_mode"]:
-        json_data['steps'] = json_data.get('quick_steps', json_data['steps'] // 2)  # use quick_steps setting, or halve steps if not set
+        # use quick_steps setting, or halve steps if not set
+        json_data['steps'] = json_data.get('quick_steps', json_data['steps'] // 2)
     return json_data
-
-
-def fetch_configuration(state):
-    """
-        Request current configuration from the webui API.
-    :return: The configuration JSON.
-    """
-
-    response = requests.get(url=f'{state.server["url"]}/sdapi/v1/options')
-    if response.status_code == 200:
-        r = response.json()
-        return r
-    else:
-        return {}
 
 
 checkpoint_pattern = re.compile(r'^(?P<dir>.*(?:\\|\/))?(?P<name>.*?)(?P<vae>\.vae)?(?P<ext>\.safetensors|\.pt|\.ckpt) ?(?P<hash>\[[^\]]*\])?.*')
