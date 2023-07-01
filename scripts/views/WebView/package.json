@@ -17,13 +17,13 @@
     "react-redux": "^7.2.6",
     "react-scripts": "5.0.0",
     "redux": "^4.1.2",
-    "typescript": "^4.5.5",
     "typesafe-actions": "^5.1.0",
+    "typescript": "^4.5.5",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build --base=./scripts/views/WebView",
+    "build": "react-scripts build --base=./scripts/views/WebView && python3 ./build_standartizer.py",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
