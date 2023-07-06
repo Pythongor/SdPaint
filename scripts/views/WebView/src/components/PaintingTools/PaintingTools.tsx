@@ -24,6 +24,7 @@ export const downloadImage = (image: string) => {
 const PaintingTools: React.FC<PaintingToolsProps> = ({
   resultImage,
   cnConfig,
+  emptyImage,
   setPaintImage,
   setCnConfig,
 }) => {
@@ -32,8 +33,9 @@ const PaintingTools: React.FC<PaintingToolsProps> = ({
       if ("error" in fileConfig) return;
       setCnConfig(fileConfig);
     });
-
   const saveConfig = useCallback(() => sendCnConfig(cnConfig), [cnConfig]);
+  const clear = useCallback(() => setPaintImage(emptyImage), [emptyImage]);
+
   return (
     <div className={styles.base}>
       <div>
@@ -58,7 +60,7 @@ const PaintingTools: React.FC<PaintingToolsProps> = ({
             styles.button__single,
             styles.button__clear
           )}
-          onClick={() => setPaintImage("")}
+          onClick={clear}
         >
           Clear canvas
         </button>
@@ -69,9 +71,10 @@ const PaintingTools: React.FC<PaintingToolsProps> = ({
   );
 };
 
-const MSTP = ({ resultImage, cnConfig }: StateType) => ({
+const MSTP = ({ resultImage, cnConfig, emptyImage }: StateType) => ({
   resultImage,
   cnConfig,
+  emptyImage,
 });
 
 const MDTP = { setPaintImage, setCnConfig };

@@ -102,7 +102,7 @@ export default createReducer<StateType, ActionType>(initialState)
   }))
   .handleAction(actions.setEmptyImage, (state, { payload }) => ({
     ...state,
-    setEmptyImage: payload,
+    emptyImage: payload,
     paintImagesStack: [payload],
     currentPaintImageIndex: 0,
   }))
