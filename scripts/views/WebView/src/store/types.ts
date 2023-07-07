@@ -14,6 +14,14 @@ export type CnConfigType = {
   modules: string[];
 };
 
+export type AudioSignalType = "epic" | "ringtone" | "bounce";
+
+export type AudioConfigType = {
+  isEnabled: boolean;
+  isReady: boolean;
+  signalType: AudioSignalType;
+};
+
 export type BrushType = "pencil" | "line" | "rectangle" | "ellipse";
 
 export type StateType = {
@@ -32,6 +40,7 @@ export type StateType = {
   currentPaintImageIndex: number;
   cnConfig: CnConfigType;
   instantGenerationMode: boolean;
+  audio: AudioConfigType;
 };
 
 export enum Actions {
@@ -51,6 +60,9 @@ export enum Actions {
   setCnConfig = "SET_CONTROL_NET_CONFIG",
   setScrollTop = "SET_SCROLL_TOP",
   setInstantGenerationMode = "SET_INSTANT_GENERATION_MODE",
+  setAudioEnabled = "SET_AUDIO_ENABLED",
+  setAudioReady = "SET_AUDIO_READY",
+  setAudioSignalType = "SET_AUDIO_SIGNAL_TYPE",
 }
 
 export type ActionType = ActType<typeof actions>;

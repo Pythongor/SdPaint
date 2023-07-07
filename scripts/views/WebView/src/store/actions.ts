@@ -1,5 +1,5 @@
 import { createAction } from "typesafe-actions";
-import { Actions, CnConfigType, BrushType } from "./types";
+import { Actions, CnConfigType, BrushType, AudioSignalType } from "./types";
 
 export const setScrollTop = createAction(Actions.setScrollTop)<number>();
 
@@ -52,6 +52,14 @@ export const setInstantGenerationMode = createAction(
   Actions.setInstantGenerationMode
 )<boolean | "switch">();
 
+export const setAudioEnabled = createAction(Actions.setAudioEnabled)<boolean>();
+
+export const setAudioReady = createAction(Actions.setAudioReady)<boolean>();
+
+export const setAudioSignalType = createAction(
+  Actions.setAudioSignalType
+)<AudioSignalType>();
+
 export default {
   setErasingBySwitch,
   setErasingByMouse,
@@ -69,4 +77,7 @@ export default {
   setCnConfig,
   setScrollTop,
   setInstantGenerationMode,
+  setAudioEnabled,
+  setAudioReady,
+  setAudioSignalType,
 };

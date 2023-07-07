@@ -1,8 +1,12 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { connect } from "react-redux";
-import { StateType } from "store/types";
-import { setInstantGenerationMode, setZenMode } from "store/actions";
-import { getSettings } from "storage";
+import { AudioSignalType, StateType } from "store/types";
+import {
+  setInstantGenerationMode,
+  setZenMode,
+  setAudioEnabled,
+  setAudioSignalType,
+} from "store/actions";
 import cn from "classnames";
 import styles from "../PaintingTools.module.scss";
 
@@ -13,8 +17,12 @@ type ToolsCheckboxesProps = StateProps & DispatchProps;
 export const ToolsCheckboxes: React.FC<ToolsCheckboxesProps> = ({
   instantGenerationMode,
   isZenModeOn,
+  isAudioEnabled,
+  audioSignalType,
   setInstantGenerationMode,
   setZenMode,
+  setAudioEnabled,
+  setAudioSignalType,
 }) => {
   return (
     <div>
@@ -46,15 +54,53 @@ export const ToolsCheckboxes: React.FC<ToolsCheckboxesProps> = ({
           <span>Zen mode</span>
         </label>
       </div>
+      <div className={cn(styles.group, styles.group__audio)}>
+        <label className={styles.label}>
+          <input
+            className={styles.checkbox}
+            type="checkbox"
+            checked={isAudioEnabled}
+            onChange={(event) => {
+              event.currentTarget.checked = !isAudioEnabled;
+              setAudioEnabled(!isAudioEnabled);
+            }}
+          ></input>
+          <span>Audio signal</span>
+        </label>
+        <select
+          className={styles.select}
+          name=""
+          id=""
+          value={audioSignalType}
+          onChange={(event) =>
+            setAudioSignalType(event?.target.value as AudioSignalType)
+          }
+        >
+          <option value="bounce">bounce</option>
+          <option value="epic">epic</option>
+          <option value="ringtone">ringtone</option>
+        </select>
+      </div>
     </div>
   );
 };
 
-const MSTP = ({ instantGenerationMode, isZenModeOn }: StateType) => ({
+const MSTP = ({
   instantGenerationMode,
   isZenModeOn,
+  audio: { isEnabled, signalType },
+}: StateType) => ({
+  instantGenerationMode,
+  isZenModeOn,
+  isAudioEnabled: isEnabled,
+  audioSignalType: signalType,
 });
 
-const MDTP = { setInstantGenerationMode, setZenMode };
+const MDTP = {
+  setInstantGenerationMode,
+  setZenMode,
+  setAudioEnabled,
+  setAudioSignalType,
+};
 
 export default connect(MSTP, MDTP)(ToolsCheckboxes);

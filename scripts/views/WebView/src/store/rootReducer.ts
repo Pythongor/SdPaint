@@ -29,6 +29,11 @@ const initialState: Readonly<StateType> = {
     modules: ["none"],
     module: "none",
   },
+  audio: {
+    isEnabled: true,
+    isReady: false,
+    signalType: "ringtone",
+  },
 };
 
 const IMAGES_CLIP_BUFFER_OVERFLOW = 20;
@@ -161,4 +166,16 @@ export default createReducer<StateType, ActionType>(initialState)
     if (payload === "switch")
       return { ...state, instantGenerationMode: !state.instantGenerationMode };
     return { ...state, instantGenerationMode: payload };
-  });
+  })
+  .handleAction(actions.setAudioEnabled, (state, { payload }) => ({
+    ...state,
+    audio: { ...state.audio, isEnabled: payload },
+  }))
+  .handleAction(actions.setAudioReady, (state, { payload }) => ({
+    ...state,
+    audio: { ...state.audio, isReady: payload },
+  }))
+  .handleAction(actions.setAudioSignalType, (state, { payload }) => ({
+    ...state,
+    audio: { ...state.audio, signalType: payload },
+  }));

@@ -25,6 +25,13 @@
     border-color: $beige;
     color: $blue;
   }
+
+  &__audio {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+  }
 }
 
 .title {
