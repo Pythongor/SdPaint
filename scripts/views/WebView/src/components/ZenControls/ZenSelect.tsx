@@ -13,14 +13,7 @@ export default ({ disabled, text, options, onClick }: SelectProps) => {
   const [isHidden, setIsHidden] = useState(true);
   const selectRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
-  useClickOutside(
-    () => {
-      console.log("click");
-      setIsHidden(true);
-    },
-    selectRef,
-    buttonRef
-  );
+  useClickOutside(() => setIsHidden(true), selectRef, buttonRef);
 
   return (
     <div className={styles.selectBase}>

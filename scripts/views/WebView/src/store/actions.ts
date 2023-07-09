@@ -52,7 +52,9 @@ export const setInstantGenerationMode = createAction(
   Actions.setInstantGenerationMode
 )<boolean | "switch">();
 
-export const setAudioEnabled = createAction(Actions.setAudioEnabled)<boolean>();
+export const setAudioEnabled = createAction(Actions.setAudioEnabled)<
+  boolean | "switch"
+>();
 
 export const setAudioReady = createAction(Actions.setAudioReady)<boolean>();
 

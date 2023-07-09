@@ -167,10 +167,17 @@ export default createReducer<StateType, ActionType>(initialState)
       return { ...state, instantGenerationMode: !state.instantGenerationMode };
     return { ...state, instantGenerationMode: payload };
   })
-  .handleAction(actions.setAudioEnabled, (state, { payload }) => ({
-    ...state,
-    audio: { ...state.audio, isEnabled: payload },
-  }))
+  .handleAction(actions.setAudioEnabled, (state, { payload }) => {
+    if (payload === "switch")
+      return {
+        ...state,
+        audio: { ...state.audio, isEnabled: !state.audio.isEnabled },
+      };
+    return {
+      ...state,
+      audio: { ...state.audio, isEnabled: payload },
+    };
+  })
   .handleAction(actions.setAudioReady, (state, { payload }) => ({
     ...state,
     audio: { ...state.audio, isReady: payload },

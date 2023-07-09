@@ -6,8 +6,9 @@
   padding: 20px;
 
   &__zen {
-    height: calc(100vh - 100px);
-    margin: 40px 0 20px;
+    min-height: calc(100vh - 100px);
+    height: fit-content;
+    margin: 40px 0 40px;
     align-items: center;
     justify-content: space-evenly;
   }

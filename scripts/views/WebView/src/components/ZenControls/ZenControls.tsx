@@ -9,6 +9,7 @@ import {
   setErasingBySwitch,
   setInstantGenerationMode,
   setZenMode,
+  setAudioEnabled,
 } from "store/actions";
 import { getErasingState } from "store/selectors";
 import cn from "classnames";
@@ -25,12 +26,14 @@ const ZenIndicator: React.FC<ResultCanvasProps> = ({
   isZenModeOn,
   isErasing,
   instantGenerationMode,
+  audioEnabled,
   setBrushWidth,
   setBrushFilling,
   setBrushType,
   setErasingBySwitch,
   setInstantGenerationMode,
   setZenMode,
+  setAudioEnabled,
 }) => {
   const [isHide, setIsHide] = useState(false);
 
@@ -79,6 +82,15 @@ const ZenIndicator: React.FC<ResultCanvasProps> = ({
         <button
           className={cn(
             styles.indicator,
+            !!audioEnabled && styles.indicator__eraser
+          )}
+          onClick={() => setAudioEnabled("switch")}
+        >
+          A
+        </button>
+        <button
+          className={cn(
+            styles.indicator,
             instantGenerationMode
               ? styles.indicator__instant
               : styles.indicator__inactive
@@ -109,6 +121,7 @@ const MSTP = (state: StateType) => ({
   isZenModeOn: state.isZenModeOn,
   isErasing: getErasingState(state),
   instantGenerationMode: state.instantGenerationMode,
+  audioEnabled: state.audio.isEnabled,
 });
 
 const MDTP = {
@@ -118,6 +131,7 @@ const MDTP = {
   setErasingBySwitch,
   setInstantGenerationMode,
   setZenMode,
+  setAudioEnabled,
 };
 
 export default connect(MSTP, MDTP)(ZenIndicator);
