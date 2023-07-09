@@ -6,7 +6,7 @@ bundle_root = os.path.join(os.getcwd(), "build", "static")
 
 def rename_files(extension):
     bundle_files = os.listdir(os.path.join(bundle_root, extension))
-    pattern = re.compile(fr"main(\.\d+\w+)\.{extension}")
+    pattern = re.compile(fr"main(\.[\d\w]*)\.{extension}")
     hash = re.match(pattern, bundle_files[0]).group(1)
     for file in bundle_files:
         file_path = os.path.join(bundle_root, extension, file)
