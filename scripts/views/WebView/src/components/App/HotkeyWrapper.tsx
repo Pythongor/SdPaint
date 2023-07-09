@@ -16,6 +16,7 @@ import {
   setZenMode,
   setImageViewerActive,
   setAudioReady,
+  setAudioEnabled,
 } from "store/actions";
 import { useHotKeys } from "hooks";
 import { downloadImage } from "components/PaintingTools/PaintingTools";
@@ -53,6 +54,7 @@ const HotkeyWrapper: React.FC<HotkeyWrapperProps> = ({
   setZenMode,
   setImageViewerActive,
   setAudioReady,
+  setAudioEnabled,
 }) => {
   const changeSeed = useCallback(
     (ascend?: boolean) => {
@@ -100,6 +102,7 @@ const HotkeyWrapper: React.FC<HotkeyWrapperProps> = ({
       Minus: () => setBrushWidth("-"),
       Delete: () => setPaintImage(""),
       Backspace: () => skipRendering(),
+      KeyA: () => setAudioEnabled("switch"),
       KeyC: loadConfig,
       KeyC_s: saveConfig,
       KeyD: memoizedDownload,
@@ -147,6 +150,7 @@ const MDTP = {
   setZenMode,
   setImageViewerActive,
   setAudioReady,
+  setAudioEnabled,
 };
 
 export default connect(MSTP, MDTP)(HotkeyWrapper);
