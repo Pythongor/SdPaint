@@ -5,6 +5,7 @@ import {
   setCnProgress,
   setEmptyImage,
   setErasingByMouse,
+  setAudioReady,
 } from "store/actions";
 import { connect } from "react-redux";
 import { StateType } from "store/types";
@@ -24,11 +25,13 @@ export const PaintingCanvas: React.FC<PaintingCanvasProps> = ({
   instantGenerationMode,
   paintImagesStack,
   isZenModeOn,
+  audio,
   setPaintImage,
   setCnProgress,
   setResultImage,
   setEmptyImage,
   setErasingByMouse,
+  setAudioReady,
 }) => {
   const {
     ref: paintingRef,
@@ -74,11 +77,13 @@ export const PaintingCanvas: React.FC<PaintingCanvasProps> = ({
       previewContext,
       mousePos,
       instantGenerationMode,
+      audio,
       setMouseCoordinates,
       setPaintImage,
       setCnProgress,
       setResultImage,
       setErasingByMouse,
+      setAudioReady,
     });
 
   return (
@@ -114,6 +119,7 @@ const MSTP = (state: StateType) => ({
   instantGenerationMode: state.instantGenerationMode,
   brushType: state.brushType,
   isZenModeOn: state.isZenModeOn,
+  audio: state.audio,
 });
 
 const MDTP = {
@@ -122,6 +128,7 @@ const MDTP = {
   setResultImage,
   setEmptyImage,
   setErasingByMouse,
+  setAudioReady,
 };
 
 export default connect(MSTP, MDTP)(PaintingCanvas);

@@ -15,11 +15,15 @@ import {
   setBrushFilling,
   setZenMode,
   setImageViewerActive,
+  setAudioReady,
 } from "store/actions";
 import { useHotKeys } from "hooks";
 import { downloadImage } from "components/PaintingTools/PaintingTools";
 import { getPaintImage } from "store/selectors";
-import { generate } from "components/PaintingTools/components/GenerateButton";
+import {
+  generate,
+  handleAudioSignal,
+} from "components/PaintingTools/components/GenerateButton";
 import { getCnConfig, sendCnConfig, skipRendering } from "api";
 
 type StateProps = ReturnType<typeof MSTP>;
@@ -34,6 +38,7 @@ const HotkeyWrapper: React.FC<HotkeyWrapperProps> = ({
   paintImage,
   cnConfig,
   isZenModeOn,
+  audio,
   decreasePaintImageIndex,
   increasePaintImageIndex,
   setPaintImage,
@@ -47,6 +52,7 @@ const HotkeyWrapper: React.FC<HotkeyWrapperProps> = ({
   setCnConfig,
   setZenMode,
   setImageViewerActive,
+  setAudioReady,
 }) => {
   const changeSeed = useCallback(
     (ascend?: boolean) => {
@@ -57,9 +63,14 @@ const HotkeyWrapper: React.FC<HotkeyWrapperProps> = ({
     [cnConfig.seed]
   );
 
+  const audioFunc = useCallback(
+    () => handleAudioSignal(audio, setAudioReady),
+    [audio]
+  );
+
   const memoizedGenerate = useCallback(() => {
-    generate(paintImage, setResultImage, setCnProgress);
-  }, [paintImage, setResultImage, setCnProgress]);
+    generate(paintImage, setResultImage, setCnProgress, audioFunc);
+  }, [paintImage, setResultImage, setCnProgress, audio]);
 
   const memoizedDownload = useCallback(
     () => downloadImage(resultImage),
@@ -118,6 +129,7 @@ const MSTP = (state: StateType) => ({
   paintImage: getPaintImage(state),
   cnConfig: state.cnConfig,
   isZenModeOn: state.isZenModeOn,
+  audio: state.audio,
 });
 
 const MDTP = {
@@ -134,6 +146,7 @@ const MDTP = {
   setCnConfig,
   setZenMode,
   setImageViewerActive,
+  setAudioReady,
 };
 
 export default connect(MSTP, MDTP)(HotkeyWrapper);

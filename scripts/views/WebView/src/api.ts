@@ -1,5 +1,5 @@
 import { extractDataFromConfig } from "helpers";
-import { getStorageConfig, getSettings } from "./storage";
+import { getStorageConfig } from "./storage";
 import { CnConfigType } from "store/types";
 export const url = "http://127.0.0.1:8000";
 
@@ -111,10 +111,9 @@ export const retryRequest = async (config: RetryRequestConfig) => {
 export const sendImage = (image: string) => {
   const config = getStorageConfig();
   config.controlnet_units[0].input_image = image;
-  const { syncJSON } = getSettings();
   return fetch(`${url}/paint_image`, {
     method: "post",
-    body: JSON.stringify({ config, sync_json: syncJSON }),
+    body: JSON.stringify({ config }),
   });
 };
 

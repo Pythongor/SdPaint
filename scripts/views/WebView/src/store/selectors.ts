@@ -1,5 +1,5 @@
 import { StateType } from "./types";
-import { getStorageConfig } from "storage";
+import { ConfigType, SettingsType, getStorageConfig } from "storage";
 
 const brushWidthMap = [1, 2, 3, 5, 10, 15, 20, 30, 40, 50];
 
@@ -27,7 +27,7 @@ export const state2config = ({
     module,
     model,
   },
-}: StateType) => {
+}: StateType): ConfigType => {
   const config = getStorageConfig();
   const firstUnit = config.controlnet_units[0];
 
@@ -46,7 +46,10 @@ export const state2config = ({
 export const state2settings = ({
   instantGenerationMode,
   isZenModeOn,
-}: StateType) => ({
+  audio: { isEnabled, signalType },
+}: StateType): SettingsType => ({
   instantMode: instantGenerationMode,
   zenMode: isZenModeOn,
+  audioEnabled: isEnabled,
+  audioSignalType: signalType,
 });

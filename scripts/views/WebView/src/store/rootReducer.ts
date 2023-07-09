@@ -30,7 +30,7 @@ const initialState: Readonly<StateType> = {
     module: "none",
   },
   audio: {
-    isEnabled: true,
+    isEnabled: false,
     isReady: false,
     signalType: "ringtone",
   },

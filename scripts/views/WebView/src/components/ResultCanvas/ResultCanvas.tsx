@@ -12,9 +12,9 @@ type ResultCanvasProps = StateProps & DispatchProps;
 
 const ResultCanvas: React.FC<ResultCanvasProps> = ({
   cnProgress,
-  setImageViewerActive,
   resultImage,
   isZenModeOn,
+  setImageViewerActive,
 }) => {
   const ref = useRef<HTMLCanvasElement>(null);
   const [context, setContext] = useState<CanvasRenderingContext2D>();

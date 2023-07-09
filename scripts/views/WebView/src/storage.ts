@@ -1,3 +1,5 @@
+import { AudioSignalType } from "store/types";
+
 export type ConfigType = typeof defaultConfig;
 export type SettingsType = typeof defaultSettings;
 
@@ -24,9 +26,10 @@ export const defaultConfig = {
 };
 
 export const defaultSettings = {
-  syncJSON: true,
   instantMode: true,
   zenMode: false,
+  audioEnabled: false,
+  audioSignalType: "ringtone" as AudioSignalType,
 };
 
 export const storage = {

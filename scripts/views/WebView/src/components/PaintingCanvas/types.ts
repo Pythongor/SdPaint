@@ -1,5 +1,5 @@
 import { PayloadActionCreator } from "typesafe-actions";
-import { Actions } from "store/types";
+import { Actions, AudioConfigType } from "store/types";
 
 export type PointType = { x: number; y: number };
 
@@ -10,11 +10,13 @@ export type UseBrushProps = {
   previewContext: CanvasRenderingContext2D | undefined;
   mousePos: PointType;
   instantGenerationMode: boolean;
+  audio: AudioConfigType;
   setMouseCoordinates: (event: any) => PointType;
   setPaintImage: PayloadActionCreator<Actions.setPaintImage, string>;
   setCnProgress: PayloadActionCreator<Actions.setCnProgress, number>;
   setResultImage: PayloadActionCreator<Actions.setResultImage, string>;
   setErasingByMouse: PayloadActionCreator<Actions.setErasingByMouse, boolean>;
+  setAudioReady: PayloadActionCreator<Actions.setAudioReady, boolean>;
 };
 
 export type CanvasInstructionProps = PointType & {

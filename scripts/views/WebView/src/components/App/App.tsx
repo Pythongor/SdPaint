@@ -15,6 +15,8 @@ import {
   setInstantGenerationMode,
   setZenMode,
   setCnConfig,
+  setAudioEnabled,
+  setAudioSignalType,
 } from "store/actions";
 import HotkeyWrapper from "./HotkeyWrapper";
 import cn from "classnames";
@@ -30,13 +32,18 @@ const App: React.FC<AppProps> = ({
   setInstantGenerationMode,
   setZenMode,
   setCnConfig,
+  setAudioEnabled,
+  setAudioSignalType,
 }) => {
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const { instantMode, zenMode } = getSettings();
+    const { instantMode, zenMode, audioEnabled, audioSignalType } =
+      getSettings();
     setInstantGenerationMode(instantMode);
     setZenMode(zenMode);
+    setAudioEnabled(audioEnabled);
+    setAudioSignalType(audioSignalType);
   }, []);
 
   useEffect(() => {
@@ -78,6 +85,8 @@ const MDTP = {
   setInstantGenerationMode,
   setZenMode,
   setCnConfig,
+  setAudioEnabled,
+  setAudioSignalType,
 };
 
 export default connect(MSTP, MDTP)(App);
