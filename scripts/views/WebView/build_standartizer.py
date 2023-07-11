@@ -1,8 +1,6 @@
 import os
 import re
 
-bundle_root = os.path.join(os.getcwd(), "build", "static")
-
 
 def rename_files(extension):
     bundle_files = os.listdir(os.path.join(bundle_root, extension))
@@ -20,14 +18,22 @@ def rename_files(extension):
     return hash
 
 
-html_file = os.path.join(os.getcwd(), "build", "index.html")
+def rewrite_file(file_path):
+    with open(file_path) as f:
+        content = f.read()
+        new_content = re.sub(js_hash, "", content)
+        new_content = re.sub(css_hash, "", new_content)
+
+    with open(file_path, "w") as f:
+        f.write(new_content)
+
+
+bundle_root = os.path.join(os.getcwd(), "build", "static")
+
 js_hash = rename_files("js")
 css_hash = rename_files("css")
+html_file = os.path.join(os.getcwd(), "build", "index.html")
+manifest_file = os.path.join(os.getcwd(), "build", "asset-manifest.json")
 
-with open(html_file) as f:
-    content = f.read()
-    new_content = re.sub(js_hash, "", content)
-    new_content = re.sub(css_hash, "", new_content)
-
-with open(html_file, "w") as f:
-    f.write(new_content)
+rewrite_file(html_file)
+rewrite_file(manifest_file)
