@@ -34,6 +34,7 @@ const initialState: Readonly<StateType> = {
     isReady: false,
     signalType: "ringtone",
   },
+  canvasSize: [512, 512],
 };
 
 const IMAGES_CLIP_BUFFER_OVERFLOW = 20;
@@ -185,4 +186,12 @@ export default createReducer<StateType, ActionType>(initialState)
   .handleAction(actions.setAudioSignalType, (state, { payload }) => ({
     ...state,
     audio: { ...state.audio, signalType: payload },
+  }))
+  .handleAction(actions.setCanvasWidth, (state, { payload }) => ({
+    ...state,
+    canvasSize: [payload, state.canvasSize[1]],
+  }))
+  .handleAction(actions.setCanvasHeight, (state, { payload }) => ({
+    ...state,
+    canvasSize: [state.canvasSize[0], payload],
   }));

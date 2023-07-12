@@ -41,6 +41,7 @@ export type StateType = {
   cnConfig: CnConfigType;
   instantGenerationMode: boolean;
   audio: AudioConfigType;
+  canvasSize: [number, number];
 };
 
 export enum Actions {
@@ -63,6 +64,8 @@ export enum Actions {
   setAudioEnabled = "SET_AUDIO_ENABLED",
   setAudioReady = "SET_AUDIO_READY",
   setAudioSignalType = "SET_AUDIO_SIGNAL_TYPE",
+  setCanvasWidth = "SET_CANVAS_WIDTH",
+  setCanvasHeight = "SET_CANVAS_HEIGHT",
 }
 
 export type ActionType = ActType<typeof actions>;

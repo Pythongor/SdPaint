@@ -11,6 +11,7 @@ import { connect } from "react-redux";
 import { StateType } from "store/types";
 import { useBrushes } from "./hooks/useBrushes";
 import { useCanvas, clear } from "./canvasHelpers";
+import CanvasResizer from "./CanvasResizer";
 import cn from "classnames";
 import styles from "./PaintingCanvas.module.scss";
 import { getPaintImage } from "store/selectors";
@@ -25,7 +26,7 @@ export const PaintingCanvas: React.FC<PaintingCanvasProps> = ({
   instantGenerationMode,
   paintImagesStack,
   isZenModeOn,
-  audio,
+  canvasSize,
   setPaintImage,
   setCnProgress,
   setResultImage,
@@ -63,7 +64,7 @@ export const PaintingCanvas: React.FC<PaintingCanvasProps> = ({
         context.drawImage(image, 0, 0);
       };
     }
-  }, [paintImage, paintingRef?.current, context]);
+  }, [paintImage, paintingRef?.current, context, canvasSize]);
 
   useEffect(() => {
     resize();
@@ -77,7 +78,6 @@ export const PaintingCanvas: React.FC<PaintingCanvasProps> = ({
       previewContext,
       mousePos,
       instantGenerationMode,
-      audio,
       setMouseCoordinates,
       setPaintImage,
       setCnProgress,
@@ -94,8 +94,8 @@ export const PaintingCanvas: React.FC<PaintingCanvasProps> = ({
       <canvas
         ref={paintingRef}
         className={cn(styles.canvas, styles.canvas__painting)}
-        height="512"
-        width="512"
+        width={canvasSize[0]}
+        height={canvasSize[1]}
       ></canvas>
       <canvas
         onPointerDown={onPointerDown}
@@ -105,9 +105,10 @@ export const PaintingCanvas: React.FC<PaintingCanvasProps> = ({
         onPointerEnter={resize}
         ref={previewRef}
         className={cn(styles.canvas, styles.canvas__preview)}
-        height="512"
-        width="512"
+        width={canvasSize[0]}
+        height={canvasSize[1]}
       ></canvas>
+      <CanvasResizer />
     </div>
   );
 };
@@ -119,7 +120,7 @@ const MSTP = (state: StateType) => ({
   instantGenerationMode: state.instantGenerationMode,
   brushType: state.brushType,
   isZenModeOn: state.isZenModeOn,
-  audio: state.audio,
+  canvasSize: state.canvasSize,
 });
 
 const MDTP = {

@@ -5,17 +5,18 @@
   background-color: $blue;
   border-radius: 5px;
   position: relative;
-  touch-action: none;
 }
 
 .title {
   color: $beige;
   text-align: center;
   width: 100%;
+  height: 20px;
 }
 
 .canvas {
   display: block;
+  touch-action: none;
 
   &__painting {
     background-color: $white;
@@ -23,7 +24,36 @@
 
   &__preview {
     position: absolute;
-    bottom: 2px;
+    top: 22px;
     left: 2px;
+  }
+}
+
+.resizer {
+  padding-top: 2px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+}
+
+.select {
+  border: 1px solid $deepBlue;
+  border-radius: 3px;
+  text-align: center;
+  transition: color 0.2s, outline-color 0.2s;
+  background-color: $lightBlue;
+  width: 56px;
+
+  &:hover {
+    color: $blue;
+
+    &:focus {
+      color: $black;
+    }
+  }
+
+  &:focus {
+    outline-color: $blue;
   }
 }

@@ -62,6 +62,10 @@ export const setAudioSignalType = createAction(
   Actions.setAudioSignalType
 )<AudioSignalType>();
 
+export const setCanvasWidth = createAction(Actions.setCanvasWidth)<number>();
+
+export const setCanvasHeight = createAction(Actions.setCanvasHeight)<number>();
+
 export default {
   setErasingBySwitch,
   setErasingByMouse,
@@ -82,4 +86,6 @@ export default {
   setAudioEnabled,
   setAudioReady,
   setAudioSignalType,
+  setCanvasWidth,
+  setCanvasHeight,
 };

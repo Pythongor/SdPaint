@@ -23,7 +23,6 @@ export const useBrush = ({
   previewContext,
   mousePos,
   instantGenerationMode,
-  audio,
   setMouseCoordinates,
   setPaintImage,
   setCnProgress,
@@ -36,9 +35,10 @@ export const useBrush = ({
   onPointerUpFunc,
 }: Props) => {
   const [isDrawing, setIsDrawing] = useState(false);
-  const { isErasing, brushType } = useSelector((state: StateType) => ({
+  const { isErasing, brushType, audio } = useSelector((state: StateType) => ({
     isErasing: getErasingState(state),
     brushType: state.brushType,
+    audio: state.audio,
   }));
 
   const audioFunc = () => handleAudioSignal(audio, setAudioReady);
