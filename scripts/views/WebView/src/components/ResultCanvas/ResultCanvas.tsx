@@ -1,7 +1,11 @@
 import React, { useRef, useCallback, useEffect, useState } from "react";
 import { StateType } from "store/types";
 import { connect } from "react-redux";
-import { setImageViewerActive } from "store/actions";
+import {
+  setImageViewerActive,
+  setResultWidth,
+  setResultHeight,
+} from "store/actions";
 import { skipRendering } from "api";
 import cn from "classnames";
 import styles from "./ResultCanvas.module.scss";
@@ -13,8 +17,11 @@ type ResultCanvasProps = StateProps & DispatchProps;
 const ResultCanvas: React.FC<ResultCanvasProps> = ({
   cnProgress,
   resultImage,
+  resultSize,
   isZenModeOn,
   setImageViewerActive,
+  setResultWidth,
+  setResultHeight,
 }) => {
   const ref = useRef<HTMLCanvasElement>(null);
   const [context, setContext] = useState<CanvasRenderingContext2D>();
@@ -33,8 +40,17 @@ const ResultCanvas: React.FC<ResultCanvasProps> = ({
     } else {
       fetch(resultImage)
         .then((response) => response.blob())
-        .then((blob) => createImageBitmap(blob))
-        .then((imageBitMap) => context.drawImage(imageBitMap, 0, 0, 512, 512));
+        .then((blob) => {
+          const url = URL.createObjectURL(blob);
+          let img = new Image();
+          img.src = url;
+          img.onload = () => {
+            URL.revokeObjectURL(url);
+            setResultWidth(img.width);
+            setResultHeight(img.height);
+            context.drawImage(img, 0, 0, img.width, img.height);
+          };
+        });
     }
   }, [resultImage, context, ref.current]);
 
@@ -52,8 +68,8 @@ const ResultCanvas: React.FC<ResultCanvasProps> = ({
           cnProgress !== 0 && !isZenModeOn && styles.canvas__waiting,
           !resultImage && styles.canvas__empty
         )}
-        height="512"
-        width="512"
+        width={resultSize[0]}
+        height={resultSize[1]}
         onClick={onClick}
         ref={ref}
       ></canvas>
@@ -74,12 +90,18 @@ const ResultCanvas: React.FC<ResultCanvasProps> = ({
   );
 };
 
-const MSTP = ({ cnProgress, resultImage, isZenModeOn }: StateType) => ({
+const MSTP = ({
   cnProgress,
   resultImage,
+  resultSize,
+  isZenModeOn,
+}: StateType) => ({
+  cnProgress,
+  resultImage,
+  resultSize,
   isZenModeOn,
 });
 
-const MDTP = { setImageViewerActive };
+const MDTP = { setImageViewerActive, setResultWidth, setResultHeight };
 
 export default connect(MSTP, MDTP)(ResultCanvas);

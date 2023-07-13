@@ -4,21 +4,30 @@ import { syncStorageConfig, syncSettings } from "storage";
 import { state2config, state2settings } from "./selectors";
 import reducer from "./rootReducer";
 
+const SYNC_CONFIG_TRIGGERS = [
+  Actions.setCnConfig,
+  Actions.setCanvasWidth,
+  Actions.setCanvasHeight,
+];
+
 const SYNC_SETTINGS_TRIGGERS = [
   Actions.setInstantGenerationMode,
   Actions.setZenMode,
   Actions.setAudioEnabled,
   Actions.setAudioSignalType,
+  Actions.setCanvasWidth,
+  Actions.setCanvasHeight,
 ];
 
 const customMiddleWare: Middleware<{}, StateType> =
   (store) => (dispatch) => (action) => {
     dispatch(action);
     const currentState = store.getState();
-    if (action.type === Actions.setCnConfig) {
+    if (SYNC_CONFIG_TRIGGERS.includes(action.type)) {
       const config = state2config(currentState);
       syncStorageConfig(config);
-    } else if (SYNC_SETTINGS_TRIGGERS.includes(action.type)) {
+    }
+    if (SYNC_SETTINGS_TRIGGERS.includes(action.type)) {
       const settings = state2settings(currentState);
       syncSettings(settings);
     }

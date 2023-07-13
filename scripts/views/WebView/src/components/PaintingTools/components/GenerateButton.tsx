@@ -63,7 +63,8 @@ export const generate = async (
   await retryRequest({
     finalFunc: async () => {
       const { blob } = await getImage();
-      setResultImage(URL.createObjectURL(blob));
+      const url = URL.createObjectURL(blob);
+      setResultImage(url);
       audioFunc();
     },
     progressFunc: (data) => {

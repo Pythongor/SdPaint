@@ -8,6 +8,8 @@ export const extractDataFromConfig = ({
   prompt,
   negative_prompt,
   controlnet_units: [{ module, model }],
+  width,
+  height,
 }: ConfigType) => ({
   seed,
   steps,
@@ -17,6 +19,8 @@ export const extractDataFromConfig = ({
   module,
   model,
   batch_size,
+  width,
+  height,
 });
 
 export const deepCopy = <T>(target: T): T => {

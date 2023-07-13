@@ -7,7 +7,7 @@ import {
 } from "components";
 import { connect } from "react-redux";
 import { StateType } from "store/types";
-import { getSettings, getStorageConfig, ConfigType } from "storage";
+import { getSettings, getStorageConfig } from "storage";
 import { extractDataFromConfig } from "helpers";
 import { getCnConfig } from "api";
 import {
@@ -17,6 +17,8 @@ import {
   setCnConfig,
   setAudioEnabled,
   setAudioSignalType,
+  setCanvasWidth,
+  setCanvasHeight,
 } from "store/actions";
 import HotkeyWrapper from "./HotkeyWrapper";
 import cn from "classnames";
@@ -34,16 +36,20 @@ const App: React.FC<AppProps> = ({
   setCnConfig,
   setAudioEnabled,
   setAudioSignalType,
+  setCanvasWidth,
+  setCanvasHeight,
 }) => {
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const { instantMode, zenMode, audioEnabled, audioSignalType } =
+    const { instantMode, zenMode, audioEnabled, audioSignalType, canvasSize } =
       getSettings();
     setInstantGenerationMode(instantMode);
     setZenMode(zenMode);
     setAudioEnabled(audioEnabled);
     setAudioSignalType(audioSignalType);
+    setCanvasWidth(canvasSize[0]);
+    setCanvasHeight(canvasSize[1]);
   }, []);
 
   useEffect(() => {
@@ -87,6 +93,8 @@ const MDTP = {
   setCnConfig,
   setAudioEnabled,
   setAudioSignalType,
+  setCanvasWidth,
+  setCanvasHeight,
 };
 
 export default connect(MSTP, MDTP)(App);

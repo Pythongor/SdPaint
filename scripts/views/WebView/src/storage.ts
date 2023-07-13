@@ -30,6 +30,7 @@ export const defaultSettings = {
   zenMode: false,
   audioEnabled: false,
   audioSignalType: "ringtone" as AudioSignalType,
+  canvasSize: [512, 512] as [number, number],
 };
 
 export const storage = {

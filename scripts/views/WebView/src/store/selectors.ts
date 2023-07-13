@@ -27,6 +27,7 @@ export const state2config = ({
     module,
     model,
   },
+  canvasSize,
 }: StateType): ConfigType => {
   const config = getStorageConfig();
   const firstUnit = config.controlnet_units[0];
@@ -40,6 +41,8 @@ export const state2config = ({
     prompt,
     negative_prompt,
     controlnet_units: [{ ...firstUnit, module, model }],
+    width: canvasSize[0],
+    height: canvasSize[1],
   };
 };
 
@@ -47,9 +50,11 @@ export const state2settings = ({
   instantGenerationMode,
   isZenModeOn,
   audio: { isEnabled, signalType },
+  canvasSize,
 }: StateType): SettingsType => ({
   instantMode: instantGenerationMode,
   zenMode: isZenModeOn,
   audioEnabled: isEnabled,
   audioSignalType: signalType,
+  canvasSize,
 });

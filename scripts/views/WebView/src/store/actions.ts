@@ -66,6 +66,10 @@ export const setCanvasWidth = createAction(Actions.setCanvasWidth)<number>();
 
 export const setCanvasHeight = createAction(Actions.setCanvasHeight)<number>();
 
+export const setResultWidth = createAction(Actions.setResultWidth)<number>();
+
+export const setResultHeight = createAction(Actions.setResultHeight)<number>();
+
 export default {
   setErasingBySwitch,
   setErasingByMouse,
@@ -88,4 +92,6 @@ export default {
   setAudioSignalType,
   setCanvasWidth,
   setCanvasHeight,
+  setResultWidth,
+  setResultHeight,
 };
