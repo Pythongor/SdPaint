@@ -130,10 +130,10 @@ const BrushInput: React.FC<BrushInputProps> = ({
 const MSTP = (state: StateType) => {
   return {
     isErasing: getErasingState(state),
-    brushType: state.brushType,
-    withBrushFill: state.withBrushFill,
+    brushType: state.brushConfig.brushType,
+    withBrushFill: state.brushConfig.withFill,
     realBrushWidth: getRealBrushWidth(state),
-    brushWidth: state.brushWidth,
+    brushWidth: state.brushConfig.width,
   };
 };
 

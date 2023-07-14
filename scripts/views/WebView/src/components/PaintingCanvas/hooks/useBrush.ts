@@ -37,7 +37,7 @@ export const useBrush = ({
   const [isDrawing, setIsDrawing] = useState(false);
   const { isErasing, brushType, audio } = useSelector((state: StateType) => ({
     isErasing: getErasingState(state),
-    brushType: state.brushType,
+    brushType: state.brushConfig.brushType,
     audio: state.audio,
   }));
 

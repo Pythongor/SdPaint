@@ -26,13 +26,17 @@ export type AudioConfigType = {
   signalType: AudioSignalType;
 };
 
-export type StateType = {
-  scrollTop: number;
+export type BrushConfigType = {
   isErasingBySwitch: boolean;
   isErasingByMouse: boolean;
-  brushWidth: number;
+  width: number;
   brushType: BrushType;
-  withBrushFill: boolean;
+  withFill: boolean;
+};
+
+export type StateType = Readonly<{
+  brushConfig: Readonly<BrushConfigType>;
+  scrollTop: number;
   cnProgress: number;
   modal: ModalType;
   isZenModeOn: boolean;
@@ -40,16 +44,16 @@ export type StateType = {
   paintImagesStack: string[];
   emptyImage: string;
   currentPaintImageIndex: number;
-  cnConfig: CnConfigType;
+  cnConfig: Readonly<CnConfigType>;
   instantGenerationMode: boolean;
-  audio: AudioConfigType;
+  audio: Readonly<AudioConfigType>;
   canvasSize: [number, number];
   resultSize: [number, number];
-};
+}>;
 
 export enum Actions {
-  setErasingBySwitch = "SET_ERASING_BY_SWITCH",
-  setErasingByMouse = "SET_ERASING_BY_MOUSE",
+  setErasingBySwitch = "SET_BRUSH_ERASING_BY_SWITCH",
+  setErasingByMouse = "SET_BRUSH_ERASING_BY_MOUSE",
   setBrushWidth = "SET_BRUSH_WIDTH",
   setBrushType = "SET_BRUSH_TYPE",
   setBrushFilling = "SET_BRUSH_FILLING",

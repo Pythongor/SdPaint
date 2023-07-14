@@ -6,7 +6,9 @@ import { StateType } from "store/types";
 import { UseBrushProps } from "../types";
 
 export const useBrushes = (props: UseBrushProps) => {
-  const brushType = useSelector(({ brushType }: StateType) => brushType);
+  const brushType = useSelector(
+    ({ brushConfig: { brushType } }: StateType) => brushType
+  );
   const pencilProps = usePencilBrush(props);
   const lineProps = useLineBrush(props);
   const rectangleProps = useRectangleBrush(props);

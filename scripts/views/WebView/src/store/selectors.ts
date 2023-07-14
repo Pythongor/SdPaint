@@ -3,8 +3,8 @@ import { ConfigType, SettingsType, getStorageConfig } from "storage";
 
 const brushWidthMap = [1, 2, 3, 5, 10, 15, 20, 30, 40, 50];
 
-export const getRealBrushWidth = ({ brushWidth }: StateType) =>
-  brushWidthMap[brushWidth - 1];
+export const getRealBrushWidth = ({ brushConfig: { width } }: StateType) =>
+  brushWidthMap[width - 1];
 
 export const getPaintImage = ({
   currentPaintImageIndex,
@@ -12,8 +12,7 @@ export const getPaintImage = ({
 }: StateType) => paintImagesStack[currentPaintImageIndex];
 
 export const getErasingState = ({
-  isErasingByMouse,
-  isErasingBySwitch,
+  brushConfig: { isErasingByMouse, isErasingBySwitch },
 }: StateType) => isErasingByMouse || isErasingBySwitch;
 
 export const state2config = ({

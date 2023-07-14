@@ -6,17 +6,19 @@ const initialState: Readonly<StateType> = {
   scrollTop: 0,
   modal: null,
   isZenModeOn: false,
-  isErasingByMouse: false,
-  isErasingBySwitch: false,
-  brushWidth: 2,
-  brushType: "pencil",
-  withBrushFill: false,
   cnProgress: 0,
   resultImage: "",
   paintImagesStack: [],
   emptyImage: "",
   currentPaintImageIndex: -1,
   instantGenerationMode: true,
+  brushConfig: {
+    isErasingByMouse: false,
+    isErasingBySwitch: false,
+    width: 2,
+    brushType: "pencil",
+    withFill: false,
+  },
   cnConfig: {
     seed: -1,
     prompt: "dark unexplored dungeon",
@@ -43,8 +45,17 @@ const IMAGES_CLIP_BUFFER_OVERFLOW = 20;
 export default createReducer<StateType, ActionType>(initialState)
   .handleAction(actions.setErasingBySwitch, (state, { payload }) => {
     if (payload === "switch")
-      return { ...state, isErasingBySwitch: !state.isErasingBySwitch };
-    return { ...state, isErasingBySwitch: payload };
+      return {
+        ...state,
+        brushConfig: {
+          ...state.brushConfig,
+          isErasingBySwitch: !state.brushConfig.isErasingBySwitch,
+        },
+      };
+    return {
+      ...state,
+      brushConfig: { ...state.brushConfig, isErasingBySwitch: payload },
+    };
   })
   .handleAction(actions.setErasingByMouse, (state, { payload }) => {
     return { ...state, isErasingByMouse: payload };
@@ -55,30 +66,63 @@ export default createReducer<StateType, ActionType>(initialState)
   }))
   .handleAction(actions.setBrushWidth, (state, { payload }) => {
     if (
-      ["ellipse", "rectangle"].includes(state.brushType) &&
-      state.withBrushFill
+      ["ellipse", "rectangle"].includes(state.brushConfig.brushType) &&
+      state.brushConfig.withFill
     )
       return state;
     if (payload === "-") {
-      return { ...state, brushWidth: Math.max(1, state.brushWidth - 1) };
+      return {
+        ...state,
+        brushConfig: {
+          ...state.brushConfig,
+          width: Math.max(1, state.brushConfig.width - 1),
+        },
+      };
     } else if (payload === "+")
-      return { ...state, brushWidth: Math.min(10, state.brushWidth + 1) };
-    return { ...state, brushWidth: payload };
+      return {
+        ...state,
+        brushConfig: {
+          ...state.brushConfig,
+          width: Math.min(10, state.brushConfig.width + 1),
+        },
+      };
+    return {
+      ...state,
+      brushConfig: {
+        ...state.brushConfig,
+        width: payload,
+      },
+    };
   })
   .handleAction(actions.setBrushType, (state, { payload }) => ({
     ...state,
-    brushType: payload,
+    brushConfig: {
+      ...state.brushConfig,
+      brushType: payload,
+    },
   }))
   .handleAction(actions.setBrushFilling, (state, { payload }) => {
     if (
-      !["ellipse", "rectangle"].includes(state.brushType) ||
-      state.isErasingBySwitch ||
-      state.isErasingByMouse
+      !["ellipse", "rectangle"].includes(state.brushConfig.brushType) ||
+      state.brushConfig.isErasingBySwitch ||
+      state.brushConfig.isErasingByMouse
     )
       return state;
     if (payload === "switch")
-      return { ...state, withBrushFill: !state.withBrushFill };
-    return { ...state, withBrushFill: payload };
+      return {
+        ...state,
+        brushConfig: {
+          ...state.brushConfig,
+          withFill: !state.brushConfig.withFill,
+        },
+      };
+    return {
+      ...state,
+      brushConfig: {
+        ...state.brushConfig,
+        withFill: payload,
+      },
+    };
   })
   .handleAction(actions.setCnProgress, (state, { payload }) => ({
     ...state,

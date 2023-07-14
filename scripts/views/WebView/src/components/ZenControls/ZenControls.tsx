@@ -115,9 +115,9 @@ const ZenIndicator: React.FC<ResultCanvasProps> = ({
 };
 
 const MSTP = (state: StateType) => ({
-  brushType: state.brushType,
-  brushWidth: state.brushWidth,
-  withBrushFill: state.withBrushFill,
+  brushType: state.brushConfig.brushType,
+  brushWidth: state.brushConfig.width,
+  withBrushFill: state.brushConfig.withFill,
   isZenModeOn: state.isZenModeOn,
   isErasing: getErasingState(state),
   instantGenerationMode: state.instantGenerationMode,

@@ -118,7 +118,7 @@ const MSTP = (state: StateType) => ({
   paintImagesStack: state.paintImagesStack,
   scrollTop: state.scrollTop,
   instantGenerationMode: state.instantGenerationMode,
-  brushType: state.brushType,
+  brushType: state.brushConfig.brushType,
   isZenModeOn: state.isZenModeOn,
   canvasSize: state.canvasSize,
 });

@@ -12,8 +12,8 @@ export const useCanvas = () => {
   const { brushWidth, brushType, withBrushFill } = useSelector(
     (state: StateType) => ({
       brushWidth: getRealBrushWidth(state),
-      brushType: state.brushType,
-      withBrushFill: state.withBrushFill,
+      brushType: state.brushConfig.brushType,
+      withBrushFill: state.brushConfig.withFill,
     })
   );
 
