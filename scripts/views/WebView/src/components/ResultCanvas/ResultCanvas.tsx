@@ -1,11 +1,7 @@
 import React, { useRef, useCallback, useEffect, useState } from "react";
 import { StateType } from "store/types";
 import { connect } from "react-redux";
-import {
-  setImageViewerActive,
-  setResultWidth,
-  setResultHeight,
-} from "store/actions";
+import { setModal, setResultWidth, setResultHeight } from "store/actions";
 import { skipRendering } from "api";
 import cn from "classnames";
 import styles from "./ResultCanvas.module.scss";
@@ -19,7 +15,7 @@ const ResultCanvas: React.FC<ResultCanvasProps> = ({
   resultImage,
   resultSize,
   isZenModeOn,
-  setImageViewerActive,
+  setModal,
   setResultWidth,
   setResultHeight,
 }) => {
@@ -56,7 +52,7 @@ const ResultCanvas: React.FC<ResultCanvasProps> = ({
 
   const onClick = useCallback(() => {
     if (!ref.current || !resultImage) return;
-    setImageViewerActive(true);
+    setModal("imageViewer");
   }, [ref.current, resultImage]);
 
   return (
@@ -102,6 +98,6 @@ const MSTP = ({
   isZenModeOn,
 });
 
-const MDTP = { setImageViewerActive, setResultWidth, setResultHeight };
+const MDTP = { setModal, setResultWidth, setResultHeight };
 
 export default connect(MSTP, MDTP)(ResultCanvas);

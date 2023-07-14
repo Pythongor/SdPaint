@@ -14,6 +14,10 @@ export type CnConfigType = {
   modules: string[];
 };
 
+export type ModalType = "imageViewer" | "settings" | null;
+
+export type BrushType = "pencil" | "line" | "rectangle" | "ellipse";
+
 export type AudioSignalType = "epic" | "ringtone" | "bounce";
 
 export type AudioConfigType = {
@@ -21,8 +25,6 @@ export type AudioConfigType = {
   isReady: boolean;
   signalType: AudioSignalType;
 };
-
-export type BrushType = "pencil" | "line" | "rectangle" | "ellipse";
 
 export type StateType = {
   scrollTop: number;
@@ -32,7 +34,7 @@ export type StateType = {
   brushType: BrushType;
   withBrushFill: boolean;
   cnProgress: number;
-  isImageViewerActive: boolean;
+  modal: ModalType;
   isZenModeOn: boolean;
   resultImage: string;
   paintImagesStack: string[];
@@ -52,7 +54,7 @@ export enum Actions {
   setBrushType = "SET_BRUSH_TYPE",
   setBrushFilling = "SET_BRUSH_FILLING",
   setCnProgress = "SET_CONTROL_NET_PROGRESS",
-  setImageViewerActive = "SET_IMAGE_VIEWER_ACTIVE",
+  setModal = "SET_MODAL",
   setZenMode = "SET_ZEN_MODE",
   setResultImage = "SET_RESULT_IMAGE",
   setPaintImage = "SET_PAINT_IMAGE",

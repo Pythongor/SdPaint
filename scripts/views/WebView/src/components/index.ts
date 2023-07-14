@@ -1,5 +1,5 @@
 export { default as App } from "./App/App";
-export { default as ImageViewer } from "./ImageViewer/ImageViewer";
+export { default as ModalWrapper } from "./ModalWrapper/ModalWrapper";
 export { default as ControlNetForm } from "./ControlNetForm/ControlNetForm";
 export { default as MainSection } from "./MainSection/MainSection";
 export { default as PaintingTools } from "./PaintingTools/PaintingTools";

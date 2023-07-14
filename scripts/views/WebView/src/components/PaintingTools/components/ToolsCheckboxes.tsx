@@ -31,20 +31,6 @@ export const ToolsCheckboxes: React.FC<ToolsCheckboxesProps> = ({
           <input
             className={styles.checkbox}
             type="checkbox"
-            checked={instantGenerationMode}
-            onChange={(event) => {
-              event.currentTarget.checked = !instantGenerationMode;
-              setInstantGenerationMode(!instantGenerationMode);
-            }}
-          ></input>
-          <span>Instant mode</span>
-        </label>
-      </div>
-      <div className={cn(styles.group, styles.group__checkbox)}>
-        <label className={styles.label}>
-          <input
-            className={styles.checkbox}
-            type="checkbox"
             checked={isZenModeOn}
             onChange={(event) => {
               event.currentTarget.checked = !isZenModeOn;
@@ -53,33 +39,6 @@ export const ToolsCheckboxes: React.FC<ToolsCheckboxesProps> = ({
           ></input>
           <span>Zen mode</span>
         </label>
-      </div>
-      <div className={cn(styles.group, styles.group__audio)}>
-        <label className={styles.label}>
-          <input
-            className={styles.checkbox}
-            type="checkbox"
-            checked={isAudioEnabled}
-            onChange={(event) => {
-              event.currentTarget.checked = !isAudioEnabled;
-              setAudioEnabled(!isAudioEnabled);
-            }}
-          ></input>
-          <span>Audio signal</span>
-        </label>
-        <select
-          className={styles.select}
-          name=""
-          id=""
-          value={audioSignalType}
-          onChange={(event) =>
-            setAudioSignalType(event?.target.value as AudioSignalType)
-          }
-        >
-          <option value="bounce">bounce</option>
-          <option value="epic">epic</option>
-          <option value="ringtone">ringtone</option>
-        </select>
       </div>
     </div>
   );

@@ -14,7 +14,7 @@ import {
   setCnConfig,
   setBrushFilling,
   setZenMode,
-  setImageViewerActive,
+  setModal,
   setAudioReady,
   setAudioEnabled,
 } from "store/actions";
@@ -34,7 +34,7 @@ type HotkeyWrapperProps = StateProps &
 
 const HotkeyWrapper: React.FC<HotkeyWrapperProps> = ({
   children,
-  isImageViewerActive,
+  modal,
   resultImage,
   paintImage,
   cnConfig,
@@ -52,7 +52,7 @@ const HotkeyWrapper: React.FC<HotkeyWrapperProps> = ({
   setCnProgress,
   setCnConfig,
   setZenMode,
-  setImageViewerActive,
+  setModal,
   setAudioReady,
   setAudioEnabled,
 }) => {
@@ -80,10 +80,26 @@ const HotkeyWrapper: React.FC<HotkeyWrapperProps> = ({
   );
 
   const handleEscape = useCallback(() => {
-    if (isImageViewerActive) {
-      setImageViewerActive(false);
+    if (modal) {
+      setModal(null);
     } else if (isZenModeOn) setZenMode(false);
-  }, [isZenModeOn, isImageViewerActive]);
+  }, [isZenModeOn, modal]);
+
+  const memoizedToggleViewer = useCallback(() => {
+    if (modal === "imageViewer") {
+      setModal(null);
+    } else {
+      setModal("imageViewer");
+    }
+  }, [modal]);
+
+  const memoizedToggleSettings = useCallback(() => {
+    if (modal === "settings") {
+      setModal(null);
+    } else {
+      setModal("settings");
+    }
+  }, [modal]);
 
   const loadConfig = () => {
     getCnConfig().then((fileConfig) => {
@@ -102,6 +118,8 @@ const HotkeyWrapper: React.FC<HotkeyWrapperProps> = ({
       Minus: () => setBrushWidth("-"),
       Delete: () => setPaintImage(""),
       Backspace: () => skipRendering(),
+      Backquote: () => changeSeed(true),
+      Backquote_s: () => changeSeed(),
       KeyA: () => setAudioEnabled("switch"),
       KeyC: loadConfig,
       KeyC_s: saveConfig,
@@ -113,21 +131,20 @@ const HotkeyWrapper: React.FC<HotkeyWrapperProps> = ({
       KeyL: () => setBrushType("line"),
       KeyP: () => setBrushType("pencil"),
       KeyR: () => setBrushType("rectangle"),
-      KeyS: () => changeSeed(true),
-      KeyS_s: () => changeSeed(),
-      KeyV: () => setImageViewerActive("switch"),
+      KeyS: memoizedToggleSettings,
+      KeyV: memoizedToggleViewer,
       KeyY_c: () => increasePaintImageIndex(),
       KeyZ: () => setZenMode("switch"),
       KeyZ_c: () => decreasePaintImageIndex(),
       KeyZ_cs: () => increasePaintImageIndex(),
     },
-    [cnConfig.seed, paintImage, resultImage, isZenModeOn, isImageViewerActive]
+    [cnConfig.seed, paintImage, resultImage, isZenModeOn, modal]
   );
   return <>{children}</>;
 };
 
 const MSTP = (state: StateType) => ({
-  isImageViewerActive: state.isImageViewerActive,
+  modal: state.modal,
   resultImage: state.resultImage,
   paintImage: getPaintImage(state),
   cnConfig: state.cnConfig,
@@ -148,7 +165,7 @@ const MDTP = {
   setCnProgress,
   setCnConfig,
   setZenMode,
-  setImageViewerActive,
+  setModal,
   setAudioReady,
   setAudioEnabled,
 };

@@ -76,3 +76,5 @@ export const useClickOutside = <T extends HTMLElement, T2 extends HTMLElement>(
     return () => window.removeEventListener("pointerdown", callback);
   }, [ref.current, ref2, ref2?.current]);
 };
+
+export const useCloseOnEscape = () => {};

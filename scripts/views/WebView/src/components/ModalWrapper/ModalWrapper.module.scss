@@ -1,0 +1,129 @@
+@import "assets/styles/constants";
+
+.base {
+  position: fixed;
+  background-color: rgba($deepBlue, 0.9);
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  z-index: 10;
+  padding: 20px;
+  cursor: pointer;
+
+  &__hide {
+    display: none;
+  }
+}
+
+.image {
+  display: block;
+  object-fit: contain;
+  margin: 0 auto;
+  height: 100%;
+}
+
+.settings {
+  padding: 2px;
+  background-color: $blue;
+  border-radius: 5px;
+  position: absolute;
+  width: 400px;
+  height: fit-content;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 5px 10px 10px;
+  z-index: 1;
+}
+
+.title {
+  color: $beige;
+  text-align: center;
+  width: 100%;
+  height: 20px;
+}
+
+.group {
+  margin-top: 5px;
+  background-color: $lightBlue;
+  border: 1px solid $deepBlue;
+  border-radius: 5px;
+  padding: 10px;
+  transition: border-color 0.2s, background-color 0.2s, color 0.2s;
+  &:first-child {
+    margin-top: 0;
+  }
+
+  &__checkbox:hover {
+    border-color: $beige;
+    color: $blue;
+  }
+
+  &__audio {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+  }
+}
+
+.label {
+  display: flex;
+  justify-content: space-between;
+  user-select: none;
+  cursor: pointer;
+  transition: color 0.2s;
+  margin-bottom: 5px;
+  gap: 5px;
+  &:has(.checkbox) {
+    border-bottom: 1px solid $blue;
+  }
+  &:not(:has(.checkbox)) .span {
+    border-bottom: 1px solid $blue;
+  }
+
+  &:hover {
+    color: $blue;
+  }
+
+  .label_span__disabled {
+    color: $gray;
+    cursor: not-allowed;
+    &:hover {
+      color: $gray;
+    }
+  }
+}
+
+.checkbox {
+  position: relative;
+}
+
+.select {
+  position: relative;
+  display: inline;
+  border: 1px solid $deepBlue;
+  border-radius: 5px;
+  padding-inline: 5px;
+  text-align: center;
+  transition: background-color 0.2s, color 0.2s;
+  top: 1px;
+
+  &:hover {
+    color: $lightBlue;
+
+    &:focus {
+      color: $black;
+    }
+  }
+
+  &:focus {
+    outline-color: $lightBlue;
+  }
+}
+
+.span {
+  display: block;
+  flex: 1;
+}

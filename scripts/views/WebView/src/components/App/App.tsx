@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import {
-  ImageViewer,
+  ModalWrapper,
   ControlNetForm,
   MainSection,
   ZenControls,
@@ -29,7 +29,7 @@ type DispatchProps = typeof MDTP;
 type AppProps = StateProps & DispatchProps;
 
 const App: React.FC<AppProps> = ({
-  isImageViewerActive,
+  modal,
   setScrollTop,
   setInstantGenerationMode,
   setZenMode,
@@ -64,16 +64,13 @@ const App: React.FC<AppProps> = ({
   return (
     <HotkeyWrapper>
       <div
-        className={cn(
-          styles.base,
-          isImageViewerActive && styles.base__scrollLock
-        )}
+        className={cn(styles.base, modal && styles.base__scrollLock)}
         ref={ref}
         onScroll={() =>
           ref.current?.scrollTop && setScrollTop(ref.current?.scrollTop)
         }
       >
-        <ImageViewer />
+        <ModalWrapper />
         <ControlNetForm />
         <MainSection />
         <ZenControls />
@@ -82,8 +79,8 @@ const App: React.FC<AppProps> = ({
   );
 };
 
-const MSTP = ({ isImageViewerActive }: StateType) => ({
-  isImageViewerActive,
+const MSTP = ({ modal }: StateType) => ({
+  modal,
 });
 
 const MDTP = {

@@ -5,7 +5,7 @@ import { getCnConfig, sendCnConfig } from "api";
 import { default as BrushInput } from "./components/BrushInput";
 import ToolsCheckboxes from "./components/ToolsCheckboxes";
 import { default as GenerateButton } from "./components/GenerateButton";
-import { setPaintImage, setCnConfig } from "store/actions";
+import { setPaintImage, setCnConfig, setModal } from "store/actions";
 import cn from "classnames";
 import styles from "./PaintingTools.module.scss";
 
@@ -27,6 +27,7 @@ const PaintingTools: React.FC<PaintingToolsProps> = ({
   emptyImage,
   setPaintImage,
   setCnConfig,
+  setModal,
 }) => {
   const loadConfig = () =>
     getCnConfig().then((fileConfig) => {
@@ -47,11 +48,31 @@ const PaintingTools: React.FC<PaintingToolsProps> = ({
           Download image
         </button>
         <div className={styles.buttonGroup}>
-          <button className={cn(styles.button)} onClick={loadConfig}>
-            Load config
+          <button
+            className={cn(
+              styles.button,
+              styles.button__symbol,
+              styles.button__big
+            )}
+            onClick={loadConfig}
+          >
+            ⭱
           </button>
-          <button className={cn(styles.button)} onClick={saveConfig}>
-            Save config
+          <button
+            className={cn(
+              styles.button,
+              styles.button__symbol,
+              styles.button__big
+            )}
+            onClick={saveConfig}
+          >
+            ⭳
+          </button>
+          <button
+            className={cn(styles.button, styles.button__symbol)}
+            onClick={() => setModal("settings")}
+          >
+            ⛭
           </button>
         </div>
         <button
@@ -77,6 +98,6 @@ const MSTP = ({ resultImage, cnConfig, emptyImage }: StateType) => ({
   emptyImage,
 });
 
-const MDTP = { setPaintImage, setCnConfig };
+const MDTP = { setPaintImage, setCnConfig, setModal };
 
 export default connect(MSTP, MDTP)(PaintingTools);

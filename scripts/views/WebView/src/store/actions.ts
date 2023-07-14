@@ -1,5 +1,11 @@
 import { createAction } from "typesafe-actions";
-import { Actions, CnConfigType, BrushType, AudioSignalType } from "./types";
+import {
+  Actions,
+  CnConfigType,
+  BrushType,
+  AudioSignalType,
+  ModalType,
+} from "./types";
 
 export const setScrollTop = createAction(Actions.setScrollTop)<number>();
 
@@ -27,9 +33,7 @@ export const setZenMode = createAction(Actions.setZenMode)<
   boolean | "switch"
 >();
 
-export const setImageViewerActive = createAction(Actions.setImageViewerActive)<
-  boolean | "switch"
->();
+export const setModal = createAction(Actions.setModal)<ModalType>();
 
 export const setResultImage = createAction(Actions.setResultImage)<string>();
 
@@ -77,7 +81,7 @@ export default {
   setBrushType,
   setBrushFilling,
   setCnProgress,
-  setImageViewerActive,
+  setModal,
   setZenMode,
   setResultImage,
   setPaintImage,

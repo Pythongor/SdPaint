@@ -109,6 +109,14 @@
     width: 100%;
   }
 
+  &__symbol {
+    font-weight: bold;
+  }
+
+  &__big {
+    font-size: 16px;
+  }
+
   &__clear {
     background-color: $red;
     color: $white;
