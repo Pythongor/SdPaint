@@ -144,7 +144,7 @@ export default createReducer<StateType, ActionType>(initialState)
       scrollTop: state.scrollTop + 0.01,
     };
   })
-  .handleAction(actions.setResultImage, (state, { payload }) => ({
+  .handleAction(actions.setResultImages, (state, { payload }) => ({
     ...state,
     resultImage: payload,
   }))

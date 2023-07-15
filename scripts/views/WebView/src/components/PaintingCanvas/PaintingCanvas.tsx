@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import {
   setPaintImage,
-  setResultImage,
+  setResultImages,
   setCnProgress,
   setEmptyImage,
   setErasingByMouse,
@@ -29,7 +29,7 @@ export const PaintingCanvas: React.FC<PaintingCanvasProps> = ({
   canvasSize,
   setPaintImage,
   setCnProgress,
-  setResultImage,
+  setResultImages,
   setEmptyImage,
   setErasingByMouse,
   setAudioReady,
@@ -81,7 +81,7 @@ export const PaintingCanvas: React.FC<PaintingCanvasProps> = ({
       setMouseCoordinates,
       setPaintImage,
       setCnProgress,
-      setResultImage,
+      setResultImages,
       setErasingByMouse,
       setAudioReady,
     });
@@ -128,7 +128,7 @@ const MSTP = (state: StateType) => ({
 const MDTP = {
   setPaintImage,
   setCnProgress,
-  setResultImage,
+  setResultImages,
   setEmptyImage,
   setErasingByMouse,
   setAudioReady,

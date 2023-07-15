@@ -26,7 +26,7 @@ export const useBrush = ({
   setMouseCoordinates,
   setPaintImage,
   setCnProgress,
-  setResultImage,
+  setResultImages,
   setErasingByMouse,
   setAudioReady,
   afterPointerDownFunc,
@@ -127,7 +127,7 @@ export const useBrush = ({
       const paintImage = paintingRef.current.toDataURL();
       setPaintImage(paintImage);
       if (instantGenerationMode) {
-        generate(paintImage, setResultImage, setCnProgress, audioFunc);
+        generate(paintImage, setResultImages, setCnProgress, audioFunc);
       }
       setErasingByMouse(false);
     },

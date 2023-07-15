@@ -9,7 +9,7 @@ import {
   setBrushType,
   setErasingBySwitch,
   setInstantGenerationMode,
-  setResultImage,
+  setResultImages,
   setCnProgress,
   setCnConfig,
   setBrushFilling,
@@ -19,7 +19,7 @@ import {
   setAudioEnabled,
 } from "store/actions";
 import { useHotKeys } from "hooks";
-import { downloadImage } from "components/PaintingTools/PaintingTools";
+import { downloadImages } from "components/PaintingTools/PaintingTools";
 import { getPaintImage } from "store/selectors";
 import {
   generate,
@@ -48,7 +48,7 @@ const HotkeyWrapper: React.FC<HotkeyWrapperProps> = ({
   setBrushFilling,
   setErasingBySwitch,
   setInstantGenerationMode,
-  setResultImage,
+  setResultImages,
   setCnProgress,
   setCnConfig,
   setZenMode,
@@ -71,11 +71,11 @@ const HotkeyWrapper: React.FC<HotkeyWrapperProps> = ({
   );
 
   const memoizedGenerate = useCallback(() => {
-    generate(paintImage, setResultImage, setCnProgress, audioFunc);
-  }, [paintImage, setResultImage, setCnProgress, audio]);
+    generate(paintImage, setResultImages, setCnProgress, audioFunc);
+  }, [paintImage, setResultImages, setCnProgress, audio]);
 
   const memoizedDownload = useCallback(
-    () => downloadImage(resultImage),
+    () => downloadImages(resultImage),
     [resultImage]
   );
 
@@ -161,7 +161,7 @@ const MDTP = {
   setBrushType,
   setErasingBySwitch,
   setInstantGenerationMode,
-  setResultImage,
+  setResultImages,
   setCnProgress,
   setCnConfig,
   setZenMode,

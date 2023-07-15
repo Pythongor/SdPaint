@@ -48,3 +48,6 @@ export const deepCopy = <T>(target: T): T => {
   }
   return target;
 };
+
+export const addBase64Prefix = (decodedData: string) =>
+  `data:image/png;base64,${decodedData}`;

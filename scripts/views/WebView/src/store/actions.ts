@@ -35,7 +35,9 @@ export const setZenMode = createAction(Actions.setZenMode)<
 
 export const setModal = createAction(Actions.setModal)<ModalType>();
 
-export const setResultImage = createAction(Actions.setResultImage)<string>();
+export const setResultImages = createAction(Actions.setResultImages)<
+  string | string[]
+>();
 
 export const setPaintImage = createAction(Actions.setPaintImage)<string>();
 
@@ -83,7 +85,7 @@ export default {
   setCnProgress,
   setModal,
   setZenMode,
-  setResultImage,
+  setResultImages,
   setPaintImage,
   setEmptyImage,
   increasePaintImageIndex,

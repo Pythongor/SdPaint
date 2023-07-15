@@ -32,9 +32,10 @@ const ResultCanvas: React.FC<ResultCanvasProps> = ({
   useEffect(() => {
     if (!context || !ref.current) return;
     if (resultImage === "") {
-      context.clearRect(0, 0, 512, 512);
+      context.clearRect(0, 0, resultSize[0], resultSize[1]);
     } else {
-      fetch(resultImage)
+      const image = Array.isArray(resultImage) ? resultImage[0] : resultImage;
+      fetch(image)
         .then((response) => response.blob())
         .then((blob) => {
           const url = URL.createObjectURL(blob);

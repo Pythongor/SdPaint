@@ -40,7 +40,7 @@ export type StateType = Readonly<{
   cnProgress: number;
   modal: ModalType;
   isZenModeOn: boolean;
-  resultImage: string;
+  resultImage: string | string[];
   paintImagesStack: string[];
   emptyImage: string;
   currentPaintImageIndex: number;
@@ -60,7 +60,7 @@ export enum Actions {
   setCnProgress = "SET_CONTROL_NET_PROGRESS",
   setModal = "SET_MODAL",
   setZenMode = "SET_ZEN_MODE",
-  setResultImage = "SET_RESULT_IMAGE",
+  setResultImages = "SET_RESULT_IMAGES",
   setPaintImage = "SET_PAINT_IMAGE",
   setEmptyImage = "SET_EMPTY_IMAGE",
   increasePaintImageIndex = "INCREASE_PAINT_IMAGE_INDEX",

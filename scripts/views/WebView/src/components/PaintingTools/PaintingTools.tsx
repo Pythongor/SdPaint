@@ -13,12 +13,18 @@ type StateProps = ReturnType<typeof MSTP>;
 type DispatchProps = typeof MDTP;
 type PaintingToolsProps = StateProps & DispatchProps;
 
-export const downloadImage = (image: string) => {
-  if (!image) return;
-  const a = document.createElement("a");
-  a.href = image;
-  a.download = `sd_gen_${new Date().toJSON()}.png`;
-  a.click();
+export const downloadImages = (images: string | string[]) => {
+  const downloadImage = (image: string) => {
+    if (!image) return;
+    const a = document.createElement("a");
+    a.href = image;
+    a.download = `sd_gen_${new Date().toJSON()}.png`;
+    a.click();
+  };
+  if (!images) return;
+  if (Array.isArray(images)) {
+    images.forEach((image) => downloadImage(image));
+  } else downloadImage(images);
 };
 
 const PaintingTools: React.FC<PaintingToolsProps> = ({
@@ -43,7 +49,7 @@ const PaintingTools: React.FC<PaintingToolsProps> = ({
         <BrushInput />
         <button
           className={cn(styles.button, styles.button__single)}
-          onClick={() => downloadImage(resultImage)}
+          onClick={() => downloadImages(resultImage)}
           title="Download result image (if any)"
         >
           Download image

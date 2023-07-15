@@ -5,7 +5,7 @@ import { PayloadActionCreator } from "typesafe-actions";
 import { Actions } from "store/types";
 import { sendImage, retryRequest, getImage, catchError } from "api";
 import { getPaintImage } from "store/selectors";
-import { setResultImage, setCnProgress, setAudioReady } from "store/actions";
+import { setResultImages, setCnProgress, setAudioReady } from "store/actions";
 import { renewAudioContext } from "audio/synth";
 import {
   playEpicSignal,
@@ -54,7 +54,10 @@ export const handleAudioSignal = (
 
 export const generate = async (
   paintImage: string,
-  setResultImage: PayloadActionCreator<Actions.setResultImage, string>,
+  setResultImages: PayloadActionCreator<
+    Actions.setResultImages,
+    string | string[]
+  >,
   setCnProgress: PayloadActionCreator<Actions.setCnProgress, number>,
   audioFunc: () => void
 ) => {
@@ -62,9 +65,8 @@ export const generate = async (
   await sendImage(paintImage).catch(catchError);
   await retryRequest({
     finalFunc: async () => {
-      const { blob } = await getImage();
-      const url = URL.createObjectURL(blob);
-      setResultImage(url);
+      const { images } = await getImage();
+      setResultImages(Array.isArray(images) ? images : images[0]);
       audioFunc();
     },
     progressFunc: (data) => {
@@ -77,7 +79,7 @@ export const generate = async (
 const GenerateButton: React.FC<GenerateButtonProps> = ({
   paintImage,
   audio,
-  setResultImage,
+  setResultImages,
   setCnProgress,
   setAudioReady,
 }) => {
@@ -87,8 +89,8 @@ const GenerateButton: React.FC<GenerateButtonProps> = ({
   );
 
   const onClick = useCallback(() => {
-    generate(paintImage, setResultImage, setCnProgress, audioFunc);
-  }, [paintImage, setResultImage, setCnProgress, audio]);
+    generate(paintImage, setResultImages, setCnProgress, audioFunc);
+  }, [paintImage, setResultImages, setCnProgress, audio]);
 
   return (
     <button
@@ -106,6 +108,6 @@ const MSTP = (state: StateType) => ({
   audio: state.audio,
 });
 
-const MDTP = { setResultImage, setCnProgress, setAudioReady };
+const MDTP = { setResultImages, setCnProgress, setAudioReady };
 
 export default connect(MSTP, MDTP)(GenerateButton);

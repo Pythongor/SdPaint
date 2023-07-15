@@ -17,7 +17,11 @@ const ModalWrapper: React.FC<ImageViewerProps> = ({
 }) => {
   const contentMap = {
     imageViewer: () => (
-      <img className={styles.image} src={resultImage} alt=""></img>
+      <img
+        className={styles.image}
+        src={Array.isArray(resultImage) ? resultImage[0] : resultImage}
+        alt=""
+      ></img>
     ),
     settings: Settings,
     empty: () => null,

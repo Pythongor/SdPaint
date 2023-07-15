@@ -1,6 +1,7 @@
-import { extractDataFromConfig } from "helpers";
+import { addBase64Prefix, extractDataFromConfig } from "helpers";
 import { getStorageConfig } from "./storage";
 import { CnConfigType } from "store/types";
+
 export const url = "http://127.0.0.1:8000";
 
 type CustomError = {
@@ -119,7 +120,6 @@ export const sendImage = (image: string) => {
 
 export const getImage = async () => {
   const response = await fetch(`${url}/cn_image`);
-  const blob = await response.blob();
-  const imageBitMap = await createImageBitmap(blob);
-  return { blob, imageBitMap };
+  const images: string[] = await response.json();
+  return { images: images.map((image) => addBase64Prefix(image)) };
 };
