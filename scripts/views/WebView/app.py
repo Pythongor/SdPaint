@@ -7,7 +7,6 @@ import threading
 
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import Response
 
 from scripts.common.state import State
 from scripts.common.cn_requests import Api
@@ -24,7 +23,7 @@ app.add_middleware(
     allow_headers=['*'],
 )
 
-sd_image = ''
+sd_images = '',
 
 state = State()
 api = Api(state)
@@ -35,13 +34,13 @@ if not state.configuration["config"]['controlnet_models']:
 
 
 def send_request():
-    global sd_image
+    global sd_images
     response = api.post_request(state)
     if response["status_code"] == 200:
         if response.get("image", None):
-            sd_image = response["image"]
-        # elif response.get("batch_images", None):
-        #     self.update_batch_images(response["batch_images"])
+            sd_images = (response["image"], )
+        elif response.get("batch_images", None):
+            sd_images = response["batch_images"]
     state.server["busy"] = False
 
 
@@ -102,6 +101,7 @@ async def root(data: Request):
         state["main_json_data"]["seed"] = data["config"]["seed"]
         state["main_json_data"]["width"] = data["config"]["width"]
         state["main_json_data"]["height"] = data["config"]["height"]
+        state["main_json_data"]["n_iter"] = 1
         t = threading.Thread(target=send_request)
         t.start()
 
@@ -120,6 +120,5 @@ async def root():
 
 @app.get('/cn_image')
 async def root():
-    if sd_image:
-        bytes_image = BytesIO(base64.b64decode(sd_image))
-        return Response(content=bytes_image.getvalue(), media_type='image/png')
+    if sd_images:
+        return sd_images
