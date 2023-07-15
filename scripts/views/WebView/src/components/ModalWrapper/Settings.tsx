@@ -63,7 +63,7 @@ const Settings: React.FC<ImageViewerProps> = ({
           ></input>
         </label>
 
-        <label className={styles.label} title="Switch audio signal theme">
+        <label className={styles.label} title="Change audio signal theme">
           <span className={styles.span}>Audio theme</span>
           <select
             className={styles.select}
