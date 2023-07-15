@@ -44,6 +44,7 @@ const PaintingTools: React.FC<PaintingToolsProps> = ({
         <button
           className={cn(styles.button, styles.button__single)}
           onClick={() => downloadImage(resultImage)}
+          title="Download result image (if any)"
         >
           Download image
         </button>
@@ -55,8 +56,9 @@ const PaintingTools: React.FC<PaintingToolsProps> = ({
               styles.button__big
             )}
             onClick={loadConfig}
+            title="Load config from 'controlnet.json'"
           >
-            ⭱
+            ⭳
           </button>
           <button
             className={cn(
@@ -65,12 +67,14 @@ const PaintingTools: React.FC<PaintingToolsProps> = ({
               styles.button__big
             )}
             onClick={saveConfig}
+            title="Save config to 'controlnet.json'"
           >
-            ⭳
+            ⭱
           </button>
           <button
             className={cn(styles.button, styles.button__symbol)}
             onClick={() => setModal("settings")}
+            title="Settings"
           >
             ⛭
           </button>
@@ -81,9 +85,10 @@ const PaintingTools: React.FC<PaintingToolsProps> = ({
             styles.button__single,
             styles.button__clear
           )}
+          title="Clear painting canvas"
           onClick={clear}
         >
-          Clear canvas
+          Clear
         </button>
       </div>
       <ToolsCheckboxes />

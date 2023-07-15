@@ -60,6 +60,7 @@ const BrushInput: React.FC<BrushInputProps> = ({
           max="10"
           value={isPrimitiveShape && withBrushFill ? 1 : brushWidth}
           onChange={onSliderInput}
+          title="Set brush width"
         ></input>
       </label>
       <div className={styles.flexGroup}>
@@ -69,6 +70,7 @@ const BrushInput: React.FC<BrushInputProps> = ({
           onChange={(event) =>
             setBrushType(event.currentTarget.value as BrushType)
           }
+          title="Set brush shape mode"
         >
           <option value="pencil">Pencil</option>
           <option value="line">Line</option>
@@ -78,7 +80,7 @@ const BrushInput: React.FC<BrushInputProps> = ({
       </div>
       <div className={styles.flexGroup}>
         <div>
-          <label className={styles.label}>
+          <label className={styles.label} title="Switch brush eraser mode">
             <input
               className={styles.checkbox}
               type="checkbox"
@@ -87,7 +89,10 @@ const BrushInput: React.FC<BrushInputProps> = ({
             ></input>
             <span>Eraser</span>
           </label>
-          <label className={styles.label}>
+          <label
+            className={styles.label}
+            title="Switch brush fill mode (only for rectangle and ellipce)"
+          >
             <input
               disabled={!isPrimitiveShape || isErasing}
               className={styles.checkbox}

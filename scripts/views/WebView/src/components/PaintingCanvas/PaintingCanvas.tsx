@@ -89,7 +89,9 @@ export const PaintingCanvas: React.FC<PaintingCanvasProps> = ({
   return (
     <div className={styles.base}>
       {!isZenModeOn && (
-        <div className={styles.title}>Draw your sketch here</div>
+        <div className={styles.title} title="Draw your sketch here">
+          Painting canvas
+        </div>
       )}
       <canvas
         ref={paintingRef}

@@ -36,7 +36,9 @@ export const ControlNetForm: React.FC<CnFormProps> = ({
       onTransitionEnd={() => setScrollTop(0)}
     >
       <label className={cn(styles.group, styles.group__prompt)}>
-        <span className={styles.title}>Enter your prompt</span>
+        <span className={styles.title} title="Describe the desired result">
+          Prompt
+        </span>
         <textarea
           className={styles.textarea}
           value={cnConfig.prompt}
@@ -44,7 +46,9 @@ export const ControlNetForm: React.FC<CnFormProps> = ({
         ></textarea>
       </label>
       <label className={cn(styles.group, styles.group__prompt)}>
-        <span className={styles.title}>Enter negative prompt</span>
+        <span className={styles.title} title="Describe the undesired result">
+          Negative prompt
+        </span>
         <textarea
           className={styles.textarea}
           value={cnConfig.negative_prompt}
@@ -55,19 +59,22 @@ export const ControlNetForm: React.FC<CnFormProps> = ({
       </label>
       <div className={cn(styles.group, styles.group__miscellaneous)}>
         <ControlNetNumberInput
-          title="Seed"
+          name="Seed"
+          title="Having parameters, seed and your sketch unchanged means having the same result"
           id="seed"
           min={-1}
           value={cnConfig.seed}
         />
         <ControlNetNumberInput
-          title="Steps"
+          name="Steps"
+          title="The higher the value, the better the result, but the more waiting time"
           id="steps"
           min={1}
           value={cnConfig.steps}
         />
         <ControlNetNumberInput
-          title="CFG Scale"
+          name="CFG Scale"
+          title="The higher the value, the more accurate may be the result"
           id="cfg_scale"
           min={1}
           value={cnConfig.cfg_scale}
@@ -79,13 +86,15 @@ export const ControlNetForm: React.FC<CnFormProps> = ({
           value={cnConfig.batch_size}
         /> */}
         <ControlNetSelect
-          title="Module"
+          name="Module"
+          title="ControlNet module"
           listName="modules"
           unitName="module"
           getFunc={getModules}
         />
         <ControlNetSelect
-          title="Model"
+          name="Model"
+          title="ControlNet model"
           listName="models"
           unitName="model"
           getFunc={getModels}
@@ -94,6 +103,7 @@ export const ControlNetForm: React.FC<CnFormProps> = ({
       <div
         className={cn(styles.arrow, isHide && styles.arrow__hidden)}
         onClick={() => setIsHide((value) => !value)}
+        title={isHide ? "Show ControlNet form" : "Hide ControlNet form"}
       ></div>
     </div>
   );

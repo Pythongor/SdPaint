@@ -4,6 +4,7 @@ import { setCnConfig } from "store/actions";
 import styles from "../ControlNetForm.module.scss";
 
 type OwnProps = {
+  name: string;
   title: string;
   id: string;
   min: number;
@@ -13,6 +14,7 @@ type DispatchProps = typeof MDTP;
 type CnInputProps = OwnProps & DispatchProps;
 
 const ControlNetNumberInput: React.FC<CnInputProps> = ({
+  name,
   title,
   id,
   min,
@@ -29,7 +31,9 @@ const ControlNetNumberInput: React.FC<CnInputProps> = ({
   );
   return (
     <label>
-      <span className={styles.title}>{title}</span>
+      <span className={styles.title} title={title}>
+        {name}
+      </span>
       <input
         className={styles.numberInput}
         type="number"

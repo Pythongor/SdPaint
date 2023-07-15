@@ -4,12 +4,13 @@ import styles from "./ZenControls.module.scss";
 
 type SelectProps = {
   disabled?: boolean;
+  title: string;
   text: string;
   options: string[];
   onClick: (value: string) => void;
 };
 
-export default ({ disabled, text, options, onClick }: SelectProps) => {
+export default ({ disabled, title, text, options, onClick }: SelectProps) => {
   const [isHidden, setIsHidden] = useState(true);
   const selectRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
@@ -22,6 +23,7 @@ export default ({ disabled, text, options, onClick }: SelectProps) => {
         ref={buttonRef}
         disabled={disabled}
         onClick={() => setIsHidden((value) => !value)}
+        title={title}
       >
         {text}
       </button>

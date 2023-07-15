@@ -94,6 +94,7 @@ const GenerateButton: React.FC<GenerateButtonProps> = ({
     <button
       className={cn(styles.button, styles.button__generate)}
       onClick={onClick}
+      title="Start image generation using your sketch and form data"
     >
       Generate
     </button>

@@ -57,7 +57,14 @@ const ResultCanvas: React.FC<ResultCanvasProps> = ({
 
   return (
     <div className={styles.base}>
-      {!isZenModeOn && <div className={styles.title}>Your result here</div>}
+      {!isZenModeOn && (
+        <div
+          className={styles.title}
+          title="Your generated result will be here"
+        >
+          Result
+        </div>
+      )}
       <canvas
         className={cn(
           styles.canvas,

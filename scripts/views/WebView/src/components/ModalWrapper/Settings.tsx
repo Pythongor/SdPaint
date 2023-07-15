@@ -2,7 +2,6 @@ import React from "react";
 import { AudioSignalType, StateType } from "store/types";
 import { connect } from "react-redux";
 import {
-  setModal,
   setInstantGenerationMode,
   setAudioEnabled,
   setAudioSignalType,
@@ -15,11 +14,9 @@ type DispatchProps = typeof MDTP;
 type ImageViewerProps = StateProps & DispatchProps;
 
 const Settings: React.FC<ImageViewerProps> = ({
-  modal,
   instantGenerationMode,
   audioSignalType,
   isAudioEnabled,
-  setModal,
   setInstantGenerationMode,
   setAudioEnabled,
   setAudioSignalType,
@@ -33,7 +30,10 @@ const Settings: React.FC<ImageViewerProps> = ({
     >
       <div className={styles.title}>Settings</div>
       <div className={cn(styles.group, styles.group__audio)}>
-        <label className={styles.label}>
+        <label
+          className={styles.label}
+          title="Switch instant mode (requests image redraw just when you stroke)"
+        >
           <span className={styles.span}>Instant mode</span>
           <input
             className={styles.checkbox}
@@ -47,7 +47,10 @@ const Settings: React.FC<ImageViewerProps> = ({
         </label>
       </div>
       <div className={cn(styles.group, styles.group__audio)}>
-        <label className={styles.label}>
+        <label
+          className={styles.label}
+          title="Switch audio signal after image generation is completed"
+        >
           <span className={styles.span}>Audio signal</span>
           <input
             className={styles.checkbox}
@@ -60,7 +63,7 @@ const Settings: React.FC<ImageViewerProps> = ({
           ></input>
         </label>
 
-        <label className={styles.label}>
+        <label className={styles.label} title="Switch audio signal theme">
           <span className={styles.span}>Audio theme</span>
           <select
             className={styles.select}
@@ -82,18 +85,15 @@ const Settings: React.FC<ImageViewerProps> = ({
 };
 
 const MSTP = ({
-  modal,
   instantGenerationMode,
   audio: { isEnabled, signalType },
 }: StateType) => ({
-  modal,
   instantGenerationMode,
   isAudioEnabled: isEnabled,
   audioSignalType: signalType,
 });
 
 const MDTP = {
-  setModal,
   setInstantGenerationMode,
   setAudioEnabled,
   setAudioSignalType,

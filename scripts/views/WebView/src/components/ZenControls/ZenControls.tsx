@@ -46,17 +46,24 @@ const ZenIndicator: React.FC<ResultCanvasProps> = ({
 
   return (
     <div className={cn(styles.base, isHide && styles.base__hidden)}>
+      <div
+        className={cn(styles.arrow, isHide && styles.arrow__hidden)}
+        onClick={() => setIsHide((value) => !value)}
+        title={isHide ? "Show control panel" : "Hide control panel"}
+      ></div>
       <div className={styles.group}>
         <ZenSelect
           text={brushType[0].toUpperCase()}
           options={["pencil", "line", "ellipse", "rectangle"]}
           onClick={(value) => setBrushType(value as BrushType)}
+          title="Set brush shape mode"
         />
         <ZenSelect
           disabled={isPrimitiveShape && withBrushFill}
           text={`W: ${isPrimitiveShape && withBrushFill ? 1 : brushWidth}`}
           options={brushWidths}
           onClick={(value) => setBrushWidth(+value)}
+          title="Set brush width"
         />
         <button
           className={cn(
@@ -65,6 +72,7 @@ const ZenIndicator: React.FC<ResultCanvasProps> = ({
           )}
           disabled={!isPrimitiveShape || isErasing}
           onClick={() => setBrushFilling("switch")}
+          title="Switch brush fill mode (only for rectangle and ellipce)"
         >
           F
         </button>
@@ -74,6 +82,7 @@ const ZenIndicator: React.FC<ResultCanvasProps> = ({
             isErasing ? styles.indicator__eraser : styles.indicator__inactive
           )}
           onClick={() => setErasingBySwitch("switch")}
+          title="Switch brush eraser mode"
         >
           E
         </button>
@@ -85,6 +94,7 @@ const ZenIndicator: React.FC<ResultCanvasProps> = ({
             !!audioEnabled && styles.indicator__eraser
           )}
           onClick={() => setAudioEnabled("switch")}
+          title="Switch audio signal after image generation is completed"
         >
           A
         </button>
@@ -96,20 +106,18 @@ const ZenIndicator: React.FC<ResultCanvasProps> = ({
               : styles.indicator__inactive
           )}
           onClick={() => setInstantGenerationMode("switch")}
+          title="Switch instant mode (requests image redraw just when you stroke)"
         >
           I
         </button>
         <button
           className={cn(styles.indicator, styles.indicator__zen)}
           onClick={() => setZenMode(false)}
+          title="Exit simplified interface mode"
         >
           Z
         </button>
       </div>
-      <div
-        className={cn(styles.arrow, isHide && styles.arrow__hidden)}
-        onClick={() => setIsHide((value) => !value)}
-      ></div>
     </div>
   );
 };

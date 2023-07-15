@@ -15,7 +15,10 @@ export const CanvasResizer: React.FC<CanvasResizerProps> = ({
   setCanvasHeight,
 }) => {
   return (
-    <div className={cn(styles.title, styles.resizer)}>
+    <div
+      className={cn(styles.title, styles.resizer)}
+      title="Change canvas size"
+    >
       Size:{" "}
       <select
         className={styles.select}

@@ -6,6 +6,7 @@ import { retryRequest } from "api";
 import styles from "../ControlNetForm.module.scss";
 
 type OwnProps = {
+  name: string;
   title: string;
   listName: "models" | "modules";
   unitName: "model" | "module";
@@ -16,11 +17,12 @@ type DispatchProps = typeof MDTP;
 type CnSelectProps = OwnProps & StateProps & DispatchProps;
 
 const ControlNetSelect: React.FC<CnSelectProps> = ({
+  name,
   title,
   listName,
   unitName,
-  getFunc,
   cnConfig,
+  getFunc,
   setCnConfig,
 }) => {
   useEffect(() => {
@@ -43,7 +45,9 @@ const ControlNetSelect: React.FC<CnSelectProps> = ({
 
   return (
     <label>
-      <span className={styles.title}>{title}</span>
+      <span className={styles.title} title={title}>
+        {name}
+      </span>
       <select
         className={styles.select}
         onChange={onChange}

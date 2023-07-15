@@ -1,12 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
-import { AudioSignalType, StateType } from "store/types";
-import {
-  setInstantGenerationMode,
-  setZenMode,
-  setAudioEnabled,
-  setAudioSignalType,
-} from "store/actions";
+import { StateType } from "store/types";
+import { setZenMode } from "store/actions";
 import cn from "classnames";
 import styles from "../PaintingTools.module.scss";
 
@@ -15,19 +10,13 @@ type DispatchProps = typeof MDTP;
 type ToolsCheckboxesProps = StateProps & DispatchProps;
 
 export const ToolsCheckboxes: React.FC<ToolsCheckboxesProps> = ({
-  instantGenerationMode,
   isZenModeOn,
-  isAudioEnabled,
-  audioSignalType,
-  setInstantGenerationMode,
   setZenMode,
-  setAudioEnabled,
-  setAudioSignalType,
 }) => {
   return (
     <div>
       <div className={cn(styles.group, styles.group__checkbox)}>
-        <label className={styles.label}>
+        <label className={styles.label} title="Switch to simplified view">
           <input
             className={styles.checkbox}
             type="checkbox"
@@ -44,22 +33,8 @@ export const ToolsCheckboxes: React.FC<ToolsCheckboxesProps> = ({
   );
 };
 
-const MSTP = ({
-  instantGenerationMode,
-  isZenModeOn,
-  audio: { isEnabled, signalType },
-}: StateType) => ({
-  instantGenerationMode,
-  isZenModeOn,
-  isAudioEnabled: isEnabled,
-  audioSignalType: signalType,
-});
+const MSTP = ({ isZenModeOn }: StateType) => ({ isZenModeOn });
 
-const MDTP = {
-  setInstantGenerationMode,
-  setZenMode,
-  setAudioEnabled,
-  setAudioSignalType,
-};
+const MDTP = { setZenMode };
 
 export default connect(MSTP, MDTP)(ToolsCheckboxes);
