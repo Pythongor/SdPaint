@@ -35,6 +35,7 @@
   transform: translate(-50%, -50%);
   padding: 5px 10px 10px;
   z-index: 1;
+  cursor: default;
 }
 
 .title {
@@ -51,6 +52,10 @@
   border-radius: 5px;
   padding: 10px;
   transition: border-color 0.2s, background-color 0.2s, color 0.2s;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
   &:first-child {
     margin-top: 0;
   }
@@ -58,13 +63,6 @@
   &__checkbox:hover {
     border-color: $beige;
     color: $blue;
-  }
-
-  &__audio {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    gap: 5px;
   }
 }
 

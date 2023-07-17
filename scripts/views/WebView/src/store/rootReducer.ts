@@ -11,7 +11,7 @@ const initialState: Readonly<StateType> = {
     images: [],
     imageSize: [512, 512],
     viewedImageIndex: 0,
-    imagesCount: 1,
+    imagesCount: 4,
     isMultipleImagesModeOn: false,
   },
   canvas: {
@@ -50,6 +50,25 @@ const initialState: Readonly<StateType> = {
 const IMAGES_CLIP_BUFFER_OVERFLOW = 20;
 
 export default createReducer<StateType, ActionType>(initialState)
+  .handleAction(actions.setAudioEnabled, (state, { payload }) => {
+    if (payload === "switch")
+      return {
+        ...state,
+        audio: { ...state.audio, isEnabled: !state.audio.isEnabled },
+      };
+    return {
+      ...state,
+      audio: { ...state.audio, isEnabled: payload },
+    };
+  })
+  .handleAction(actions.setAudioReady, (state, { payload }) => ({
+    ...state,
+    audio: { ...state.audio, isReady: payload },
+  }))
+  .handleAction(actions.setAudioSignalType, (state, { payload }) => ({
+    ...state,
+    audio: { ...state.audio, signalType: payload },
+  }))
   .handleAction(actions.setErasingBySwitch, (state, { payload }) => {
     if (payload === "switch")
       return {
@@ -67,10 +86,6 @@ export default createReducer<StateType, ActionType>(initialState)
   .handleAction(actions.setErasingByMouse, (state, { payload }) => {
     return { ...state, isErasingByMouse: payload };
   })
-  .handleAction(actions.setScrollTop, (state, { payload }) => ({
-    ...state,
-    scrollTop: payload,
-  }))
   .handleAction(actions.setBrushWidth, (state, { payload }) => {
     if (
       ["ellipse", "rectangle"].includes(state.brushConfig.brushType) &&
@@ -131,30 +146,6 @@ export default createReducer<StateType, ActionType>(initialState)
       },
     };
   })
-  .handleAction(actions.setCnProgress, (state, { payload }) => ({
-    ...state,
-    cnProgress: payload,
-  }))
-  .handleAction(actions.setModal, (state, { payload }) => {
-    return { ...state, modal: payload };
-  })
-  .handleAction(actions.setZenMode, (state, { payload }) => {
-    if (payload === "switch")
-      return {
-        ...state,
-        isZenModeOn: !state.isZenModeOn,
-        scrollTop: state.scrollTop + 0.01,
-      };
-    return {
-      ...state,
-      isZenModeOn: payload,
-      scrollTop: state.scrollTop + 0.01,
-    };
-  })
-  .handleAction(actions.setResultImages, (state, { payload }) => ({
-    ...state,
-    result: { ...state.result, images: payload },
-  }))
   .handleAction(actions.setEmptyImage, (state, { payload }) => ({
     ...state,
     canvas: {
@@ -210,34 +201,6 @@ export default createReducer<StateType, ActionType>(initialState)
     const currentImageIndex = Math.max(0, state.canvas.currentImageIndex - 1);
     return { ...state, canvas: { ...state.canvas, currentImageIndex } };
   })
-  .handleAction(actions.setCnConfig, (state, { payload }) => ({
-    ...state,
-    cnConfig: { ...state.cnConfig, ...payload },
-  }))
-  .handleAction(actions.setInstantGenerationMode, (state, { payload }) => {
-    if (payload === "switch")
-      return { ...state, instantGenerationMode: !state.instantGenerationMode };
-    return { ...state, instantGenerationMode: payload };
-  })
-  .handleAction(actions.setAudioEnabled, (state, { payload }) => {
-    if (payload === "switch")
-      return {
-        ...state,
-        audio: { ...state.audio, isEnabled: !state.audio.isEnabled },
-      };
-    return {
-      ...state,
-      audio: { ...state.audio, isEnabled: payload },
-    };
-  })
-  .handleAction(actions.setAudioReady, (state, { payload }) => ({
-    ...state,
-    audio: { ...state.audio, isReady: payload },
-  }))
-  .handleAction(actions.setAudioSignalType, (state, { payload }) => ({
-    ...state,
-    audio: { ...state.audio, signalType: payload },
-  }))
   .handleAction(actions.setCanvasWidth, (state, { payload }) => ({
     ...state,
     canvas: { ...state.canvas, size: [payload, state.canvas.size[1]] },
@@ -245,6 +208,10 @@ export default createReducer<StateType, ActionType>(initialState)
   .handleAction(actions.setCanvasHeight, (state, { payload }) => ({
     ...state,
     canvas: { ...state.canvas, size: [state.canvas.size[0], payload] },
+  }))
+  .handleAction(actions.setResultImages, (state, { payload }) => ({
+    ...state,
+    result: { ...state.result, images: payload },
   }))
   .handleAction(actions.setResultWidth, (state, { payload }) => ({
     ...state,
@@ -259,4 +226,55 @@ export default createReducer<StateType, ActionType>(initialState)
       ...state.result,
       imageSize: [state.result.imageSize[0], payload],
     },
-  }));
+  }))
+  .handleAction(actions.setResultImagesCount, (state, { payload }) => ({
+    ...state,
+    result: {
+      ...state.result,
+      imagesCount: payload,
+    },
+  }))
+  .handleAction(actions.setMultipleImagesMode, (state, { payload }) => ({
+    ...state,
+    result: {
+      ...state.result,
+      isMultipleImagesModeOn: payload,
+    },
+    cnConfig: {
+      ...state.cnConfig,
+      batch_size: payload ? state.result.imagesCount : 1,
+    },
+  }))
+  .handleAction(actions.setScrollTop, (state, { payload }) => ({
+    ...state,
+    scrollTop: payload,
+  }))
+  .handleAction(actions.setCnProgress, (state, { payload }) => ({
+    ...state,
+    cnProgress: payload,
+  }))
+  .handleAction(actions.setModal, (state, { payload }) => {
+    return { ...state, modal: payload };
+  })
+  .handleAction(actions.setZenMode, (state, { payload }) => {
+    if (payload === "switch")
+      return {
+        ...state,
+        isZenModeOn: !state.isZenModeOn,
+        scrollTop: state.scrollTop + 0.01,
+      };
+    return {
+      ...state,
+      isZenModeOn: payload,
+      scrollTop: state.scrollTop + 0.01,
+    };
+  })
+  .handleAction(actions.setCnConfig, (state, { payload }) => ({
+    ...state,
+    cnConfig: { ...state.cnConfig, ...payload },
+  }))
+  .handleAction(actions.setInstantGenerationMode, (state, { payload }) => {
+    if (payload === "switch")
+      return { ...state, instantGenerationMode: !state.instantGenerationMode };
+    return { ...state, instantGenerationMode: payload };
+  });

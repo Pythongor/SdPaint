@@ -8,6 +8,7 @@ const SYNC_CONFIG_TRIGGERS = [
   Actions.setCnConfig,
   Actions.setCanvasWidth,
   Actions.setCanvasHeight,
+  Actions.setMultipleImagesMode,
 ];
 
 const SYNC_SETTINGS_TRIGGERS = [

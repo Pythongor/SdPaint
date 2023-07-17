@@ -10,6 +10,7 @@ import {
   setCnProgress,
   setAudioReady,
   setCnConfig,
+  setMultipleImagesMode,
 } from "store/actions";
 import { renewAudioContext } from "audio/synth";
 import {
@@ -80,12 +81,12 @@ export const generate = async (
 
 const GenerateGroup: React.FC<GenerateGroupProps> = ({
   paintImage,
-  imagesCount,
-  setCnConfig,
+  isMultipleModeOn,
   audio,
   setResultImages,
   setCnProgress,
   setAudioReady,
+  setMultipleImagesMode,
 }) => {
   const audioFunc = useCallback(
     () => handleAudioSignal(audio, setAudioReady),
@@ -98,19 +99,19 @@ const GenerateGroup: React.FC<GenerateGroupProps> = ({
 
   return (
     <div className={styles.group}>
-      <label className={cn(styles.label, styles.label__generate)}>
-        Images amount:
-        <select
-          className={styles.select}
-          onChange={(event) => setCnConfig({ batch_size: +event.target.value })}
-          value={imagesCount}
-        >
-          {[1, 2, 4, 6, 9].map((name) => (
-            <option key={name} value={name} className={styles.option}>
-              {name}
-            </option>
-          ))}
-        </select>
+      <label
+        className={styles.label}
+        title="In multiple mode app generates few images instead of just one"
+      >
+        <input
+          className={styles.checkbox}
+          type="checkbox"
+          checked={isMultipleModeOn}
+          onChange={() => {
+            setMultipleImagesMode(!isMultipleModeOn);
+          }}
+        ></input>
+        Multiple mode
       </label>
       <button
         className={cn(styles.button, styles.button__generate)}
@@ -127,8 +128,15 @@ const MSTP = (state: StateType) => ({
   paintImage: getCanvasImage(state),
   imagesCount: state.cnConfig.batch_size,
   audio: state.audio,
+  isMultipleModeOn: state.result.isMultipleImagesModeOn,
 });
 
-const MDTP = { setResultImages, setCnProgress, setAudioReady, setCnConfig };
+const MDTP = {
+  setResultImages,
+  setCnProgress,
+  setAudioReady,
+  setCnConfig,
+  setMultipleImagesMode,
+};
 
 export default connect(MSTP, MDTP)(GenerateGroup);

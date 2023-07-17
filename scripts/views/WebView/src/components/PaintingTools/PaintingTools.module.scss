@@ -69,14 +69,6 @@
     color: $blue;
   }
 
-  &__generate {
-    justify-content: space-between;
-
-    &:hover {
-      color: $beige;
-    }
-  }
-
   .label_span__disabled {
     color: $gray;
     cursor: not-allowed;
