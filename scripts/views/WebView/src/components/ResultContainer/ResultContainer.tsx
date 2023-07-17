@@ -10,21 +10,21 @@ type StateProps = ReturnType<typeof MSTP>;
 type DispatchProps = typeof MDTP;
 type ResultCanvasProps = StateProps & DispatchProps;
 
-const ResultCanvas: React.FC<ResultCanvasProps> = ({
+const ResultContainer: React.FC<ResultCanvasProps> = ({
   cnProgress,
-  resultImages,
-  resultSize,
+  images,
+  imageSize,
   isZenModeOn,
   setModal,
   setResultWidth,
   setResultHeight,
   seed,
 }) => {
-  const isEmpty = resultImages.length === 0;
-  const isBatch = resultImages.length > 1;
+  const isEmpty = images.length === 0;
+  const isBatch = images.length > 1;
 
   useEffect(() => {
-    const image = resultImages[0];
+    const image = images[0];
     fetch(image)
       .then((response) => response.blob())
       .then((blob) => {
@@ -37,7 +37,7 @@ const ResultCanvas: React.FC<ResultCanvasProps> = ({
           setResultHeight(img.height);
         };
       });
-  }, [resultImages]);
+  }, [images]);
 
   return (
     <div className={styles.base}>
@@ -52,21 +52,20 @@ const ResultCanvas: React.FC<ResultCanvasProps> = ({
       <div
         className={cn(
           styles.container,
-          resultImages.length > 1 && styles.container__2c
+          images.length > 1 && styles.container__2c
         )}
       >
         {!isEmpty &&
-          resultImages.map((image, index) => (
-            <div className={styles.imageWrapper}>
+          images.map((image, index) => (
+            <div className={styles.imageWrapper} key={index}>
               <img
-                key={index}
                 className={cn(
                   styles.image,
                   cnProgress !== 0 && !isZenModeOn && styles.image__waiting,
-                  !resultImages && styles.image__empty
+                  !images && styles.image__empty
                 )}
-                width={resultSize[0]}
-                height={resultSize[1]}
+                width={imageSize[0]}
+                height={imageSize[1]}
                 onClick={() => setModal("imageViewer")}
                 src={image}
               ></img>
@@ -96,18 +95,17 @@ const ResultCanvas: React.FC<ResultCanvasProps> = ({
 
 const MSTP = ({
   cnProgress,
-  resultImages,
-  resultSize,
+  result: { images, imageSize },
   isZenModeOn,
   cnConfig: { seed },
 }: StateType) => ({
   cnProgress,
-  resultImages,
-  resultSize,
+  images,
+  imageSize,
   isZenModeOn,
   seed,
 });
 
 const MDTP = { setModal, setResultWidth, setResultHeight };
 
-export default connect(MSTP, MDTP)(ResultCanvas);
+export default connect(MSTP, MDTP)(ResultContainer);

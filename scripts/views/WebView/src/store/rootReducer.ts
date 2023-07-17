@@ -7,10 +7,19 @@ const initialState: Readonly<StateType> = {
   modal: null,
   isZenModeOn: false,
   cnProgress: 0,
-  resultImages: [],
-  paintImagesStack: [],
-  emptyImage: "",
-  currentPaintImageIndex: -1,
+  result: {
+    images: [],
+    imageSize: [512, 512],
+    viewedImageIndex: 0,
+    imagesCount: 1,
+    isMultipleImagesModeOn: false,
+  },
+  canvas: {
+    imagesStack: [],
+    emptyImage: "",
+    currentImageIndex: -1,
+    size: [512, 512],
+  },
   instantGenerationMode: true,
   brushConfig: {
     isErasingByMouse: false,
@@ -36,8 +45,6 @@ const initialState: Readonly<StateType> = {
     isReady: false,
     signalType: "ringtone",
   },
-  canvasSize: [512, 512],
-  resultSize: [512, 512],
 };
 
 const IMAGES_CLIP_BUFFER_OVERFLOW = 20;
@@ -146,60 +153,65 @@ export default createReducer<StateType, ActionType>(initialState)
   })
   .handleAction(actions.setResultImages, (state, { payload }) => ({
     ...state,
-    resultImages: payload,
+    result: { ...state.result, images: payload },
   }))
   .handleAction(actions.setEmptyImage, (state, { payload }) => ({
     ...state,
-    emptyImage: payload,
-    paintImagesStack: [payload],
-    currentPaintImageIndex: 0,
+    canvas: {
+      ...state.canvas,
+      emptyImage: payload,
+      imagesStack: [payload],
+      currentImageIndex: 0,
+    },
   }))
   .handleAction(actions.setPaintImage, (state, { payload }) => {
-    const { paintImagesStack, currentPaintImageIndex } = state;
-    const isStackEmpty = !paintImagesStack.length;
-    const isOverflow = paintImagesStack.length >= IMAGES_CLIP_BUFFER_OVERFLOW;
-    const oldIndex = isStackEmpty ? 0 : currentPaintImageIndex;
-    const areSame = paintImagesStack[oldIndex] === payload;
+    const { imagesStack, currentImageIndex } = state.canvas;
+    const isStackEmpty = !imagesStack.length;
+    const isOverflow = imagesStack.length >= IMAGES_CLIP_BUFFER_OVERFLOW;
+    const oldIndex = isStackEmpty ? 0 : currentImageIndex;
+    const areSame = imagesStack[oldIndex] === payload;
 
     const newStack: string[] = [];
     const newIndex =
       areSame || isOverflow
         ? oldIndex
-        : Math.min(IMAGES_CLIP_BUFFER_OVERFLOW, currentPaintImageIndex + 1);
+        : Math.min(IMAGES_CLIP_BUFFER_OVERFLOW, currentImageIndex + 1);
 
     if (areSame) {
-      newStack.push(...paintImagesStack);
-    } else if (oldIndex >= paintImagesStack.length - 1) {
+      newStack.push(...imagesStack);
+    } else if (oldIndex >= imagesStack.length - 1) {
       if (isOverflow) {
-        const sliceStart =
-          paintImagesStack.length - IMAGES_CLIP_BUFFER_OVERFLOW + 1;
-        newStack.push(...paintImagesStack.slice(sliceStart), payload);
+        const sliceStart = imagesStack.length - IMAGES_CLIP_BUFFER_OVERFLOW + 1;
+        newStack.push(...imagesStack.slice(sliceStart), payload);
       } else {
-        newStack.push(...paintImagesStack, payload);
+        newStack.push(...imagesStack, payload);
       }
     } else {
-      newStack.push(...paintImagesStack.slice(0, newIndex), payload);
+      newStack.push(...imagesStack.slice(0, newIndex), payload);
     }
     return {
       ...state,
-      paintImagesStack: newStack,
-      currentPaintImageIndex: newIndex,
+      canvas: {
+        ...state.canvas,
+        imagesStack: newStack,
+        currentPaintImageIndex: newIndex,
+      },
     };
   })
   .handleAction(actions.increasePaintImageIndex, (state) => {
-    const currentPaintImageIndex = Math.min(
+    const currentImageIndex = Math.min(
       IMAGES_CLIP_BUFFER_OVERFLOW,
-      state.paintImagesStack.length - 1,
-      state.currentPaintImageIndex + 1
+      state.canvas.imagesStack.length - 1,
+      state.canvas.currentImageIndex + 1
     );
-    return { ...state, currentPaintImageIndex };
+    return { ...state, canvas: { ...state.canvas, currentImageIndex } };
   })
   .handleAction(actions.decreasePaintImageIndex, (state) => {
     const currentPaintImageIndex = Math.max(
       0,
-      state.currentPaintImageIndex - 1
+      state.canvas.currentImageIndex - 1
     );
-    return { ...state, currentPaintImageIndex };
+    return { ...state, canvas: { ...state.canvas, currentPaintImageIndex } };
   })
   .handleAction(actions.setCnConfig, (state, { payload }) => ({
     ...state,
@@ -231,17 +243,23 @@ export default createReducer<StateType, ActionType>(initialState)
   }))
   .handleAction(actions.setCanvasWidth, (state, { payload }) => ({
     ...state,
-    canvasSize: [payload, state.canvasSize[1]],
+    canvas: { ...state.canvas, size: [payload, state.canvas.size[1]] },
   }))
   .handleAction(actions.setCanvasHeight, (state, { payload }) => ({
     ...state,
-    canvasSize: [state.canvasSize[0], payload],
+    canvas: { ...state.canvas, size: [state.canvas.size[0], payload] },
   }))
   .handleAction(actions.setResultWidth, (state, { payload }) => ({
     ...state,
-    resultSize: [payload, state.resultSize[1]],
+    result: {
+      ...state.result,
+      imageSize: [payload, state.result.imageSize[1]],
+    },
   }))
   .handleAction(actions.setResultHeight, (state, { payload }) => ({
     ...state,
-    resultSize: [state.resultSize[0], payload],
+    result: {
+      ...state.result,
+      imageSize: [state.result.imageSize[0], payload],
+    },
   }));

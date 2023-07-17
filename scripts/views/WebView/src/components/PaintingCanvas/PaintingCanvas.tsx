@@ -24,7 +24,7 @@ export const PaintingCanvas: React.FC<PaintingCanvasProps> = ({
   scrollTop,
   paintImage,
   instantGenerationMode,
-  paintImagesStack,
+  canvasImagesStack,
   isZenModeOn,
   canvasSize,
   setPaintImage,
@@ -45,11 +45,11 @@ export const PaintingCanvas: React.FC<PaintingCanvasProps> = ({
 
   useEffect(() => {
     if (!paintingRef?.current || !context) return;
-    if (!paintImagesStack.length) {
+    if (!canvasImagesStack.length) {
       const image = paintingRef.current.toDataURL();
       setEmptyImage(image);
     }
-  }, [paintingRef?.current, context, paintImagesStack]);
+  }, [paintingRef?.current, context, canvasImagesStack]);
 
   useEffect(() => {
     if (!paintingRef?.current || !context) return;
@@ -117,12 +117,12 @@ export const PaintingCanvas: React.FC<PaintingCanvasProps> = ({
 
 const MSTP = (state: StateType) => ({
   paintImage: getPaintImage(state),
-  paintImagesStack: state.paintImagesStack,
+  canvasImagesStack: state.canvas.imagesStack,
   scrollTop: state.scrollTop,
   instantGenerationMode: state.instantGenerationMode,
   brushType: state.brushConfig.brushType,
   isZenModeOn: state.isZenModeOn,
-  canvasSize: state.canvasSize,
+  canvasSize: state.canvas.size,
 });
 
 const MDTP = {

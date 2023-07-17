@@ -34,21 +34,32 @@ export type BrushConfigType = {
   withFill: boolean;
 };
 
+export type ResultConfigType = {
+  images: string[];
+  imageSize: [number, number];
+  viewedImageIndex: number;
+  imagesCount: number;
+  isMultipleImagesModeOn: boolean;
+};
+
+export type CanvasConfigType = {
+  imagesStack: string[];
+  currentImageIndex: number;
+  size: [number, number];
+  emptyImage: string;
+};
+
 export type StateType = Readonly<{
   brushConfig: Readonly<BrushConfigType>;
   scrollTop: number;
   cnProgress: number;
   modal: ModalType;
   isZenModeOn: boolean;
-  resultImages: string[];
-  paintImagesStack: string[];
-  emptyImage: string;
-  currentPaintImageIndex: number;
+  canvas: Readonly<CanvasConfigType>;
+  result: Readonly<ResultConfigType>;
   cnConfig: Readonly<CnConfigType>;
   instantGenerationMode: boolean;
   audio: Readonly<AudioConfigType>;
-  canvasSize: [number, number];
-  resultSize: [number, number];
 }>;
 
 export enum Actions {
@@ -60,7 +71,6 @@ export enum Actions {
   setCnProgress = "SET_CONTROL_NET_PROGRESS",
   setModal = "SET_MODAL",
   setZenMode = "SET_ZEN_MODE",
-  setResultImages = "SET_RESULT_IMAGES",
   setPaintImage = "SET_PAINT_IMAGE",
   setEmptyImage = "SET_EMPTY_IMAGE",
   increasePaintImageIndex = "INCREASE_PAINT_IMAGE_INDEX",
@@ -75,6 +85,7 @@ export enum Actions {
   setCanvasHeight = "SET_CANVAS_HEIGHT",
   setResultWidth = "SET_RESULT_WIDTH",
   setResultHeight = "SET_RESULT_HEIGHT",
+  setResultImages = "SET_RESULT_IMAGES",
 }
 
 export type ActionType = ActType<typeof actions>;

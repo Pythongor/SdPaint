@@ -103,8 +103,12 @@ const PaintingTools: React.FC<PaintingToolsProps> = ({
   );
 };
 
-const MSTP = ({ resultImages, cnConfig, emptyImage }: StateType) => ({
-  resultImages,
+const MSTP = ({
+  result: { images },
+  cnConfig,
+  canvas: { emptyImage },
+}: StateType) => ({
+  resultImages: images,
   cnConfig,
   emptyImage,
 });

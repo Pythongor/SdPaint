@@ -43,7 +43,7 @@ export const CanvasResizer: React.FC<CanvasResizerProps> = ({
   );
 };
 
-const MSTP = ({ canvasSize }: StateType) => ({ canvasSize });
+const MSTP = ({ canvas: { size } }: StateType) => ({ canvasSize: size });
 
 const MDTP = {
   setCanvasWidth,

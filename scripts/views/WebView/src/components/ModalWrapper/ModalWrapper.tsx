@@ -35,9 +35,9 @@ const ModalWrapper: React.FC<ImageViewerProps> = ({
   );
 };
 
-const MSTP = ({ modal, resultImages }: StateType) => ({
+const MSTP = ({ modal, result: { images } }: StateType) => ({
   modal,
-  resultImages,
+  resultImages: images,
 });
 
 const MDTP = { setModal };

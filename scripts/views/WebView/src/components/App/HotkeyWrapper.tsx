@@ -35,7 +35,7 @@ type HotkeyWrapperProps = StateProps &
 const HotkeyWrapper: React.FC<HotkeyWrapperProps> = ({
   children,
   modal,
-  resultImage,
+  resultImages,
   paintImage,
   cnConfig,
   isZenModeOn,
@@ -75,8 +75,8 @@ const HotkeyWrapper: React.FC<HotkeyWrapperProps> = ({
   }, [paintImage, setResultImages, setCnProgress, audio]);
 
   const memoizedDownload = useCallback(
-    () => downloadImages(resultImage),
-    [resultImage]
+    () => downloadImages(resultImages),
+    [resultImages]
   );
 
   const handleEscape = useCallback(() => {
@@ -140,14 +140,14 @@ const HotkeyWrapper: React.FC<HotkeyWrapperProps> = ({
       KeyZ_c: () => decreasePaintImageIndex(),
       KeyZ_cs: () => increasePaintImageIndex(),
     },
-    [cnConfig.seed, paintImage, resultImage, isZenModeOn, modal]
+    [cnConfig.seed, paintImage, resultImages, isZenModeOn, modal]
   );
   return <>{children}</>;
 };
 
 const MSTP = (state: StateType) => ({
   modal: state.modal,
-  resultImage: state.resultImages,
+  resultImages: state.result.images,
   paintImage: getPaintImage(state),
   cnConfig: state.cnConfig,
   isZenModeOn: state.isZenModeOn,
