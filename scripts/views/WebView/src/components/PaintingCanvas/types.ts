@@ -11,7 +11,7 @@ export type UseBrushProps = {
   mousePos: PointType;
   instantGenerationMode: boolean;
   setMouseCoordinates: (event: any) => PointType;
-  setPaintImage: PayloadActionCreator<Actions.setPaintImage, string>;
+  setCanvasImage: PayloadActionCreator<Actions.setCanvasImage, string>;
   setCnProgress: PayloadActionCreator<Actions.setCnProgress, number>;
   setResultImages: PayloadActionCreator<Actions.setResultImages, string[]>;
   setErasingByMouse: PayloadActionCreator<Actions.setErasingByMouse, boolean>;

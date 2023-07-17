@@ -4,7 +4,7 @@ import { AudioConfigType, AudioSignalType, StateType } from "store/types";
 import { PayloadActionCreator } from "typesafe-actions";
 import { Actions } from "store/types";
 import { sendImage, retryRequest, getImage, catchError } from "api";
-import { getPaintImage } from "store/selectors";
+import { getCanvasImage } from "store/selectors";
 import {
   setResultImages,
   setCnProgress,
@@ -124,7 +124,7 @@ const GenerateGroup: React.FC<GenerateGroupProps> = ({
 };
 
 const MSTP = (state: StateType) => ({
-  paintImage: getPaintImage(state),
+  paintImage: getCanvasImage(state),
   imagesCount: state.cnConfig.batch_size,
   audio: state.audio,
 });

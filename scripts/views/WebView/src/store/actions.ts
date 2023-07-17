@@ -39,15 +39,15 @@ export const setResultImages = createAction(Actions.setResultImages)<
   string[]
 >();
 
-export const setPaintImage = createAction(Actions.setPaintImage)<string>();
+export const setCanvasImage = createAction(Actions.setCanvasImage)<string>();
 
 export const setEmptyImage = createAction(Actions.setEmptyImage)<string>();
-export const increasePaintImageIndex = createAction(
-  Actions.increasePaintImageIndex
+export const increaseCanvasImageIndex = createAction(
+  Actions.increaseCanvasImageIndex
 )();
 
-export const decreasePaintImageIndex = createAction(
-  Actions.decreasePaintImageIndex
+export const decreaseCanvasImageIndex = createAction(
+  Actions.decreaseCanvasImageIndex
 )();
 
 export const setCnConfig = createAction(Actions.setCnConfig)<
@@ -86,10 +86,10 @@ export default {
   setModal,
   setZenMode,
   setResultImages,
-  setPaintImage,
+  setCanvasImage,
   setEmptyImage,
-  increasePaintImageIndex,
-  decreasePaintImageIndex,
+  increaseCanvasImageIndex,
+  decreaseCanvasImageIndex,
   setCnConfig,
   setScrollTop,
   setInstantGenerationMode,

@@ -164,7 +164,7 @@ export default createReducer<StateType, ActionType>(initialState)
       currentImageIndex: 0,
     },
   }))
-  .handleAction(actions.setPaintImage, (state, { payload }) => {
+  .handleAction(actions.setCanvasImage, (state, { payload }) => {
     const { imagesStack, currentImageIndex } = state.canvas;
     const isStackEmpty = !imagesStack.length;
     const isOverflow = imagesStack.length >= IMAGES_CLIP_BUFFER_OVERFLOW;
@@ -194,11 +194,11 @@ export default createReducer<StateType, ActionType>(initialState)
       canvas: {
         ...state.canvas,
         imagesStack: newStack,
-        currentPaintImageIndex: newIndex,
+        currentImageIndex: newIndex,
       },
     };
   })
-  .handleAction(actions.increasePaintImageIndex, (state) => {
+  .handleAction(actions.increaseCanvasImageIndex, (state) => {
     const currentImageIndex = Math.min(
       IMAGES_CLIP_BUFFER_OVERFLOW,
       state.canvas.imagesStack.length - 1,
@@ -206,12 +206,9 @@ export default createReducer<StateType, ActionType>(initialState)
     );
     return { ...state, canvas: { ...state.canvas, currentImageIndex } };
   })
-  .handleAction(actions.decreasePaintImageIndex, (state) => {
-    const currentPaintImageIndex = Math.max(
-      0,
-      state.canvas.currentImageIndex - 1
-    );
-    return { ...state, canvas: { ...state.canvas, currentPaintImageIndex } };
+  .handleAction(actions.decreaseCanvasImageIndex, (state) => {
+    const currentImageIndex = Math.max(0, state.canvas.currentImageIndex - 1);
+    return { ...state, canvas: { ...state.canvas, currentImageIndex } };
   })
   .handleAction(actions.setCnConfig, (state, { payload }) => ({
     ...state,

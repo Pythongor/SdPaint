@@ -5,7 +5,7 @@ import { getCnConfig, sendCnConfig } from "api";
 import { default as BrushInput } from "./components/BrushInput";
 import ToolsCheckboxes from "./components/ToolsCheckboxes";
 import { default as GenerateButton } from "./components/GenerateGroup";
-import { setPaintImage, setCnConfig, setModal } from "store/actions";
+import { setCanvasImage, setCnConfig, setModal } from "store/actions";
 import cn from "classnames";
 import styles from "./PaintingTools.module.scss";
 
@@ -31,7 +31,7 @@ const PaintingTools: React.FC<PaintingToolsProps> = ({
   resultImages,
   cnConfig,
   emptyImage,
-  setPaintImage,
+  setCanvasImage,
   setCnConfig,
   setModal,
 }) => {
@@ -41,7 +41,7 @@ const PaintingTools: React.FC<PaintingToolsProps> = ({
       setCnConfig(fileConfig);
     });
   const saveConfig = useCallback(() => sendCnConfig(cnConfig), [cnConfig]);
-  const clear = useCallback(() => setPaintImage(emptyImage), [emptyImage]);
+  const clear = useCallback(() => setCanvasImage(emptyImage), [emptyImage]);
 
   return (
     <div className={styles.base}>
@@ -113,6 +113,6 @@ const MSTP = ({
   emptyImage,
 });
 
-const MDTP = { setPaintImage, setCnConfig, setModal };
+const MDTP = { setCanvasImage, setCnConfig, setModal };
 
 export default connect(MSTP, MDTP)(PaintingTools);

@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import {
-  setPaintImage,
+  setCanvasImage,
   setResultImages,
   setCnProgress,
   setEmptyImage,
@@ -14,7 +14,7 @@ import { useCanvas, clear } from "./canvasHelpers";
 import CanvasResizer from "./CanvasResizer";
 import cn from "classnames";
 import styles from "./PaintingCanvas.module.scss";
-import { getPaintImage } from "store/selectors";
+import { getCanvasImage } from "store/selectors";
 
 type StateProps = ReturnType<typeof MSTP>;
 type DispatchProps = typeof MDTP;
@@ -22,12 +22,12 @@ type PaintingCanvasProps = StateProps & DispatchProps;
 
 export const PaintingCanvas: React.FC<PaintingCanvasProps> = ({
   scrollTop,
-  paintImage,
+  canvasImage,
   instantGenerationMode,
   canvasImagesStack,
   isZenModeOn,
   canvasSize,
-  setPaintImage,
+  setCanvasImage,
   setCnProgress,
   setResultImages,
   setEmptyImage,
@@ -54,17 +54,17 @@ export const PaintingCanvas: React.FC<PaintingCanvasProps> = ({
   useEffect(() => {
     if (!paintingRef?.current || !context) return;
     const currentImage = paintingRef.current.toDataURL();
-    if (paintImage === "") {
+    if (canvasImage === "") {
       clear(paintingRef, context);
-    } else if (currentImage !== paintImage) {
+    } else if (currentImage !== canvasImage) {
       const image = new Image();
-      image.src = paintImage;
+      image.src = canvasImage;
       image.onload = function () {
         clear(paintingRef, context);
         context.drawImage(image, 0, 0);
       };
     }
-  }, [paintImage, paintingRef?.current, context, canvasSize]);
+  }, [canvasImage, paintingRef?.current, context, canvasSize]);
 
   useEffect(() => {
     resize();
@@ -79,7 +79,7 @@ export const PaintingCanvas: React.FC<PaintingCanvasProps> = ({
       mousePos,
       instantGenerationMode,
       setMouseCoordinates,
-      setPaintImage,
+      setCanvasImage,
       setCnProgress,
       setResultImages,
       setErasingByMouse,
@@ -116,7 +116,7 @@ export const PaintingCanvas: React.FC<PaintingCanvasProps> = ({
 };
 
 const MSTP = (state: StateType) => ({
-  paintImage: getPaintImage(state),
+  canvasImage: getCanvasImage(state),
   canvasImagesStack: state.canvas.imagesStack,
   scrollTop: state.scrollTop,
   instantGenerationMode: state.instantGenerationMode,
@@ -126,7 +126,7 @@ const MSTP = (state: StateType) => ({
 });
 
 const MDTP = {
-  setPaintImage,
+  setCanvasImage,
   setCnProgress,
   setResultImages,
   setEmptyImage,

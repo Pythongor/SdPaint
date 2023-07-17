@@ -6,7 +6,7 @@ const brushWidthMap = [1, 2, 3, 5, 10, 15, 20, 30, 40, 50];
 export const getRealBrushWidth = ({ brushConfig: { width } }: StateType) =>
   brushWidthMap[width - 1];
 
-export const getPaintImage = ({
+export const getCanvasImage = ({
   canvas: { currentImageIndex, imagesStack },
 }: StateType) => imagesStack[currentImageIndex];
 

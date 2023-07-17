@@ -24,7 +24,7 @@ export const useBrush = ({
   mousePos,
   instantGenerationMode,
   setMouseCoordinates,
-  setPaintImage,
+  setCanvasImage,
   setCnProgress,
   setResultImages,
   setErasingByMouse,
@@ -125,7 +125,7 @@ export const useBrush = ({
       context.strokeStyle = isErasing ? "white" : "black";
       onPointerUpFunc(event);
       const paintImage = paintingRef.current.toDataURL();
-      setPaintImage(paintImage);
+      setCanvasImage(paintImage);
       if (instantGenerationMode) {
         generate(paintImage, setResultImages, setCnProgress, audioFunc);
       }

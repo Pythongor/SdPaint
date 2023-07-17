@@ -2,9 +2,9 @@ import React, { useCallback } from "react";
 import { connect } from "react-redux";
 import { StateType } from "store/types";
 import {
-  decreasePaintImageIndex,
-  increasePaintImageIndex,
-  setPaintImage,
+  decreaseCanvasImageIndex,
+  increaseCanvasImageIndex,
+  setCanvasImage,
   setBrushWidth,
   setBrushType,
   setErasingBySwitch,
@@ -20,7 +20,7 @@ import {
 } from "store/actions";
 import { useHotKeys } from "hooks";
 import { downloadImages } from "components/PaintingTools/PaintingTools";
-import { getPaintImage } from "store/selectors";
+import { getCanvasImage } from "store/selectors";
 import {
   generate,
   handleAudioSignal,
@@ -36,13 +36,13 @@ const HotkeyWrapper: React.FC<HotkeyWrapperProps> = ({
   children,
   modal,
   resultImages,
-  paintImage,
+  canvasImage,
   cnConfig,
   isZenModeOn,
   audio,
-  decreasePaintImageIndex,
-  increasePaintImageIndex,
-  setPaintImage,
+  decreaseCanvasImageIndex,
+  increaseCanvasImageIndex,
+  setCanvasImage,
   setBrushWidth,
   setBrushType,
   setBrushFilling,
@@ -71,8 +71,8 @@ const HotkeyWrapper: React.FC<HotkeyWrapperProps> = ({
   );
 
   const memoizedGenerate = useCallback(() => {
-    generate(paintImage, setResultImages, setCnProgress, audioFunc);
-  }, [paintImage, setResultImages, setCnProgress, audio]);
+    generate(canvasImage, setResultImages, setCnProgress, audioFunc);
+  }, [canvasImage, setResultImages, setCnProgress, audio]);
 
   const memoizedDownload = useCallback(
     () => downloadImages(resultImages),
@@ -118,7 +118,7 @@ const HotkeyWrapper: React.FC<HotkeyWrapperProps> = ({
       Enter: memoizedGenerate,
       Equal: () => setBrushWidth("+"),
       Minus: () => setBrushWidth("-"),
-      Delete: () => setPaintImage(""),
+      Delete: () => setCanvasImage(""),
       Backspace: () => skipRendering(),
       Backquote: () => changeSeed(true),
       Backquote_s: () => changeSeed(),
@@ -135,12 +135,12 @@ const HotkeyWrapper: React.FC<HotkeyWrapperProps> = ({
       KeyR: () => setBrushType("rectangle"),
       KeyS: memoizedToggleSettings,
       KeyV: memoizedToggleViewer,
-      KeyY_c: () => increasePaintImageIndex(),
+      KeyY_c: () => increaseCanvasImageIndex(),
       KeyZ: () => setZenMode("switch"),
-      KeyZ_c: () => decreasePaintImageIndex(),
-      KeyZ_cs: () => increasePaintImageIndex(),
+      KeyZ_c: () => decreaseCanvasImageIndex(),
+      KeyZ_cs: () => increaseCanvasImageIndex(),
     },
-    [cnConfig.seed, paintImage, resultImages, isZenModeOn, modal]
+    [cnConfig.seed, canvasImage, resultImages, isZenModeOn, modal]
   );
   return <>{children}</>;
 };
@@ -148,16 +148,16 @@ const HotkeyWrapper: React.FC<HotkeyWrapperProps> = ({
 const MSTP = (state: StateType) => ({
   modal: state.modal,
   resultImages: state.result.images,
-  paintImage: getPaintImage(state),
+  canvasImage: getCanvasImage(state),
   cnConfig: state.cnConfig,
   isZenModeOn: state.isZenModeOn,
   audio: state.audio,
 });
 
 const MDTP = {
-  decreasePaintImageIndex,
-  increasePaintImageIndex,
-  setPaintImage,
+  decreaseCanvasImageIndex,
+  increaseCanvasImageIndex,
+  setCanvasImage,
   setBrushWidth,
   setBrushFilling,
   setBrushType,
