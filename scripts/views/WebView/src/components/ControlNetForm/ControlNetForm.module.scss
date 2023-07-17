@@ -5,7 +5,7 @@
   display: flex;
   justify-content: space-between;
   gap: 10px;
-  margin: 20px 20px 0;
+  margin: 10px 10px 0;
   background-color: $blue;
   border-radius: 5px;
   padding: 10px;
@@ -13,7 +13,7 @@
   z-index: 1;
   border: 1px solid $deepBlue;
   top: 0;
-  width: calc(100% - 40px);
+  width: calc(100% - 20px);
 
   &__zen {
     position: absolute;
