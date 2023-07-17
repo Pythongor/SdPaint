@@ -6,7 +6,7 @@ import { UseBrushProps, PointType } from "../types";
 import {
   generate,
   handleAudioSignal,
-} from "components/PaintingTools/components/GenerateButton";
+} from "components/PaintingTools/components/GenerateGroup";
 import { clear } from "../canvasHelpers";
 
 type Props = UseBrushProps & {

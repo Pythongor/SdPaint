@@ -40,7 +40,7 @@ export type StateType = Readonly<{
   cnProgress: number;
   modal: ModalType;
   isZenModeOn: boolean;
-  resultImage: string | string[];
+  resultImages: string[];
   paintImagesStack: string[];
   emptyImage: string;
   currentPaintImageIndex: number;

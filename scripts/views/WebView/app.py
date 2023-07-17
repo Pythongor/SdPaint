@@ -1,7 +1,5 @@
 
 import json
-import base64
-from io import BytesIO
 import requests
 import threading
 
@@ -101,7 +99,7 @@ async def root(data: Request):
         state["main_json_data"]["seed"] = data["config"]["seed"]
         state["main_json_data"]["width"] = data["config"]["width"]
         state["main_json_data"]["height"] = data["config"]["height"]
-        state["main_json_data"]["n_iter"] = 1
+        state["main_json_data"]["batch_size"] = data["config"]["batch_size"]
         t = threading.Thread(target=send_request)
         t.start()
 

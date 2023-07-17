@@ -7,7 +7,7 @@ const initialState: Readonly<StateType> = {
   modal: null,
   isZenModeOn: false,
   cnProgress: 0,
-  resultImage: "",
+  resultImages: [],
   paintImagesStack: [],
   emptyImage: "",
   currentPaintImageIndex: -1,
@@ -146,7 +146,7 @@ export default createReducer<StateType, ActionType>(initialState)
   })
   .handleAction(actions.setResultImages, (state, { payload }) => ({
     ...state,
-    resultImage: payload,
+    resultImages: payload,
   }))
   .handleAction(actions.setEmptyImage, (state, { payload }) => ({
     ...state,

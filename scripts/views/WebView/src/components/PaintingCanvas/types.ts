@@ -13,10 +13,7 @@ export type UseBrushProps = {
   setMouseCoordinates: (event: any) => PointType;
   setPaintImage: PayloadActionCreator<Actions.setPaintImage, string>;
   setCnProgress: PayloadActionCreator<Actions.setCnProgress, number>;
-  setResultImages: PayloadActionCreator<
-    Actions.setResultImages,
-    string | string[]
-  >;
+  setResultImages: PayloadActionCreator<Actions.setResultImages, string[]>;
   setErasingByMouse: PayloadActionCreator<Actions.setErasingByMouse, boolean>;
   setAudioReady: PayloadActionCreator<Actions.setAudioReady, boolean>;
 };

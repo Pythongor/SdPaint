@@ -8,6 +8,15 @@
   height: fit-content;
 }
 
+.container {
+  min-width: 512px;
+  min-height: 512px;
+  display: grid;
+  &__2c {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
 .title {
   color: $beige;
   text-align: center;
@@ -15,11 +24,37 @@
   height: 20px;
 }
 
-.canvas {
+.imageWrapper {
+  position: relative;
+}
+
+.seed {
+  position: absolute;
+  left: 50%;
+  top: 10px;
+  transform: translateX(-50%, -50%);
+  background-color: $deepBlue;
+  color: $beige;
+  font-size: 20px;
+  padding: 5px;
+  border-radius: 5px;
+  opacity: 0;
+  transition: opacity 0.3s;
+
+  .imageWrapper:hover & {
+    opacity: 0.7;
+  }
+}
+
+.image {
   display: block;
   background-color: $blue;
   cursor: pointer;
-  transition: opacity 0.3s;
+  transition: opacity 0.3s, filter 0.3s;
+
+  &:hover {
+    filter: sepia(0.2) brightness(0.9);
+  }
 
   &__waiting {
     opacity: 0.5;

@@ -11,17 +11,13 @@ type DispatchProps = typeof MDTP;
 type ImageViewerProps = StateProps & DispatchProps;
 
 const ModalWrapper: React.FC<ImageViewerProps> = ({
-  resultImage,
+  resultImages,
   modal,
   setModal,
 }) => {
   const contentMap = {
     imageViewer: () => (
-      <img
-        className={styles.image}
-        src={Array.isArray(resultImage) ? resultImage[0] : resultImage}
-        alt=""
-      ></img>
+      <img className={styles.image} src={resultImages[0]} alt=""></img>
     ),
     settings: Settings,
     empty: () => null,
@@ -39,9 +35,9 @@ const ModalWrapper: React.FC<ImageViewerProps> = ({
   );
 };
 
-const MSTP = ({ modal, resultImage }: StateType) => ({
+const MSTP = ({ modal, resultImages }: StateType) => ({
   modal,
-  resultImage,
+  resultImages,
 });
 
 const MDTP = { setModal };

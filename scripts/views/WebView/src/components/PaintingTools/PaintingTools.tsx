@@ -4,7 +4,7 @@ import { StateType } from "store/types";
 import { getCnConfig, sendCnConfig } from "api";
 import { default as BrushInput } from "./components/BrushInput";
 import ToolsCheckboxes from "./components/ToolsCheckboxes";
-import { default as GenerateButton } from "./components/GenerateButton";
+import { default as GenerateButton } from "./components/GenerateGroup";
 import { setPaintImage, setCnConfig, setModal } from "store/actions";
 import cn from "classnames";
 import styles from "./PaintingTools.module.scss";
@@ -28,7 +28,7 @@ export const downloadImages = (images: string | string[]) => {
 };
 
 const PaintingTools: React.FC<PaintingToolsProps> = ({
-  resultImage,
+  resultImages,
   cnConfig,
   emptyImage,
   setPaintImage,
@@ -49,7 +49,7 @@ const PaintingTools: React.FC<PaintingToolsProps> = ({
         <BrushInput />
         <button
           className={cn(styles.button, styles.button__single)}
-          onClick={() => downloadImages(resultImage)}
+          onClick={() => downloadImages(resultImages)}
           title="Download result image (if any)"
         >
           Download image
@@ -103,8 +103,8 @@ const PaintingTools: React.FC<PaintingToolsProps> = ({
   );
 };
 
-const MSTP = ({ resultImage, cnConfig, emptyImage }: StateType) => ({
-  resultImage,
+const MSTP = ({ resultImages, cnConfig, emptyImage }: StateType) => ({
+  resultImages,
   cnConfig,
   emptyImage,
 });

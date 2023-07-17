@@ -24,7 +24,7 @@ import { getPaintImage } from "store/selectors";
 import {
   generate,
   handleAudioSignal,
-} from "components/PaintingTools/components/GenerateButton";
+} from "components/PaintingTools/components/GenerateGroup";
 import { getCnConfig, sendCnConfig, skipRendering } from "api";
 
 type StateProps = ReturnType<typeof MSTP>;
@@ -108,7 +108,9 @@ const HotkeyWrapper: React.FC<HotkeyWrapperProps> = ({
     });
   };
 
-  const saveConfig = useCallback(() => sendCnConfig(cnConfig), [cnConfig]);
+  const saveConfig = useCallback(() => {
+    sendCnConfig(cnConfig);
+  }, [cnConfig]);
 
   useHotKeys(
     {
@@ -145,7 +147,7 @@ const HotkeyWrapper: React.FC<HotkeyWrapperProps> = ({
 
 const MSTP = (state: StateType) => ({
   modal: state.modal,
-  resultImage: state.resultImage,
+  resultImage: state.resultImages,
   paintImage: getPaintImage(state),
   cnConfig: state.cnConfig,
   isZenModeOn: state.isZenModeOn,

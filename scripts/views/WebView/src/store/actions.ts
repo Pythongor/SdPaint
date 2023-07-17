@@ -36,7 +36,7 @@ export const setZenMode = createAction(Actions.setZenMode)<
 export const setModal = createAction(Actions.setModal)<ModalType>();
 
 export const setResultImages = createAction(Actions.setResultImages)<
-  string | string[]
+  string[]
 >();
 
 export const setPaintImage = createAction(Actions.setPaintImage)<string>();

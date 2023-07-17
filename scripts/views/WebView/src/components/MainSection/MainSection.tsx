@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { StateType } from "store/types";
-import { PaintingTools, PaintingCanvas, ResultCanvas } from "components";
+import { PaintingTools, PaintingCanvas, ResultContainer } from "components";
 import cn from "classnames";
 import styles from "./MainSection.module.scss";
 
@@ -12,7 +12,7 @@ const MainSection: React.FC<StateProps> = ({ isZenModeOn }) => {
     <div className={cn(styles.base, isZenModeOn && styles.base__zen)}>
       {!isZenModeOn && <PaintingTools />}
       <PaintingCanvas />
-      <ResultCanvas />
+      <ResultContainer />
     </div>
   );
 };
