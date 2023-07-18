@@ -3,6 +3,7 @@ import { StateType } from "store/types";
 import { connect } from "react-redux";
 import { setModal } from "store/actions";
 import Settings from "./Settings";
+import ImagesViewer from "./ImagesViewer";
 import cn from "classnames";
 import styles from "./ModalWrapper.module.scss";
 
@@ -16,9 +17,7 @@ const ModalWrapper: React.FC<ImageViewerProps> = ({
   setModal,
 }) => {
   const contentMap = {
-    imageViewer: () => (
-      <img className={styles.image} src={resultImages[0]} alt=""></img>
-    ),
+    imageViewer: ImagesViewer,
     settings: Settings,
     empty: () => null,
   };

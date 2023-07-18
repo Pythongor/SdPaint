@@ -71,6 +71,10 @@ export const setMultipleImagesMode = createAction(
   Actions.setMultipleImagesMode
 )<boolean>();
 
+export const setViewedImageIndex = createAction(
+  Actions.setViewedImageIndex
+)<number>();
+
 // other
 export const setScrollTop = createAction(Actions.setScrollTop)<number>();
 
@@ -110,6 +114,7 @@ export default {
   setResultHeight,
   setMultipleImagesMode,
   setResultImagesCount,
+  setViewedImageIndex,
   setCnProgress,
   setModal,
   setZenMode,

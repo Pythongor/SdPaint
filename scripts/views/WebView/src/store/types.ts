@@ -81,6 +81,7 @@ export enum Actions {
   setResultImages = "RESULT__SET_IMAGES",
   setResultImagesCount = "RESULT__SET_IMAGES_COUNT",
   setMultipleImagesMode = "RESULT__SET_MULTIPLE_IMAGES_MODE",
+  setViewedImageIndex = "RESULT__SET_VIEWED_IMAGE_INDEX",
   setCnProgress = "SET_CONTROL_NET_PROGRESS",
   setInstantGenerationMode = "SET_INSTANT_GENERATION_MODE",
   setModal = "SET_MODAL",

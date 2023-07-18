@@ -245,6 +245,13 @@ export default createReducer<StateType, ActionType>(initialState)
       batch_size: payload ? state.result.imagesCount : 1,
     },
   }))
+  .handleAction(actions.setViewedImageIndex, (state, { payload }) => ({
+    ...state,
+    result: {
+      ...state.result,
+      viewedImageIndex: payload,
+    },
+  }))
   .handleAction(actions.setScrollTop, (state, { payload }) => ({
     ...state,
     scrollTop: payload,

@@ -1,7 +1,12 @@
-import React, { useRef, useCallback, useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { StateType } from "store/types";
 import { connect } from "react-redux";
-import { setModal, setResultWidth, setResultHeight } from "store/actions";
+import {
+  setModal,
+  setResultWidth,
+  setResultHeight,
+  setViewedImageIndex,
+} from "store/actions";
 import { skipRendering } from "api";
 import cn from "classnames";
 import styles from "./ResultContainer.module.scss";
@@ -15,10 +20,11 @@ const ResultContainer: React.FC<ResultCanvasProps> = ({
   images,
   imageSize,
   isZenModeOn,
+  seed,
   setModal,
   setResultWidth,
   setResultHeight,
-  seed,
+  setViewedImageIndex,
 }) => {
   const isEmpty = images.length === 0;
   const isBatch = images.length > 1;
@@ -61,12 +67,14 @@ const ResultContainer: React.FC<ResultCanvasProps> = ({
               <img
                 className={cn(
                   styles.image,
-                  cnProgress !== 0 && !isZenModeOn && styles.image__waiting,
-                  !images && styles.image__empty
+                  cnProgress !== 0 && !isZenModeOn && styles.image__waiting
                 )}
                 width={imageSize[0]}
                 height={imageSize[1]}
-                onClick={() => setModal("imageViewer")}
+                onClick={() => {
+                  setViewedImageIndex(index);
+                  setModal("imageViewer");
+                }}
                 src={image}
               ></img>
               {isBatch && (
@@ -106,6 +114,6 @@ const MSTP = ({
   seed,
 });
 
-const MDTP = { setModal, setResultWidth, setResultHeight };
+const MDTP = { setModal, setResultWidth, setResultHeight, setViewedImageIndex };
 
 export default connect(MSTP, MDTP)(ResultContainer);
