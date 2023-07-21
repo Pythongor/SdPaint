@@ -3,12 +3,13 @@
   flex-wrap: wrap;
   justify-content: center;
   gap: 10px;
-  padding: 10px;
+  padding: 10px 10px 0;
 
   &__zen {
     min-height: calc(100vh - 100px);
     height: fit-content;
     margin: 10px 0 40px;
     justify-content: space-evenly;
+    align-items: center;
   }
 }

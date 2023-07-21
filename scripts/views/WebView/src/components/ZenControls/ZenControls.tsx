@@ -10,6 +10,7 @@ import {
   setInstantGenerationMode,
   setZenMode,
   setAudioEnabled,
+  setMultipleImagesMode,
 } from "store/actions";
 import { getErasingState } from "store/selectors";
 import cn from "classnames";
@@ -27,6 +28,7 @@ const ZenIndicator: React.FC<ResultCanvasProps> = ({
   isErasing,
   instantGenerationMode,
   audioEnabled,
+  isMultipleModeOn,
   setBrushWidth,
   setBrushFilling,
   setBrushType,
@@ -34,6 +36,7 @@ const ZenIndicator: React.FC<ResultCanvasProps> = ({
   setInstantGenerationMode,
   setZenMode,
   setAudioEnabled,
+  setMultipleImagesMode,
 }) => {
   const [isHide, setIsHide] = useState(false);
 
@@ -91,6 +94,16 @@ const ZenIndicator: React.FC<ResultCanvasProps> = ({
         <button
           className={cn(
             styles.indicator,
+            !isMultipleModeOn && styles.indicator__inactive
+          )}
+          onClick={() => setMultipleImagesMode(!isMultipleModeOn)}
+          title="Switch audio signal after image generation is completed"
+        >
+          M
+        </button>
+        <button
+          className={cn(
+            styles.indicator,
             !!audioEnabled && styles.indicator__eraser
           )}
           onClick={() => setAudioEnabled("switch")}
@@ -130,6 +143,7 @@ const MSTP = (state: StateType) => ({
   isErasing: getErasingState(state),
   instantGenerationMode: state.instantGenerationMode,
   audioEnabled: state.audio.isEnabled,
+  isMultipleModeOn: state.result.isMultipleImagesModeOn,
 });
 
 const MDTP = {
@@ -140,6 +154,7 @@ const MDTP = {
   setInstantGenerationMode,
   setZenMode,
   setAudioEnabled,
+  setMultipleImagesMode,
 };
 
 export default connect(MSTP, MDTP)(ZenIndicator);
