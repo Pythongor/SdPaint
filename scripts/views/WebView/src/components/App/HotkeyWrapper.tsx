@@ -17,6 +17,7 @@ import {
   setModal,
   setAudioReady,
   setAudioEnabled,
+  setMultipleImagesMode,
 } from "store/actions";
 import { useHotKeys } from "hooks";
 import { downloadImages } from "components/PaintingTools/PaintingTools";
@@ -55,6 +56,7 @@ const HotkeyWrapper: React.FC<HotkeyWrapperProps> = ({
   setModal,
   setAudioReady,
   setAudioEnabled,
+  setMultipleImagesMode,
 }) => {
   const changeSeed = useCallback(
     (ascend?: boolean) => {
@@ -131,6 +133,7 @@ const HotkeyWrapper: React.FC<HotkeyWrapperProps> = ({
       KeyF: () => setBrushFilling("switch"),
       KeyI: () => setInstantGenerationMode("switch"),
       KeyL: () => setBrushType("line"),
+      KeyM: () => setMultipleImagesMode("switch"),
       KeyP: () => setBrushType("pencil"),
       KeyR: () => setBrushType("rectangle"),
       KeyS: memoizedToggleSettings,
@@ -170,6 +173,7 @@ const MDTP = {
   setModal,
   setAudioReady,
   setAudioEnabled,
+  setMultipleImagesMode,
 };
 
 export default connect(MSTP, MDTP)(HotkeyWrapper);

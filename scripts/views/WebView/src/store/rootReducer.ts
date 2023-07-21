@@ -2,6 +2,8 @@ import { createReducer } from "typesafe-actions";
 import { ActionType, StateType } from "./types";
 import actions from "./actions";
 
+const IMAGES_CLIP_BUFFER_OVERFLOW = 20;
+
 const initialState: Readonly<StateType> = {
   scrollTop: 0,
   modal: null,
@@ -46,8 +48,6 @@ const initialState: Readonly<StateType> = {
     signalType: "ringtone",
   },
 };
-
-const IMAGES_CLIP_BUFFER_OVERFLOW = 20;
 
 export default createReducer<StateType, ActionType>(initialState)
   .handleAction(actions.setAudioEnabled, (state, { payload }) => {
@@ -234,17 +234,33 @@ export default createReducer<StateType, ActionType>(initialState)
       imagesCount: payload,
     },
   }))
-  .handleAction(actions.setMultipleImagesMode, (state, { payload }) => ({
-    ...state,
-    result: {
-      ...state.result,
-      isMultipleImagesModeOn: payload,
-    },
-    cnConfig: {
-      ...state.cnConfig,
-      batch_size: payload ? state.result.imagesCount : 1,
-    },
-  }))
+  .handleAction(actions.setMultipleImagesMode, (state, { payload }) => {
+    if (payload === "switch")
+      return {
+        ...state,
+        result: {
+          ...state.result,
+          isMultipleImagesModeOn: !state.result.isMultipleImagesModeOn,
+        },
+        cnConfig: {
+          ...state.cnConfig,
+          batch_size: state.result.isMultipleImagesModeOn
+            ? 1
+            : state.result.imagesCount,
+        },
+      };
+    return {
+      ...state,
+      result: {
+        ...state.result,
+        isMultipleImagesModeOn: payload,
+      },
+      cnConfig: {
+        ...state.cnConfig,
+        batch_size: payload ? state.result.imagesCount : 1,
+      },
+    };
+  })
   .handleAction(actions.setViewedImageIndex, (state, { payload }) => ({
     ...state,
     result: {

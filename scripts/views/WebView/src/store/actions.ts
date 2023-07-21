@@ -69,7 +69,7 @@ export const setResultImagesCount = createAction(
 
 export const setMultipleImagesMode = createAction(
   Actions.setMultipleImagesMode
-)<boolean>();
+)<boolean | "switch">();
 
 export const setViewedImageIndex = createAction(
   Actions.setViewedImageIndex
