@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { StateType } from "store/types";
 import { connect } from "react-redux";
 import { setViewedImageIndex } from "store/actions";
@@ -14,27 +14,33 @@ const ImagesViewer: React.FC<ImageViewerProps> = ({
   viewedImageIndex,
   setViewedImageIndex,
 }) => {
+  useEffect(() => {
+    setViewedImageIndex(0);
+  }, [images]);
+
   return (
     <div className={styles.viewer}>
       <div className={styles.imageContainer}>
         <img className={styles.image} src={images[viewedImageIndex]} />
       </div>
-      <div
-        className={styles.carousel}
-        onClick={(event) => event.stopPropagation()}
-      >
-        {images.map((image, index) => (
-          <img
-            className={cn(
-              styles.carouselImage,
-              index === viewedImageIndex && styles.carouselImage__selected
-            )}
-            src={image}
-            onClick={() => setViewedImageIndex(index)}
-            key={index}
-          />
-        ))}
-      </div>
+      {images.length > 1 && (
+        <div
+          className={styles.carousel}
+          onClick={(event) => event.stopPropagation()}
+        >
+          {images.map((image, index) => (
+            <img
+              className={cn(
+                styles.carouselImage,
+                index === viewedImageIndex && styles.carouselImage__selected
+              )}
+              src={image}
+              onClick={() => setViewedImageIndex(index)}
+              key={index}
+            />
+          ))}
+        </div>
+      )}
     </div>
   );
 };
