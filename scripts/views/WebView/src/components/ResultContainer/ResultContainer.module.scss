@@ -16,6 +16,12 @@
   &__2c {
     grid-template-columns: 1fr 1fr;
   }
+  &__3c {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+  &__4c {
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+  }
 }
 
 .title {
@@ -33,7 +39,7 @@
   position: absolute;
   left: 50%;
   top: 10px;
-  transform: translateX(-50%, -50%);
+  transform: translateX(-50%);
   background-color: $deepBlue;
   color: $beige;
   font-size: 20px;
@@ -48,6 +54,8 @@
 }
 
 .image {
+  position: relative;
+  left: 1px;
   display: block;
   background-color: $blue;
   cursor: pointer;

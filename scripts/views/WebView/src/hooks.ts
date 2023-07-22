@@ -77,4 +77,9 @@ export const useClickOutside = <T extends HTMLElement, T2 extends HTMLElement>(
   }, [ref.current, ref2, ref2?.current]);
 };
 
-export const useCloseOnEscape = () => {};
+export const useResize = (func: () => any, deps: any[] = []) => {
+  useEffect(() => {
+    window.addEventListener("resize", func);
+    return () => window.removeEventListener("resize", func);
+  }, deps);
+};

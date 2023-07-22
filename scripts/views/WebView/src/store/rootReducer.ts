@@ -233,6 +233,12 @@ export default createReducer<StateType, ActionType>(initialState)
       ...state.result,
       imagesCount: payload,
     },
+    cnConfig: {
+      ...state.cnConfig,
+      batch_size: state.result.isMultipleImagesModeOn
+        ? payload
+        : state.cnConfig.batch_size,
+    },
   }))
   .handleAction(actions.setMultipleImagesMode, (state, { payload }) => {
     if (payload === "switch")

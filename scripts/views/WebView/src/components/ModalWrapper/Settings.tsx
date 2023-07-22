@@ -7,14 +7,13 @@ import {
   setAudioSignalType,
   setResultImagesCount,
 } from "store/actions";
-import cn from "classnames";
 import styles from "./ModalWrapper.module.scss";
 
 type StateProps = ReturnType<typeof MSTP>;
 type DispatchProps = typeof MDTP;
 type ImageViewerProps = StateProps & DispatchProps;
 
-const RESULT_IMAGES_GRID_TYPES = [2, 4, 6, 9, 12, 16];
+export const RESULT_IMAGES_GRID_TYPES = [2, 4, 6, 9, 12, 16] as const;
 
 const Settings: React.FC<ImageViewerProps> = ({
   instantGenerationMode,
