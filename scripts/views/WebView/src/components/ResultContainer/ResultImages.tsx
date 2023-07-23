@@ -1,44 +1,35 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { StateType } from "store/types";
 import { connect } from "react-redux";
-import {
-  setModal,
-  setResultWidth,
-  setResultHeight,
-  setViewedImageIndex,
-} from "store/actions";
+import { setResultWidth, setResultHeight, setCnConfig } from "store/actions";
 import { useResize } from "hooks";
-import { RESULT_IMAGES_GRID_TYPES } from "components/ModalWrapper/Settings";
+import ResultImage from "./ResultImage";
 import cn from "classnames";
 import styles from "./ResultContainer.module.scss";
 
-type LengthType = (typeof RESULT_IMAGES_GRID_TYPES)[number] | 1;
-type ImagesSizesMap = { [key in LengthType]: number };
-
 type StateProps = ReturnType<typeof MSTP>;
 type DispatchProps = typeof MDTP;
-type ResultCanvasProps = StateProps & DispatchProps;
+type ResultImagesProps = StateProps & DispatchProps;
 
-const ResultImages: React.FC<ResultCanvasProps> = ({
+const ResultImages: React.FC<ResultImagesProps> = ({
   cnProgress,
   images,
   imageSize,
   isZenModeOn,
-  seed,
   canvasWidth,
-  setModal,
+  seed,
   setResultWidth,
   setResultHeight,
-  setViewedImageIndex,
 }) => {
+  // TODO rework with server response
+  const [imageSeed, setImageSeed] = useState(seed);
   const [containerStyle, setContainerStyle] = useState(styles.container);
-  const isEmpty = images.length === 0;
-  const isBatch = images.length > 1;
 
   const setContainerLayout = useCallback(() => {
     const diffWithoutResult =
       window.innerWidth - (isZenModeOn ? 38 : 248) - canvasWidth;
     const containerStyles = [styles.container];
+
     if (images.length > 1) {
       if (images.length === 6) {
         if (diffWithoutResult - imageSize[0] > 0) {
@@ -66,7 +57,10 @@ const ResultImages: React.FC<ResultCanvasProps> = ({
 
   useResize(setContainerLayout, [images, imageSize, canvasWidth, isZenModeOn]);
 
-  useEffect(setContainerLayout, [imageSize, images, images]);
+  useEffect(() => {
+    setContainerLayout();
+    setImageSeed(seed);
+  }, [images, imageSize, canvasWidth, isZenModeOn]);
 
   useEffect(() => {
     const image = images[0];
@@ -86,41 +80,17 @@ const ResultImages: React.FC<ResultCanvasProps> = ({
       });
   }, [images, canvasWidth, imageSize, isZenModeOn]);
 
-  const imageSizesMap: ImagesSizesMap = {
-    1: 1,
-    2: 2,
-    4: 2,
-    6: 2,
-    9: 3,
-    12: 3,
-    16: 4,
-  };
-
-  const oneImageSize = [
-    imageSize[0] / imageSizesMap[images.length as LengthType],
-    imageSize[1] / imageSizesMap[images.length as LengthType],
-  ];
-
   return (
     <div className={containerStyle}>
-      {!isEmpty &&
+      {images.length > 0 &&
         images.map((image, index) => (
-          <div className={styles.imageWrapper} key={index}>
-            <img
-              className={cn(
-                styles.image,
-                cnProgress !== 0 && !isZenModeOn && styles.image__waiting
-              )}
-              width={oneImageSize[0]}
-              height={oneImageSize[1]}
-              onClick={() => {
-                setViewedImageIndex(index);
-                setModal("imageViewer");
-              }}
-              src={image}
-            ></img>
-            {isBatch && <div className={styles.seed}>Seed: {seed + index}</div>}
-          </div>
+          <ResultImage
+            src={image}
+            isWaiting={cnProgress !== 0 && !isZenModeOn}
+            index={index}
+            imageSeed={imageSeed}
+            key={index}
+          />
         ))}
     </div>
   );
@@ -130,17 +100,17 @@ const MSTP = ({
   cnProgress,
   result: { images, imageSize },
   isZenModeOn,
-  cnConfig: { seed },
   canvas: { size },
+  cnConfig: { seed },
 }: StateType) => ({
   cnProgress,
   images,
   imageSize,
   isZenModeOn,
-  seed,
   canvasWidth: size[0],
+  seed,
 });
 
-const MDTP = { setModal, setResultWidth, setResultHeight, setViewedImageIndex };
+const MDTP = { setResultWidth, setResultHeight, setCnConfig };
 
 export default connect(MSTP, MDTP)(ResultImages);

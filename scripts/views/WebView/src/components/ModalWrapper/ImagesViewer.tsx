@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { StateType } from "store/types";
 import { connect } from "react-redux";
 import { setViewedImageIndex } from "store/actions";
@@ -14,8 +14,17 @@ const ImagesViewer: React.FC<ImageViewerProps> = ({
   viewedImageIndex,
   setViewedImageIndex,
 }) => {
+  const itemsRef = useRef<(HTMLDivElement | null)[]>([]);
   useEffect(() => {
-    setViewedImageIndex(0);
+    if (viewedImageIndex > images.length - 1) setViewedImageIndex(0);
+  }, [images, viewedImageIndex]);
+
+  useEffect(() => {
+    itemsRef.current = itemsRef.current.slice(0, images.length);
+    const selected = itemsRef.current[viewedImageIndex];
+    if (selected) {
+      selected.scrollIntoView(true);
+    }
   }, [images]);
 
   return (
@@ -37,6 +46,7 @@ const ImagesViewer: React.FC<ImageViewerProps> = ({
               src={image}
               onClick={() => setViewedImageIndex(index)}
               key={index}
+              ref={(el) => (itemsRef.current[index] = el)}
             />
           ))}
         </div>

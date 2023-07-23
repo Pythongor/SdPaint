@@ -1,0 +1,82 @@
+import React from "react";
+import { StateType } from "store/types";
+import { connect } from "react-redux";
+import { setModal, setViewedImageIndex, setCnConfig } from "store/actions";
+import { RESULT_IMAGES_GRID_TYPES } from "components/ModalWrapper/Settings";
+import cn from "classnames";
+import styles from "./ResultContainer.module.scss";
+
+type LengthType = (typeof RESULT_IMAGES_GRID_TYPES)[number] | 1;
+type ImagesSizesMap = { [key in LengthType]: number };
+
+type OwnProps = {
+  src: string;
+  isWaiting: boolean;
+  index: number;
+  imageSeed: number;
+};
+type StateProps = ReturnType<typeof MSTP>;
+type DispatchProps = typeof MDTP;
+type ResultImageProps = OwnProps & StateProps & DispatchProps;
+
+const imageSizesMap: ImagesSizesMap = {
+  1: 1,
+  2: 2,
+  4: 2,
+  6: 2,
+  9: 3,
+  12: 3,
+  16: 4,
+};
+
+const ResultImage = ({
+  src,
+  isWaiting,
+  index,
+  imageSeed,
+  images,
+  imageSize,
+  setViewedImageIndex,
+  setModal,
+  setCnConfig,
+}: ResultImageProps) => {
+  const oneImageSize = [
+    imageSize[0] / imageSizesMap[images.length as LengthType],
+    imageSize[1] / imageSizesMap[images.length as LengthType],
+  ];
+
+  return (
+    <div className={styles.imageWrapper}>
+      <img
+        className={cn(styles.image, isWaiting && styles.image__waiting)}
+        width={oneImageSize[0]}
+        height={oneImageSize[1]}
+        onClick={() => {
+          setViewedImageIndex(index);
+          setModal("imageViewer");
+        }}
+        src={src}
+      ></img>
+      {images.length !== 1 && (
+        <div className={styles.seed}>
+          Seed: {imageSeed + index}
+          <button
+            className={styles.button}
+            onPointerDown={() => setCnConfig({ seed: imageSeed + index })}
+          >
+            Use seed
+          </button>
+        </div>
+      )}
+    </div>
+  );
+};
+
+const MSTP = ({ result: { images, imageSize } }: StateType) => ({
+  images,
+  imageSize,
+});
+
+const MDTP = { setModal, setViewedImageIndex, setCnConfig };
+
+export default connect(MSTP, MDTP)(ResultImage);
