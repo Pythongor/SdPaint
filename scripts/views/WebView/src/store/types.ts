@@ -20,6 +20,43 @@ export type BrushType = "pencil" | "line" | "rectangle" | "ellipse";
 
 export type AudioSignalType = "epic" | "ringtone" | "bounce";
 
+export type ResultInfoType = {
+  prompt: string;
+  all_prompts: string[];
+  negative_prompt: string;
+  all_negative_prompts: string[];
+  seed: number;
+  all_seeds: number[];
+  subseed: number;
+  all_subseeds: number[];
+  subseed_strength: number;
+  width: number;
+  height: number;
+  sampler_name: string;
+  cfg_scale: number;
+  steps: number;
+  batch_size: number;
+  restore_faces: boolean;
+  face_restoration_model: null;
+  sd_model_hash: string;
+  seed_resize_from_w: number;
+  seed_resize_from_h: number;
+  denoising_strength: number;
+  extra_generation_params: { "ControlNet 0": string };
+  index_of_first_image: number;
+  infotexts: string[];
+  styles: any[];
+  job_timestamp: string;
+  clip_skip: number;
+  is_using_inpainting_conditioning: boolean;
+  [key: string]: any;
+};
+
+export type ResultType = {
+  info: ResultInfoType;
+  status_code: number;
+} & ({ image: string } | { batch_images: string[] });
+
 export type AudioConfigType = {
   isEnabled: boolean;
   isReady: boolean;
@@ -40,6 +77,7 @@ export type ResultConfigType = {
   viewedImageIndex: number;
   imagesCount: number;
   isMultipleImagesModeOn: boolean;
+  info: ResultInfoType | null;
 };
 
 export type CanvasConfigType = {
@@ -79,6 +117,7 @@ export enum Actions {
   setResultWidth = "RESULT__SET_WIDTH",
   setResultHeight = "RESULT__SET_HEIGHT",
   setResultImages = "RESULT__SET_IMAGES",
+  setResultInfo = "RESULT__SET_INFO",
   setResultImagesCount = "RESULT__SET_IMAGES_COUNT",
   setMultipleImagesMode = "RESULT__SET_MULTIPLE_IMAGES_MODE",
   setViewedImageIndex = "RESULT__SET_VIEWED_IMAGE_INDEX",

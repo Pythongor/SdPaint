@@ -15,6 +15,7 @@ const initialState: Readonly<StateType> = {
     viewedImageIndex: 0,
     imagesCount: 4,
     isMultipleImagesModeOn: false,
+    info: null,
   },
   canvas: {
     imagesStack: [],
@@ -272,6 +273,13 @@ export default createReducer<StateType, ActionType>(initialState)
     result: {
       ...state.result,
       viewedImageIndex: payload,
+    },
+  }))
+  .handleAction(actions.setResultInfo, (state, { payload }) => ({
+    ...state,
+    result: {
+      ...state.result,
+      info: payload,
     },
   }))
   .handleAction(actions.setScrollTop, (state, { payload }) => ({

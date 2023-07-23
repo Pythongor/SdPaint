@@ -1,6 +1,6 @@
 import { addBase64Prefix, extractDataFromConfig } from "helpers";
 import { getStorageConfig } from "./storage";
-import { CnConfigType } from "store/types";
+import { CnConfigType, ResultInfoType, ResultType } from "store/types";
 
 export const url = "http://127.0.0.1:8000";
 
@@ -120,6 +120,16 @@ export const sendImage = (image: string) => {
 
 export const getImage = async () => {
   const response = await fetch(`${url}/cn_image`);
-  const images: string[] = await response.json();
-  return { images: images.map((image) => addBase64Prefix(image)) };
+  const json = (await response.json()) as Omit<ResultType, "info"> & {
+    info: string;
+  };
+  const parsedInfo = JSON.parse(json.info) as ResultInfoType;
+  const images: string[] = [];
+  if ("image" in json) {
+    images.push(addBase64Prefix(json.image as string));
+  } else if ("batch_images" in json) {
+    const batch_images = json.batch_images as string[];
+    images.push(...batch_images.map((image) => addBase64Prefix(image)));
+  }
+  return { ...json, info: parsedInfo, images };
 };

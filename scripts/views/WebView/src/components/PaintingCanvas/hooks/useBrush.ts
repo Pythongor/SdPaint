@@ -3,10 +3,7 @@ import { useSelector } from "react-redux";
 import { StateType } from "store/types";
 import { getErasingState } from "store/selectors";
 import { UseBrushProps, PointType } from "../types";
-import {
-  generate,
-  handleAudioSignal,
-} from "components/PaintingTools/components/GenerateGroup";
+import { generate, handleAudioSignal } from "components/PaintingTools/generate";
 import { clear } from "../canvasHelpers";
 
 type Props = UseBrushProps & {
@@ -27,6 +24,7 @@ export const useBrush = ({
   setCanvasImage,
   setCnProgress,
   setResultImages,
+  setResultInfo,
   setErasingByMouse,
   setAudioReady,
   afterPointerDownFunc,
@@ -127,7 +125,13 @@ export const useBrush = ({
       const paintImage = paintingRef.current.toDataURL();
       setCanvasImage(paintImage);
       if (instantGenerationMode) {
-        generate(paintImage, setResultImages, setCnProgress, audioFunc);
+        generate(
+          paintImage,
+          setResultImages,
+          setCnProgress,
+          setResultInfo,
+          audioFunc
+        );
       }
       setErasingByMouse(false);
     },

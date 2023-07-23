@@ -85,7 +85,6 @@ const ResultImages: React.FC<ResultImagesProps> = ({
       {images.length > 0 &&
         images.map((image, index) => (
           <ResultImage
-            src={image}
             isWaiting={cnProgress !== 0 && !isZenModeOn}
             index={index}
             imageSeed={imageSeed}

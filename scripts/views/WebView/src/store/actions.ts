@@ -5,6 +5,7 @@ import {
   BrushType,
   AudioSignalType,
   ModalType,
+  ResultInfoType,
 } from "./types";
 
 // audio
@@ -67,6 +68,10 @@ export const setResultImagesCount = createAction(
   Actions.setResultImagesCount
 )<number>();
 
+export const setResultInfo = createAction(
+  Actions.setResultInfo
+)<ResultInfoType | null>();
+
 export const setMultipleImagesMode = createAction(
   Actions.setMultipleImagesMode
 )<boolean | "switch">();
@@ -114,6 +119,7 @@ export default {
   setResultHeight,
   setMultipleImagesMode,
   setResultImagesCount,
+  setResultInfo,
   setViewedImageIndex,
   setCnProgress,
   setModal,

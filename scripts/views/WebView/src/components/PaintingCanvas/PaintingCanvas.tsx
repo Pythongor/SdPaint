@@ -6,6 +6,7 @@ import {
   setEmptyImage,
   setErasingByMouse,
   setAudioReady,
+  setResultInfo,
 } from "store/actions";
 import { connect } from "react-redux";
 import { StateType } from "store/types";
@@ -30,6 +31,7 @@ export const PaintingCanvas: React.FC<PaintingCanvasProps> = ({
   setCanvasImage,
   setCnProgress,
   setResultImages,
+  setResultInfo,
   setEmptyImage,
   setErasingByMouse,
   setAudioReady,
@@ -82,6 +84,7 @@ export const PaintingCanvas: React.FC<PaintingCanvasProps> = ({
       setCanvasImage,
       setCnProgress,
       setResultImages,
+      setResultInfo,
       setErasingByMouse,
       setAudioReady,
     });
@@ -129,6 +132,7 @@ const MDTP = {
   setCanvasImage,
   setCnProgress,
   setResultImages,
+  setResultInfo,
   setEmptyImage,
   setErasingByMouse,
   setAudioReady,

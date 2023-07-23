@@ -1,9 +1,6 @@
 import React, { useCallback } from "react";
 import { connect } from "react-redux";
-import { AudioConfigType, AudioSignalType, StateType } from "store/types";
-import { PayloadActionCreator } from "typesafe-actions";
-import { Actions } from "store/types";
-import { sendImage, retryRequest, getImage, catchError } from "api";
+import { StateType } from "store/types";
 import { getCanvasImage } from "store/selectors";
 import {
   setResultImages,
@@ -11,73 +8,15 @@ import {
   setAudioReady,
   setCnConfig,
   setMultipleImagesMode,
+  setResultInfo,
 } from "store/actions";
-import { renewAudioContext } from "audio/synth";
-import {
-  playEpicSignal,
-  playRingtoneSignal,
-  playBounceSignal,
-} from "audio/signals";
-import { start } from "tone";
+import { generate, handleAudioSignal } from "../generate";
 import cn from "classnames";
 import styles from "../PaintingTools.module.scss";
 
 type StateProps = ReturnType<typeof MSTP>;
 type DispatchProps = typeof MDTP;
 type GenerateGroupProps = StateProps & DispatchProps;
-
-const playSignal = (signalType: AudioSignalType) => {
-  if (signalType === "epic") {
-    playEpicSignal();
-  } else if (signalType === "ringtone") {
-    playRingtoneSignal();
-  } else {
-    playBounceSignal();
-  }
-};
-
-export const handleAudioSignal = (
-  { isEnabled, isReady, signalType }: AudioConfigType,
-  setAudioReady: PayloadActionCreator<Actions.setAudioReady, boolean>
-) => {
-  if (!isEnabled) {
-    if (isReady) {
-      renewAudioContext();
-      setAudioReady(false);
-    }
-  } else {
-    if (isReady) renewAudioContext();
-    start().then(
-      () => {
-        !isReady && console.log("audio is ready");
-        playSignal(signalType);
-        setAudioReady(true);
-      },
-      (er) => console.log(er)
-    );
-  }
-};
-
-export const generate = async (
-  paintImage: string,
-  setResultImages: PayloadActionCreator<Actions.setResultImages, string[]>,
-  setCnProgress: PayloadActionCreator<Actions.setCnProgress, number>,
-  audioFunc: () => void
-) => {
-  if (!paintImage) return;
-  await sendImage(paintImage).catch(catchError);
-  await retryRequest({
-    finalFunc: async () => {
-      const { images } = await getImage();
-      setResultImages(images);
-      audioFunc();
-    },
-    progressFunc: (data) => {
-      setCnProgress(data * 100);
-      return !!data;
-    },
-  });
-};
 
 const GenerateGroup: React.FC<GenerateGroupProps> = ({
   paintImage,
@@ -87,6 +26,7 @@ const GenerateGroup: React.FC<GenerateGroupProps> = ({
   setCnProgress,
   setAudioReady,
   setMultipleImagesMode,
+  setResultInfo,
 }) => {
   const audioFunc = useCallback(
     () => handleAudioSignal(audio, setAudioReady),
@@ -94,8 +34,14 @@ const GenerateGroup: React.FC<GenerateGroupProps> = ({
   );
 
   const onClick = useCallback(() => {
-    generate(paintImage, setResultImages, setCnProgress, audioFunc);
-  }, [paintImage, setResultImages, setCnProgress, audio]);
+    generate(
+      paintImage,
+      setResultImages,
+      setCnProgress,
+      setResultInfo,
+      audioFunc
+    );
+  }, [paintImage, setResultImages, setCnProgress, setResultInfo, audio]);
 
   return (
     <div className={styles.group}>
@@ -137,6 +83,7 @@ const MDTP = {
   setAudioReady,
   setCnConfig,
   setMultipleImagesMode,
+  setResultInfo,
 };
 
 export default connect(MSTP, MDTP)(GenerateGroup);

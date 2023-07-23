@@ -10,7 +10,6 @@ type LengthType = (typeof RESULT_IMAGES_GRID_TYPES)[number] | 1;
 type ImagesSizesMap = { [key in LengthType]: number };
 
 type OwnProps = {
-  src: string;
   isWaiting: boolean;
   index: number;
   imageSeed: number;
@@ -30,7 +29,6 @@ const imageSizesMap: ImagesSizesMap = {
 };
 
 const ResultImage = ({
-  src,
   isWaiting,
   index,
   imageSeed,
@@ -55,7 +53,7 @@ const ResultImage = ({
           setViewedImageIndex(index);
           setModal("imageViewer");
         }}
-        src={src}
+        src={images[index]}
       ></img>
       {images.length !== 1 && (
         <div className={styles.seed}>

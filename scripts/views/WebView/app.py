@@ -21,7 +21,7 @@ app.add_middleware(
     allow_headers=['*'],
 )
 
-sd_images = '',
+sd_response = None,
 
 state = State()
 api = Api(state)
@@ -32,13 +32,10 @@ if not state.configuration["config"]['controlnet_models']:
 
 
 def send_request():
-    global sd_images
+    global sd_response
     response = api.post_request(state)
     if response["status_code"] == 200:
-        if response.get("image", None):
-            sd_images = (response["image"], )
-        elif response.get("batch_images", None):
-            sd_images = response["batch_images"]
+        sd_response = response
     state.server["busy"] = False
 
 
@@ -118,5 +115,5 @@ async def root():
 
 @app.get('/cn_image')
 async def root():
-    if sd_images:
-        return sd_images
+    if sd_response:
+        return sd_response
