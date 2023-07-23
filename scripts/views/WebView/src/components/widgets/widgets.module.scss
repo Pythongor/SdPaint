@@ -63,6 +63,7 @@
   display: block;
   color: $beige;
   transition: transform 0.3s;
+  user-select: none;
 
   .arrow__left &,
   .arrow__right & {
@@ -84,7 +85,7 @@
     transform: rotate(90deg);
   }
 
-  .arrow__bottom &.arrow__off {
+  .arrow__bottom.arrow__off & {
     transform: rotate(-90deg);
   }
 
