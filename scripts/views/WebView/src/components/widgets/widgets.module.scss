@@ -10,15 +10,6 @@
   pointer-events: all;
   cursor: pointer;
 
-  &::after {
-    content: ">";
-    width: fit-content;
-    margin: 0 auto;
-    display: block;
-    color: $beige;
-    transition: transform 0.3s;
-  }
-
   &__hidden {
     opacity: 0;
     pointer-events: none;
@@ -41,56 +32,71 @@
     height: 100px;
   }
 
-  &__left::after,
-  &__right::after {
-    position: absolute;
-    transform: translate(-50%, -50%);
-    top: 50%;
-    left: 50%;
-  }
-
   &__top {
     top: -20px;
     border-radius: 5px 5px 0 0;
     border-bottom: none;
-    &::after {
-      transform: rotate(-90deg);
-    }
-    &.arrow__off::after {
-      transform: rotate(90deg);
-    }
   }
 
   &__bottom {
     bottom: -20px;
     border-radius: 0 0 5px 5px;
     border-top: none;
-    &::after {
-      transform: rotate(90deg);
-    }
-    &.arrow__off::after {
-      transform: rotate(-90deg);
-    }
   }
 
   &__left {
     left: -20px;
     border-radius: 5px 0 0 5px;
     border-right: none;
-    &.arrow__off::after {
-      transform: translate(-50%, -50%) rotate(180deg);
-    }
   }
 
   &__right {
     right: -20px;
     border-radius: 0 5px 5px 0;
     border-left: none;
-    &::after {
-      transform: translate(-50%, -50%) rotate(180deg);
-    }
-    &.arrow__off::after {
-      transform: translate(-50%, -50%);
-    }
+  }
+}
+
+.arrow_symbol {
+  width: fit-content;
+  margin: 0 auto;
+  display: block;
+  color: $beige;
+  transition: transform 0.3s;
+
+  .arrow__left &,
+  .arrow__right & {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    top: 50%;
+    left: 50%;
+  }
+
+  .arrow__top & {
+    transform: rotate(-90deg);
+  }
+
+  .arrow__top.arrow__off & {
+    transform: rotate(90deg);
+  }
+
+  .arrow__bottom & {
+    transform: rotate(90deg);
+  }
+
+  .arrow__bottom &.arrow__off {
+    transform: rotate(-90deg);
+  }
+
+  .arrow__left.arrow__off & {
+    transform: translate(-50%, -50%) rotate(180deg);
+  }
+
+  .arrow__right & {
+    transform: translate(-50%, -50%) rotate(180deg);
+  }
+
+  .arrow__right.arrow__off & {
+    transform: translate(-50%, -50%);
   }
 }

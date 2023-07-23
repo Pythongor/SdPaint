@@ -2,8 +2,7 @@ import React from "react";
 import { StateType } from "store/types";
 import { connect } from "react-redux";
 import { setModal } from "store/actions";
-import Settings from "./Settings";
-import ImagesViewer from "./ImagesViewer";
+import { ImagesViewer, Settings } from "..";
 import cn from "classnames";
 import styles from "./ModalWrapper.module.scss";
 
@@ -11,11 +10,7 @@ type StateProps = ReturnType<typeof MSTP>;
 type DispatchProps = typeof MDTP;
 type ImageViewerProps = StateProps & DispatchProps;
 
-const ModalWrapper: React.FC<ImageViewerProps> = ({
-  resultImages,
-  modal,
-  setModal,
-}) => {
+const ModalWrapper: React.FC<ImageViewerProps> = ({ modal, setModal }) => {
   const contentMap = {
     imageViewer: ImagesViewer,
     settings: Settings,
@@ -27,17 +22,14 @@ const ModalWrapper: React.FC<ImageViewerProps> = ({
   return (
     <div
       className={cn(styles.base, !modal && styles.base__hide)}
-      onClick={() => setModal(null)}
+      onPointerDown={() => setModal(null)}
     >
       <Content />
     </div>
   );
 };
 
-const MSTP = ({ modal, result: { images } }: StateType) => ({
-  modal,
-  resultImages: images,
-});
+const MSTP = ({ modal }: StateType) => ({ modal });
 
 const MDTP = { setModal };
 

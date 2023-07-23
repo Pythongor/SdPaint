@@ -7,7 +7,7 @@ import {
   setAudioSignalType,
   setResultImagesCount,
 } from "store/actions";
-import styles from "./ModalWrapper.module.scss";
+import styles from "./Settings.module.scss";
 
 type StateProps = ReturnType<typeof MSTP>;
 type DispatchProps = typeof MDTP;

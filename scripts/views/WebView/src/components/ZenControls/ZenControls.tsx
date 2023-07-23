@@ -55,7 +55,6 @@ const ZenIndicator: React.FC<ResultCanvasProps> = ({
         customClass={styles.arrow}
         title={isHidden ? "Show control panel" : "Hide control panel"}
         isOn={!isHidden}
-        isHidden={!isZenModeOn}
         position="top"
       />
       <div className={styles.group}>

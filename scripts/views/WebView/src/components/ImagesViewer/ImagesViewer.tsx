@@ -3,7 +3,8 @@ import { StateType } from "store/types";
 import { connect } from "react-redux";
 import { setViewedImageIndex } from "store/actions";
 import cn from "classnames";
-import styles from "./ModalWrapper.module.scss";
+import ImageInfo from "./ImageInfo";
+import styles from "./ImagesViewer.module.scss";
 
 type StateProps = ReturnType<typeof MSTP>;
 type DispatchProps = typeof MDTP;
@@ -28,14 +29,15 @@ const ImagesViewer: React.FC<ImageViewerProps> = ({
   }, [images]);
 
   return (
-    <div className={styles.viewer}>
+    <div className={styles.base}>
+      <ImageInfo />
       <div className={styles.imageContainer}>
         <img className={styles.image} src={images[viewedImageIndex]} />
       </div>
       {images.length > 1 && (
         <div
           className={styles.carousel}
-          onClick={(event) => event.stopPropagation()}
+          onPointerDown={(event) => event.stopPropagation()}
         >
           {images.map((image, index) => (
             <img
@@ -44,7 +46,10 @@ const ImagesViewer: React.FC<ImageViewerProps> = ({
                 index === viewedImageIndex && styles.carouselImage__selected
               )}
               src={image}
-              onClick={() => setViewedImageIndex(index)}
+              onPointerDown={(event) => {
+                event.stopPropagation();
+                setViewedImageIndex(index);
+              }}
               key={index}
               ref={(el) => (itemsRef.current[index] = el)}
             />
