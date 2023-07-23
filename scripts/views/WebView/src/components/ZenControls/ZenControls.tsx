@@ -15,6 +15,7 @@ import {
 import { getErasingState } from "store/selectors";
 import cn from "classnames";
 import styles from "./ZenControls.module.scss";
+import { Arrow } from "components/widgets";
 
 type StateProps = ReturnType<typeof MSTP>;
 type DispatchProps = typeof MDTP;
@@ -38,7 +39,7 @@ const ZenIndicator: React.FC<ResultCanvasProps> = ({
   setAudioEnabled,
   setMultipleImagesMode,
 }) => {
-  const [isHide, setIsHide] = useState(false);
+  const [isHidden, setHidden] = useState(false);
 
   if (!isZenModeOn) return null;
 
@@ -48,12 +49,15 @@ const ZenIndicator: React.FC<ResultCanvasProps> = ({
     .map((num) => String(num));
 
   return (
-    <div className={cn(styles.base, isHide && styles.base__hidden)}>
-      <div
-        className={cn(styles.arrow, isHide && styles.arrow__hidden)}
-        onClick={() => setIsHide((value) => !value)}
-        title={isHide ? "Show control panel" : "Hide control panel"}
-      ></div>
+    <div className={cn(styles.base, isHidden && styles.base__hidden)}>
+      <Arrow
+        onPointerDown={() => setHidden((value) => !value)}
+        customClass={styles.arrow}
+        title={isHidden ? "Show control panel" : "Hide control panel"}
+        isOn={!isHidden}
+        isHidden={!isZenModeOn}
+        position="top"
+      />
       <div className={styles.group}>
         <ZenSelect
           text={brushType[0].toUpperCase()}

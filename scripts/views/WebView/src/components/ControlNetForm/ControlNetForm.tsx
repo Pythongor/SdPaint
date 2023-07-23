@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import { StateType } from "store/types";
 import { setCnConfig, setScrollTop } from "store/actions";
 import { getModels, getModules } from "../../api";
+import { Arrow } from "components/widgets";
 import ControlNetNumberInput from "./components/ControlNetNumberInput";
 import ControlNetSelect from "./components/ControlNetSelect";
 import cn from "classnames";
@@ -18,12 +19,12 @@ export const ControlNetForm: React.FC<CnFormProps> = ({
   setCnConfig,
   setScrollTop,
 }) => {
-  const [isHide, setIsHide] = useState(isZenModeOn);
+  const [isHidden, setHidden] = useState(isZenModeOn);
 
   useEffect(() => {
     if (isZenModeOn) {
-      setIsHide(true);
-    } else setIsHide(false);
+      setHidden(true);
+    } else setHidden(false);
   }, [isZenModeOn]);
 
   return (
@@ -31,7 +32,7 @@ export const ControlNetForm: React.FC<CnFormProps> = ({
       className={cn(
         styles.base,
         isZenModeOn && styles.base__zen,
-        isHide && styles.base__hidden
+        isHidden && styles.base__hidden
       )}
       onTransitionEnd={() => setScrollTop(0)}
     >
@@ -79,12 +80,6 @@ export const ControlNetForm: React.FC<CnFormProps> = ({
           min={1}
           value={cnConfig.cfg_scale}
         />
-        {/* <ControlNetNumberInput
-          title="Batch size"
-          id="batch_size"
-          min={1}
-          value={cnConfig.batch_size}
-        /> */}
         <ControlNetSelect
           name="Module"
           title="ControlNet module"
@@ -100,11 +95,12 @@ export const ControlNetForm: React.FC<CnFormProps> = ({
           getFunc={getModels}
         />
       </div>
-      <div
-        className={cn(styles.arrow, isHide && styles.arrow__hidden)}
-        onClick={() => setIsHide((value) => !value)}
-        title={isHide ? "Show ControlNet form" : "Hide ControlNet form"}
-      ></div>
+      <Arrow
+        onPointerDown={() => setHidden((value) => !value)}
+        title={isHidden ? "Show ControlNet form" : "Hide ControlNet form"}
+        isOn={!isHidden}
+        isHidden={!isZenModeOn}
+      />
     </div>
   );
 };

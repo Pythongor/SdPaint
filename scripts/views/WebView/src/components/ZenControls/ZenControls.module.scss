@@ -23,6 +23,12 @@
   &__hidden {
     transform: translateY(100%);
   }
+
+  .arrow {
+    border: 1px solid $blue;
+    border-bottom-color: $deepBlue;
+    background-color: $deepBlue;
+  }
 }
 
 .group {
@@ -139,36 +145,5 @@
     left: 50%;
     bottom: -9px;
     transform: translateX(-50%);
-  }
-}
-
-.arrow {
-  position: absolute;
-  border-radius: 5px 5px 0 0;
-  top: -20px;
-  left: 50%;
-  height: 20px;
-  width: 100px;
-  transform: translateX(-50%);
-  border: 1px solid $blue;
-  border-bottom-color: $deepBlue;
-  background-color: $deepBlue;
-  z-index: 0;
-  opacity: 1;
-  cursor: pointer;
-  transition: opacity 0.3s;
-
-  &::after {
-    content: ">";
-    width: fit-content;
-    margin: 0 auto;
-    display: block;
-    color: $beige;
-    transform: rotate(90deg);
-    transition: transform 0.3s;
-  }
-
-  &__hidden::after {
-    transform: rotate(-90deg);
   }
 }
