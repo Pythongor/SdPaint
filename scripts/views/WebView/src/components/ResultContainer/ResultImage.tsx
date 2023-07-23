@@ -9,18 +9,14 @@ import styles from "./ResultContainer.module.scss";
 type LengthType = (typeof RESULT_IMAGES_GRID_TYPES)[number] | 1;
 type ImagesSizesMap = { [key in LengthType]: number };
 
-type OwnProps = {
-  isWaiting: boolean;
-  index: number;
-  imageSeed: number;
-};
+type OwnProps = { isWaiting: boolean; index: number };
 type StateProps = ReturnType<typeof MSTP>;
 type DispatchProps = typeof MDTP;
 type ResultImageProps = OwnProps & StateProps & DispatchProps;
 
 const imageSizesMap: ImagesSizesMap = {
   1: 1,
-  2: 2,
+  2: 1,
   4: 2,
   6: 2,
   9: 3,
@@ -31,7 +27,7 @@ const imageSizesMap: ImagesSizesMap = {
 const ResultImage = ({
   isWaiting,
   index,
-  imageSeed,
+  seeds,
   images,
   imageSize,
   setViewedImageIndex,
@@ -57,10 +53,10 @@ const ResultImage = ({
       ></img>
       {images.length !== 1 && (
         <div className={styles.seed}>
-          Seed: {imageSeed + index}
+          Seed: {seeds[index]}
           <button
             className={styles.button}
-            onPointerDown={() => setCnConfig({ seed: imageSeed + index })}
+            onPointerDown={() => setCnConfig({ seed: seeds[index] })}
           >
             Use seed
           </button>
@@ -70,9 +66,13 @@ const ResultImage = ({
   );
 };
 
-const MSTP = ({ result: { images, imageSize } }: StateType) => ({
+const MSTP = ({
+  result: { images, imageSize, info },
+  cnConfig: { seed },
+}: StateType) => ({
   images,
   imageSize,
+  seeds: info?.all_seeds || images.map(() => seed),
 });
 
 const MDTP = { setModal, setViewedImageIndex, setCnConfig };

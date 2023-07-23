@@ -17,12 +17,9 @@ const ResultImages: React.FC<ResultImagesProps> = ({
   imageSize,
   isZenModeOn,
   canvasWidth,
-  seed,
   setResultWidth,
   setResultHeight,
 }) => {
-  // TODO rework with server response
-  const [imageSeed, setImageSeed] = useState(seed);
   const [containerStyle, setContainerStyle] = useState(styles.container);
 
   const setContainerLayout = useCallback(() => {
@@ -57,10 +54,7 @@ const ResultImages: React.FC<ResultImagesProps> = ({
 
   useResize(setContainerLayout, [images, imageSize, canvasWidth, isZenModeOn]);
 
-  useEffect(() => {
-    setContainerLayout();
-    setImageSeed(seed);
-  }, [images, imageSize, canvasWidth, isZenModeOn]);
+  useEffect(setContainerLayout, [images, imageSize, canvasWidth, isZenModeOn]);
 
   useEffect(() => {
     const image = images[0];
@@ -83,11 +77,10 @@ const ResultImages: React.FC<ResultImagesProps> = ({
   return (
     <div className={containerStyle}>
       {images.length > 0 &&
-        images.map((image, index) => (
+        images.map((_, index) => (
           <ResultImage
             isWaiting={cnProgress !== 0 && !isZenModeOn}
             index={index}
-            imageSeed={imageSeed}
             key={index}
           />
         ))}
@@ -100,14 +93,12 @@ const MSTP = ({
   result: { images, imageSize },
   isZenModeOn,
   canvas: { size },
-  cnConfig: { seed },
 }: StateType) => ({
   cnProgress,
   images,
   imageSize,
   isZenModeOn,
   canvasWidth: size[0],
-  seed,
 });
 
 const MDTP = { setResultWidth, setResultHeight, setCnConfig };
