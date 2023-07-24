@@ -46,6 +46,7 @@
   text-align: center;
   display: block;
   color: $beige;
+  cursor: help;
 }
 
 .textarea {
@@ -98,6 +99,7 @@
   padding-inline: 5px;
   text-align: center;
   margin-top: 5px;
+  cursor: pointer;
   transition: color 0.2s, outline-color 0.2s;
 
   &:hover {

@@ -13,11 +13,13 @@
   text-align: center;
   width: 100%;
   height: 20px;
+  cursor: help;
 }
 
 .canvas {
   display: block;
   touch-action: none;
+  cursor: none;
 
   &__painting {
     background-color: $white;
@@ -45,6 +47,7 @@
   transition: color 0.2s, outline-color 0.2s;
   background-color: $lightBlue;
   width: 56px;
+  cursor: pointer;
 
   &:hover {
     color: $blue;

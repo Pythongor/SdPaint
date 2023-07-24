@@ -45,6 +45,7 @@
   border-radius: 5px;
   padding-inline: 5px;
   text-align: center;
+  cursor: pointer;
   transition: background-color 0.2s, color 0.2s;
 
   &:hover {
@@ -69,13 +70,13 @@
   &:hover {
     color: $blue;
   }
+}
 
-  .label_span__disabled {
+.label_span__disabled {
+  color: $gray;
+  cursor: not-allowed;
+  &:hover {
     color: $gray;
-    cursor: not-allowed;
-    &:hover {
-      color: $gray;
-    }
   }
 }
 
