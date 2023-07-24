@@ -85,7 +85,10 @@ export default createReducer<StateType, ActionType>(initialState)
     };
   })
   .handleAction(actions.setErasingByMouse, (state, { payload }) => {
-    return { ...state, isErasingByMouse: payload };
+    return {
+      ...state,
+      brushConfig: { ...state.brushConfig, isErasingByMouse: payload },
+    };
   })
   .handleAction(actions.setBrushWidth, (state, { payload }) => {
     if (

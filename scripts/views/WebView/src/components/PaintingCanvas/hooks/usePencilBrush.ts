@@ -1,4 +1,4 @@
-import { useCallback } from "react";
+import { useCallback, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { StateType } from "store/types";
 import { getErasingState } from "store/selectors";
@@ -16,6 +16,12 @@ export const usePencilBrush = ({
   const { isErasing } = useSelector((state: StateType) => ({
     isErasing: getErasingState(state),
   }));
+
+  useEffect(() => {
+    if (context) {
+      context.lineJoin = "round";
+    }
+  }, [context]);
 
   const drawCircle = useCallback(
     (context: CanvasRenderingContext2D, withStroke?: boolean) => {
