@@ -49,7 +49,7 @@ const PaintingTools: React.FC<PaintingToolsProps> = ({
         <BrushInput />
         <button
           className={cn(styles.button, styles.button__single)}
-          onClick={() => downloadImages(resultImages)}
+          onPointerDown={() => downloadImages(resultImages)}
           title="Download result image (if any)"
         >
           Download image
@@ -61,7 +61,7 @@ const PaintingTools: React.FC<PaintingToolsProps> = ({
               styles.button__symbol,
               styles.button__big
             )}
-            onClick={loadConfig}
+            onPointerDown={loadConfig}
             title="Load config from 'controlnet.json'"
           >
             ⭳
@@ -72,14 +72,14 @@ const PaintingTools: React.FC<PaintingToolsProps> = ({
               styles.button__symbol,
               styles.button__big
             )}
-            onClick={saveConfig}
+            onPointerDown={saveConfig}
             title="Save config to 'controlnet.json'"
           >
             ⭱
           </button>
           <button
             className={cn(styles.button, styles.button__symbol)}
-            onClick={() => setModal("settings")}
+            onPointerDown={() => setModal("settings")}
             title="Settings"
           >
             ⛭
@@ -92,7 +92,7 @@ const PaintingTools: React.FC<PaintingToolsProps> = ({
             styles.button__clear
           )}
           title="Clear painting canvas"
-          onClick={clear}
+          onPointerDown={clear}
         >
           Clear
         </button>

@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import cn from "classnames";
 import styles from "./widgets.module.scss";
 
 type ArrowProps = {
   onPointerDown: React.PointerEventHandler<HTMLDivElement>;
-  onClick?: React.PointerEventHandler<HTMLDivElement>;
   title?: string;
   isHidden?: boolean;
   isOn: boolean;
@@ -19,7 +18,6 @@ const Arrow: React.FC<ArrowProps> = ({
   position = "bottom",
   customClass = "",
   onPointerDown,
-  onClick,
 }) => {
   return (
     <div
@@ -31,7 +29,6 @@ const Arrow: React.FC<ArrowProps> = ({
         styles[`arrow__${position}`]
       )}
       onPointerDown={onPointerDown}
-      onClick={onClick}
       title={title}
     >
       <div className={styles.arrow_symbol}>{">"}</div>

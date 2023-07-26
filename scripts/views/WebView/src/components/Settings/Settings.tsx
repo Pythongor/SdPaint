@@ -28,7 +28,7 @@ const Settings: React.FC<ImageViewerProps> = ({
   return (
     <div
       className={styles.settings}
-      onClick={(ev) => {
+      onPointerDown={(ev) => {
         ev.stopPropagation();
       }}
     >

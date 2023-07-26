@@ -30,10 +30,10 @@ const GenerateGroup: React.FC<GenerateGroupProps> = ({
 }) => {
   const audioFunc = useCallback(
     () => handleAudioSignal(audio, setAudioReady),
-    [audio]
+    [audio, setAudioReady]
   );
 
-  const onClick = useCallback(() => {
+  const onPointerDown = useCallback(() => {
     generate(
       paintImage,
       setResultImages,
@@ -41,7 +41,7 @@ const GenerateGroup: React.FC<GenerateGroupProps> = ({
       setResultInfo,
       audioFunc
     );
-  }, [paintImage, setResultImages, setCnProgress, setResultInfo, audio]);
+  }, [paintImage, setResultImages, setCnProgress, setResultInfo, audioFunc]);
 
   return (
     <div className={styles.group}>
@@ -61,7 +61,7 @@ const GenerateGroup: React.FC<GenerateGroupProps> = ({
       </label>
       <button
         className={cn(styles.button, styles.button__generate)}
-        onClick={onClick}
+        onPointerDown={onPointerDown}
         title="Start image generation using your sketch and form data"
       >
         Generate

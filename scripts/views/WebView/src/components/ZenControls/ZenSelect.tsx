@@ -7,10 +7,16 @@ type SelectProps = {
   title: string;
   text: string;
   options: string[];
-  onClick: (value: string) => void;
+  onPointerDown: (value: string) => void;
 };
 
-export default ({ disabled, title, text, options, onClick }: SelectProps) => {
+const ZenSelect = ({
+  disabled,
+  title,
+  text,
+  options,
+  onPointerDown,
+}: SelectProps) => {
   const [isHidden, setIsHidden] = useState(true);
   const selectRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
@@ -22,7 +28,7 @@ export default ({ disabled, title, text, options, onClick }: SelectProps) => {
         className={styles.indicator}
         ref={buttonRef}
         disabled={disabled}
-        onClick={() => setIsHidden((value) => !value)}
+        onPointerDown={() => setIsHidden((value) => !value)}
         title={title}
       >
         {text}
@@ -33,9 +39,9 @@ export default ({ disabled, title, text, options, onClick }: SelectProps) => {
             <button
               key={option}
               className={styles.indicator}
-              onClick={() => {
+              onPointerDown={() => {
                 setIsHidden(true);
-                onClick(option);
+                onPointerDown(option);
               }}
             >
               {option}
@@ -46,3 +52,5 @@ export default ({ disabled, title, text, options, onClick }: SelectProps) => {
     </div>
   );
 };
+
+export default ZenSelect;

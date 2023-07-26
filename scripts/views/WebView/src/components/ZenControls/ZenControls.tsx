@@ -61,14 +61,14 @@ const ZenIndicator: React.FC<ResultCanvasProps> = ({
         <ZenSelect
           text={brushType[0].toUpperCase()}
           options={["pencil", "line", "ellipse", "rectangle"]}
-          onClick={(value) => setBrushType(value as BrushType)}
+          onPointerDown={(value) => setBrushType(value as BrushType)}
           title="Set brush shape mode"
         />
         <ZenSelect
           disabled={isPrimitiveShape && withBrushFill}
           text={`W: ${isPrimitiveShape && withBrushFill ? 1 : brushWidth}`}
           options={brushWidths}
-          onClick={(value) => setBrushWidth(+value)}
+          onPointerDown={(value) => setBrushWidth(+value)}
           title="Set brush width"
         />
         <button
@@ -77,7 +77,7 @@ const ZenIndicator: React.FC<ResultCanvasProps> = ({
             withBrushFill ? styles.indicator__fill : styles.indicator__inactive
           )}
           disabled={!isPrimitiveShape || isErasing}
-          onClick={() => setBrushFilling("switch")}
+          onPointerDown={() => setBrushFilling("switch")}
           title="Switch brush fill mode (only for rectangle and ellipce)"
         >
           F
@@ -87,7 +87,7 @@ const ZenIndicator: React.FC<ResultCanvasProps> = ({
             styles.indicator,
             isErasing ? styles.indicator__eraser : styles.indicator__inactive
           )}
-          onClick={() => setErasingBySwitch("switch")}
+          onPointerDown={() => setErasingBySwitch("switch")}
           title="Switch brush eraser mode"
         >
           E
@@ -99,7 +99,7 @@ const ZenIndicator: React.FC<ResultCanvasProps> = ({
             styles.indicator,
             !isMultipleModeOn && styles.indicator__inactive
           )}
-          onClick={() => setMultipleImagesMode(!isMultipleModeOn)}
+          onPointerDown={() => setMultipleImagesMode(!isMultipleModeOn)}
           title="Switch audio signal after image generation is completed"
         >
           M
@@ -109,7 +109,7 @@ const ZenIndicator: React.FC<ResultCanvasProps> = ({
             styles.indicator,
             !!audioEnabled && styles.indicator__eraser
           )}
-          onClick={() => setAudioEnabled("switch")}
+          onPointerDown={() => setAudioEnabled("switch")}
           title="Switch audio signal after image generation is completed"
         >
           A
@@ -121,14 +121,14 @@ const ZenIndicator: React.FC<ResultCanvasProps> = ({
               ? styles.indicator__instant
               : styles.indicator__inactive
           )}
-          onClick={() => setInstantGenerationMode("switch")}
+          onPointerDown={() => setInstantGenerationMode("switch")}
           title="Switch instant mode (requests image redraw just when you stroke)"
         >
           I
         </button>
         <button
           className={cn(styles.indicator, styles.indicator__zen)}
-          onClick={() => setZenMode(false)}
+          onPointerDown={() => setZenMode(false)}
           title="Exit simplified interface mode"
         >
           Z

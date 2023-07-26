@@ -28,7 +28,7 @@ const ResultContainer: React.FC<ResultCanvasProps> = ({
           {!isZenModeOn && (
             <div
               className={styles.loader}
-              onClick={() => skipRendering()}
+              onPointerDown={() => skipRendering()}
             ></div>
           )}
           <progress className={styles.progress} max="100" value={cnProgress}>

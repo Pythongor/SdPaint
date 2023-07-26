@@ -45,11 +45,12 @@ const ResultImage = ({
         className={cn(styles.image, isWaiting && styles.image__waiting)}
         width={oneImageSize[0]}
         height={oneImageSize[1]}
-        onClick={() => {
+        onPointerDown={() => {
           setViewedImageIndex(index);
           setModal("imageViewer");
         }}
         src={images[index]}
+        alt=""
       ></img>
       {images.length !== 1 && (
         <div className={styles.seed}>
