@@ -16,6 +16,7 @@ const initialState: Readonly<StateType> = {
     imagesCount: 4,
     isMultipleImagesModeOn: false,
     info: null,
+    inputImageViewOpacity: 0,
   },
   canvas: {
     imagesStack: [],
@@ -278,6 +279,25 @@ export default createReducer<StateType, ActionType>(initialState)
       viewedImageIndex: payload,
     },
   }))
+  .handleAction(actions.setInputImageViewOpacity, (state, { payload }) => {
+    if (payload === "switch") {
+      const opacity = state.result.inputImageViewOpacity;
+      return {
+        ...state,
+        result: {
+          ...state.result,
+          inputImageViewOpacity: +(opacity < 1),
+        },
+      };
+    }
+    return {
+      ...state,
+      result: {
+        ...state.result,
+        inputImageViewOpacity: payload,
+      },
+    };
+  })
   .handleAction(actions.setResultInfo, (state, { payload }) => ({
     ...state,
     result: {

@@ -80,6 +80,10 @@ export const setViewedImageIndex = createAction(
   Actions.setViewedImageIndex
 )<number>();
 
+export const setInputImageViewOpacity = createAction(
+  Actions.setInputImageViewOpacity
+)<number | "switch">();
+
 // other
 export const setScrollTop = createAction(Actions.setScrollTop)<number>();
 
@@ -99,7 +103,7 @@ export const setInstantGenerationMode = createAction(
   Actions.setInstantGenerationMode
 )<boolean | "switch">();
 
-export default {
+const actions = {
   setAudioEnabled,
   setAudioReady,
   setAudioSignalType,
@@ -121,6 +125,7 @@ export default {
   setResultImagesCount,
   setResultInfo,
   setViewedImageIndex,
+  setInputImageViewOpacity,
   setCnProgress,
   setModal,
   setZenMode,
@@ -128,3 +133,5 @@ export default {
   setScrollTop,
   setInstantGenerationMode,
 };
+
+export default actions;

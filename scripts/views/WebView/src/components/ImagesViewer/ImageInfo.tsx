@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { StateType } from "store/types";
 import { connect } from "react-redux";
-import { setViewedImageIndex } from "store/actions";
+import { setViewedImageIndex, setInputImageViewOpacity } from "store/actions";
 import cn from "classnames";
 import styles from "./ImagesViewer.module.scss";
 import { Arrow } from "components/widgets";
@@ -10,8 +10,19 @@ type StateProps = ReturnType<typeof MSTP>;
 type DispatchProps = typeof MDTP;
 type ImageViewerProps = StateProps & DispatchProps;
 
-const ImageInfo: React.FC<ImageViewerProps> = ({ info, viewedImageIndex }) => {
+const ImageInfo: React.FC<ImageViewerProps> = ({
+  info,
+  viewedImageIndex,
+  inputImageViewOpacity,
+  setInputImageViewOpacity,
+}) => {
   const [isHidden, setHidden] = useState(true);
+  useEffect(
+    () => () => {
+      setInputImageViewOpacity(0);
+    },
+    [setInputImageViewOpacity]
+  );
   if (!info) return null;
   const {
     all_seeds,
@@ -22,6 +33,7 @@ const ImageInfo: React.FC<ImageViewerProps> = ({ info, viewedImageIndex }) => {
     sampler_name,
     cfg_scale,
     steps,
+    input_image,
     // infotexts,
   } = info;
   // console.log(infotexts[viewedImageIndex]);
@@ -36,6 +48,9 @@ const ImageInfo: React.FC<ImageViewerProps> = ({ info, viewedImageIndex }) => {
     ["Steps", `${steps}`],
   ];
 
+  const onSliderInput = (event: React.FormEvent<HTMLInputElement>) =>
+    setInputImageViewOpacity(+event.currentTarget.value / 10);
+
   return (
     <div
       className={cn(styles.info, isHidden && styles.info__hidden)}
@@ -49,6 +64,24 @@ const ImageInfo: React.FC<ImageViewerProps> = ({ info, viewedImageIndex }) => {
       >
         <div className={styles.info_title}>Info</div>
         <div className={styles.info_wrapper}>
+          <div className={styles.info_row}>
+            <div className={styles.info_key}>Input image</div>
+            <img
+              className={styles.info_image}
+              src={input_image}
+              alt=""
+              onPointerDown={() => setInputImageViewOpacity("switch")}
+            />
+            <input
+              className={styles.slider}
+              type="range"
+              min="0"
+              max="10"
+              value={inputImageViewOpacity * 10}
+              onChange={onSliderInput}
+              title="Set brush width"
+            ></input>
+          </div>
           {infoRows.map(([key, value]) => (
             <div className={styles.info_row} key={key}>
               <div className={styles.info_key}>{key}</div>
@@ -70,11 +103,14 @@ const ImageInfo: React.FC<ImageViewerProps> = ({ info, viewedImageIndex }) => {
   );
 };
 
-const MSTP = ({ result: { info, viewedImageIndex } }: StateType) => ({
+const MSTP = ({
+  result: { info, viewedImageIndex, inputImageViewOpacity },
+}: StateType) => ({
   info,
   viewedImageIndex,
+  inputImageViewOpacity,
 });
 
-const MDTP = { setViewedImageIndex };
+const MDTP = { setViewedImageIndex, setInputImageViewOpacity };
 
 export default connect(MSTP, MDTP)(ImageInfo);

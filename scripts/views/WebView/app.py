@@ -31,10 +31,14 @@ if not state.configuration["config"]['controlnet_models']:
     api.fetch_controlnet_models(state)
 
 
-def send_request():
+def send_request(data):
     global sd_response
     response = api.post_request(state)
     if response["status_code"] == 200:
+        info = json.loads(response["info"])
+        input_image = data["config"]["controlnet_units"][0]["input_image"]
+        info["input_image"] = input_image
+        response["info"] = json.dumps(info)
         sd_response = response
     state.server["busy"] = False
 
@@ -97,7 +101,7 @@ async def root(data: Request):
         state["main_json_data"]["width"] = data["config"]["width"]
         state["main_json_data"]["height"] = data["config"]["height"]
         state["main_json_data"]["batch_size"] = data["config"]["batch_size"]
-        t = threading.Thread(target=send_request)
+        t = threading.Thread(target=send_request, args=[data])
         t.start()
 
 

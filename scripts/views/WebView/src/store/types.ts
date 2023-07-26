@@ -32,6 +32,7 @@ export type ResultInfoType = {
   subseed_strength: number;
   width: number;
   height: number;
+  input_image: string;
   sampler_name: string;
   cfg_scale: number;
   steps: number;
@@ -78,6 +79,7 @@ export type ResultConfigType = {
   imagesCount: number;
   isMultipleImagesModeOn: boolean;
   info: ResultInfoType | null;
+  inputImageViewOpacity: number;
 };
 
 export type CanvasConfigType = {
@@ -121,6 +123,7 @@ export enum Actions {
   setResultImagesCount = "RESULT__SET_IMAGES_COUNT",
   setMultipleImagesMode = "RESULT__SET_MULTIPLE_IMAGES_MODE",
   setViewedImageIndex = "RESULT__SET_VIEWED_IMAGE_INDEX",
+  setInputImageViewOpacity = "RESULT__SET_INPUT_IMAGE_VIEW_OPACITY",
   setCnProgress = "SET_CONTROL_NET_PROGRESS",
   setInstantGenerationMode = "SET_INSTANT_GENERATION_MODE",
   setModal = "SET_MODAL",
