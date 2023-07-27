@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useRef } from "react";
 import { connect } from "react-redux";
 import { StateType } from "store/types";
 import {
@@ -29,10 +29,14 @@ import { getCnConfig, sendCnConfig, skipRendering } from "api";
 type StateProps = ReturnType<typeof MSTP>;
 type DispatchProps = typeof MDTP;
 type HotkeyWrapperProps = StateProps &
-  DispatchProps & { children: React.ReactNode };
+  DispatchProps & {
+    children: React.ReactNode;
+    innerRef?: React.RefObject<HTMLElement>;
+  };
 
 const HotkeyWrapper: React.FC<HotkeyWrapperProps> = ({
   children,
+  innerRef,
   modal,
   resultImages,
   canvasImage,
@@ -63,12 +67,12 @@ const HotkeyWrapper: React.FC<HotkeyWrapperProps> = ({
         setCnConfig({ seed: cnConfig.seed + 1 });
       } else setCnConfig({ seed: cnConfig.seed - 1 });
     },
-    [cnConfig.seed]
+    [cnConfig.seed, setCnConfig]
   );
 
   const audioFunc = useCallback(
     () => handleAudioSignal(audio, setAudioReady),
-    [audio]
+    [audio, setAudioReady]
   );
 
   const memoizedGenerate = useCallback(() => {
@@ -79,18 +83,12 @@ const HotkeyWrapper: React.FC<HotkeyWrapperProps> = ({
       setResultInfo,
       audioFunc
     );
-  }, [canvasImage, setResultImages, setCnProgress, audio]);
+  }, [canvasImage, setResultImages, setCnProgress, setResultInfo, audioFunc]);
 
   const memoizedDownload = useCallback(
     () => downloadImages(resultImages),
     [resultImages]
   );
-
-  const handleEscape = useCallback(() => {
-    if (modal) {
-      setModal(null);
-    } else if (isZenModeOn) setZenMode(false);
-  }, [isZenModeOn, modal]);
 
   const memoizedToggleViewer = useCallback(() => {
     if (modal === "imageViewer") {
@@ -98,7 +96,7 @@ const HotkeyWrapper: React.FC<HotkeyWrapperProps> = ({
     } else {
       setModal("imageViewer");
     }
-  }, [modal]);
+  }, [modal, setModal]);
 
   const memoizedToggleSettings = useCallback(() => {
     if (modal === "settings") {
@@ -106,7 +104,7 @@ const HotkeyWrapper: React.FC<HotkeyWrapperProps> = ({
     } else {
       setModal("settings");
     }
-  }, [modal]);
+  }, [modal, setModal]);
 
   const loadConfig = () => {
     getCnConfig().then((fileConfig) => {
@@ -121,7 +119,7 @@ const HotkeyWrapper: React.FC<HotkeyWrapperProps> = ({
 
   useHotKeys(
     {
-      Escape: handleEscape,
+      Escape: () => setZenMode(false),
       Enter: memoizedGenerate,
       Equal: () => setBrushWidth("+"),
       Minus: () => setBrushWidth("-"),

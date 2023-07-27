@@ -1,6 +1,6 @@
 import { useEffect, useCallback, RefObject } from "react";
 
-const inputTags = ["TEXTAREA", "INPUT", "BUTTON"];
+const TEXT_INPUTS_TYPES = ["text", "number"];
 
 type KeyCallback = (
   event: KeyboardEvent,
@@ -23,15 +23,29 @@ const getMapKey = (event: KeyboardEvent) => {
   return `${code}_${keyPostfix}`;
 };
 
-const isTextInputActive = () =>
-  inputTags.includes(document.activeElement?.tagName || "");
+const isTextInputActive = () => {
+  const tag = document.activeElement?.tagName;
+  if (tag === "TEXTAREA") {
+    return true;
+  } else if (tag === "INPUT") {
+    const input = document.activeElement as HTMLInputElement;
+    if (TEXT_INPUTS_TYPES.includes(input.type)) {
+      return true;
+    }
+  }
+};
 
-export const useHotKeys = (hotkeyMap: HotkeyMapType, deps: any[]) => {
+export const useHotKeys = (
+  hotkeyMap: HotkeyMapType,
+  deps: any[],
+  ref?: React.RefObject<HTMLElement>
+) => {
   const callback = useCallback(
     (event: KeyboardEvent, { blockInputs = true } = {}) => {
       // console.log(event.code, document.activeElement?.tagName);
       const value = hotkeyMap[getMapKey(event)];
       if (!value) return;
+      event.stopPropagation();
       if (blockInputs) {
         if (isTextInputActive()) {
           return;
@@ -43,12 +57,21 @@ export const useHotKeys = (hotkeyMap: HotkeyMapType, deps: any[]) => {
           : () => value(event);
       func();
     },
-    [...deps, document.activeElement]
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [...deps, document.activeElement, hotkeyMap]
   );
   useEffect(() => {
-    window.addEventListener("keydown", callback);
-    return () => window.removeEventListener("keydown", callback);
-  });
+    const element = ref?.current ? ref.current : window;
+    element.addEventListener(
+      "keydown",
+      callback as EventListenerOrEventListenerObject
+    );
+    return () =>
+      element.removeEventListener(
+        "keydown",
+        callback as EventListenerOrEventListenerObject
+      );
+  }, [callback, ref]);
 };
 
 export const useClickOutside = <T extends HTMLElement, T2 extends HTMLElement>(
@@ -69,17 +92,18 @@ export const useClickOutside = <T extends HTMLElement, T2 extends HTMLElement>(
       event.stopPropagation();
       handler(event);
     },
-    [ref, ref2, ref2?.current]
+    [handler, ref, ref2]
   );
   useEffect(() => {
     window.addEventListener("pointerdown", callback);
     return () => window.removeEventListener("pointerdown", callback);
-  }, [ref.current, ref2, ref2?.current]);
+  }, [callback, ref2]);
 };
 
 export const useResize = (func: () => any, deps: any[] = []) => {
   useEffect(() => {
     window.addEventListener("resize", func);
     return () => window.removeEventListener("resize", func);
-  }, deps);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [func, ...deps]);
 };
