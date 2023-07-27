@@ -9,6 +9,8 @@ type StateProps = ReturnType<typeof MSTP>;
 type DispatchProps = typeof MDTP;
 type CanvasResizerProps = StateProps & DispatchProps;
 
+const SIZES = [512, 768, 1024];
+
 export const CanvasResizer: React.FC<CanvasResizerProps> = ({
   canvasSize,
   setCanvasWidth,
@@ -25,9 +27,9 @@ export const CanvasResizer: React.FC<CanvasResizerProps> = ({
         value={canvasSize[0]}
         onChange={(event) => setCanvasWidth(+event.target.value)}
       >
-        <option value="512">512</option>
-        <option value="768">768</option>
-        <option value="1024">1024</option>
+        {SIZES.map((size) => (
+          <option value={size}>{size}</option>
+        ))}
       </select>{" "}
       x{" "}
       <select
@@ -35,9 +37,9 @@ export const CanvasResizer: React.FC<CanvasResizerProps> = ({
         value={canvasSize[1]}
         onChange={(event) => setCanvasHeight(+event.target.value)}
       >
-        <option value="512">512</option>
-        <option value="768">768</option>
-        <option value="1024">1024</option>
+        {SIZES.map((size) => (
+          <option value={size}>{size}</option>
+        ))}
       </select>
     </div>
   );

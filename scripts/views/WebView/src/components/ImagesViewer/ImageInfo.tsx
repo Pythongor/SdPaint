@@ -38,14 +38,30 @@ const ImageInfo: React.FC<ImageViewerProps> = ({
   } = info;
   // console.log(infotexts[viewedImageIndex]);
 
-  const infoRows: [string, string][] = [
-    ["Seed", `${all_seeds[viewedImageIndex]}`],
-    ["Prompt", all_prompts[viewedImageIndex]],
-    ["Negative prompt", all_negative_prompts[viewedImageIndex]],
-    ["Size", `${width} x ${height}`],
-    ["Sampler", sampler_name],
-    ["CFG scale", `${cfg_scale}`],
-    ["Steps", `${steps}`],
+  const infoRows: [string, string, string][] = [
+    [
+      "Seed",
+      `${all_seeds[viewedImageIndex]}`,
+      "Having parameters, seed and your sketch unchanged means having the same result",
+    ],
+    ["Prompt", all_prompts[viewedImageIndex], "Describe the desired result"],
+    [
+      "Negative prompt",
+      all_negative_prompts[viewedImageIndex],
+      "Describe the undesired result",
+    ],
+    ["Size", `${width} x ${height}`, "Size of image in pixels"],
+    ["Sampler", sampler_name, "Sampling method used during generation process"],
+    [
+      "CFG scale",
+      `${cfg_scale}`,
+      "The higher the value, the more accurate may be the result",
+    ],
+    [
+      "Steps",
+      `${steps}`,
+      "The higher the value, the better the result, but the more waiting time",
+    ],
   ];
 
   const onSliderInput = (event: React.FormEvent<HTMLInputElement>) =>
@@ -65,7 +81,12 @@ const ImageInfo: React.FC<ImageViewerProps> = ({
         <div className={styles.info_title}>Info</div>
         <div className={styles.info_wrapper}>
           <div className={styles.info_row}>
-            <div className={styles.info_key}>Input image</div>
+            <div
+              className={styles.info_key}
+              title="The sketch that served as the basis for the generation"
+            >
+              Input image
+            </div>
             <img
               className={styles.info_image}
               src={input_image}
@@ -82,9 +103,11 @@ const ImageInfo: React.FC<ImageViewerProps> = ({
               title="Set brush width"
             ></input>
           </div>
-          {infoRows.map(([key, value]) => (
+          {infoRows.map(([key, value, title]) => (
             <div className={styles.info_row} key={key}>
-              <div className={styles.info_key}>{key}</div>
+              <div className={styles.info_key} title={title}>
+                {key}
+              </div>
               <div className={styles.info_value}>{value}</div>
             </div>
           ))}
