@@ -19,6 +19,8 @@ import {
   setAudioSignalType,
   setCanvasWidth,
   setCanvasHeight,
+  setResultImagesCount,
+  setMultipleImagesMode,
 } from "store/actions";
 import HotkeyWrapper from "./HotkeyWrapper";
 import cn from "classnames";
@@ -38,19 +40,39 @@ const App: React.FC<AppProps> = ({
   setAudioSignalType,
   setCanvasWidth,
   setCanvasHeight,
+  setResultImagesCount,
+  setMultipleImagesMode,
 }) => {
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const { instantMode, zenMode, audioEnabled, audioSignalType, canvasSize } =
-      getSettings();
+    const {
+      instantMode,
+      zenMode,
+      audioEnabled,
+      audioSignalType,
+      canvasSize,
+      resultImagesCount,
+      isMultipleImagesModeOn,
+    } = getSettings();
     setInstantGenerationMode(instantMode);
     setZenMode(zenMode);
     setAudioEnabled(audioEnabled);
     setAudioSignalType(audioSignalType);
     setCanvasWidth(canvasSize[0]);
     setCanvasHeight(canvasSize[1]);
-  }, []);
+    setResultImagesCount(resultImagesCount);
+    setMultipleImagesMode(isMultipleImagesModeOn);
+  }, [
+    setAudioEnabled,
+    setAudioSignalType,
+    setCanvasHeight,
+    setCanvasWidth,
+    setInstantGenerationMode,
+    setMultipleImagesMode,
+    setResultImagesCount,
+    setZenMode,
+  ]);
 
   useEffect(() => {
     const storageConfig = extractDataFromConfig(getStorageConfig());
@@ -59,7 +81,7 @@ const App: React.FC<AppProps> = ({
       if ("error" in fileConfig) return;
       setCnConfig(fileConfig);
     });
-  }, []);
+  }, [setCnConfig]);
 
   return (
     <HotkeyWrapper>
@@ -92,6 +114,8 @@ const MDTP = {
   setAudioSignalType,
   setCanvasWidth,
   setCanvasHeight,
+  setResultImagesCount,
+  setMultipleImagesMode,
 };
 
 export default connect(MSTP, MDTP)(App);

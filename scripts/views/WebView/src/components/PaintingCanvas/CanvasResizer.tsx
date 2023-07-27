@@ -28,7 +28,9 @@ export const CanvasResizer: React.FC<CanvasResizerProps> = ({
         onChange={(event) => setCanvasWidth(+event.target.value)}
       >
         {SIZES.map((size) => (
-          <option value={size}>{size}</option>
+          <option value={size} key={size}>
+            {size}
+          </option>
         ))}
       </select>{" "}
       x{" "}
@@ -38,7 +40,9 @@ export const CanvasResizer: React.FC<CanvasResizerProps> = ({
         onChange={(event) => setCanvasHeight(+event.target.value)}
       >
         {SIZES.map((size) => (
-          <option value={size}>{size}</option>
+          <option value={size} key={size}>
+            {size}
+          </option>
         ))}
       </select>
     </div>

@@ -19,6 +19,8 @@ const SYNC_SETTINGS_TRIGGERS = [
   Actions.setAudioSignalType,
   Actions.setCanvasWidth,
   Actions.setCanvasHeight,
+  Actions.setResultImagesCount,
+  Actions.setMultipleImagesMode,
 ];
 
 const customMiddleWare: Middleware<{}, StateType> =

@@ -31,6 +31,8 @@ export const defaultSettings = {
   audioEnabled: false,
   audioSignalType: "ringtone" as AudioSignalType,
   canvasSize: [512, 512] as [number, number],
+  resultImagesCount: 4,
+  isMultipleImagesModeOn: false,
 };
 
 export const storage = {

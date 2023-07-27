@@ -49,10 +49,13 @@ export const state2settings = ({
   isZenModeOn,
   audio: { isEnabled, signalType },
   canvas: { size },
+  result: { imagesCount, isMultipleImagesModeOn },
 }: StateType): SettingsType => ({
   instantMode: instantGenerationMode,
   zenMode: isZenModeOn,
   audioEnabled: isEnabled,
   audioSignalType: signalType,
   canvasSize: size,
+  isMultipleImagesModeOn,
+  resultImagesCount: imagesCount,
 });
