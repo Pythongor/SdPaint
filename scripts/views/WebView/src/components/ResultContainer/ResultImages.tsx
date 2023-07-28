@@ -54,25 +54,39 @@ const ResultImages: React.FC<ResultImagesProps> = ({
 
   useResize(setContainerLayout, [images, imageSize, canvasWidth, isZenModeOn]);
 
-  useEffect(setContainerLayout, [images, imageSize, canvasWidth, isZenModeOn]);
+  useEffect(setContainerLayout, [
+    images,
+    imageSize,
+    canvasWidth,
+    isZenModeOn,
+    setContainerLayout,
+  ]);
 
   useEffect(() => {
     const image = images[0];
-    fetch(image)
-      .then((response) => response.blob())
-      .then((blob) => {
-        const url = URL.createObjectURL(blob);
-        let img = new Image();
-        img.src = url;
-        img.onload = () => {
-          URL.revokeObjectURL(url);
-          if (imageSize[0] !== img.width || imageSize[1] !== img.height) {
-            setResultWidth(img.width);
-            setResultHeight(img.height);
-          }
-        };
-      });
-  }, [images, canvasWidth, imageSize, isZenModeOn]);
+    image &&
+      fetch(image)
+        .then((response) => response.blob())
+        .then((blob) => {
+          const url = URL.createObjectURL(blob);
+          let img = new Image();
+          img.src = url;
+          img.onload = () => {
+            URL.revokeObjectURL(url);
+            if (imageSize[0] !== img.width || imageSize[1] !== img.height) {
+              setResultWidth(img.width);
+              setResultHeight(img.height);
+            }
+          };
+        });
+  }, [
+    images,
+    canvasWidth,
+    imageSize,
+    isZenModeOn,
+    setResultWidth,
+    setResultHeight,
+  ]);
 
   return (
     <div className={containerStyle}>
