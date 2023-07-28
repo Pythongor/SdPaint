@@ -56,7 +56,12 @@ export const generate = async (
   await sendImage(paintImage).catch(catchError);
   await retryRequest({
     finalFunc: async () => {
-      const { images, info, status_code } = await getImage();
+      const result = await getImage();
+      if ("error" in result) {
+        audioFunc();
+        return;
+      }
+      const { images, info, status_code } = result;
       if (status_code === 200) {
         setResultImages(images);
         setResultInfo(info);
@@ -64,7 +69,7 @@ export const generate = async (
       audioFunc();
     },
     progressFunc: (data) => {
-      setCnProgress(data * 100);
+      setCnProgress(isNaN(data) ? 100 : data * 100);
       return !!data;
     },
   });

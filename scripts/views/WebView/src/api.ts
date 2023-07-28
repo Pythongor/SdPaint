@@ -123,7 +123,11 @@ export const getImage = async () => {
   const json = (await response.json()) as Omit<ResultType, "info"> & {
     info: string;
   };
-  console.log(json);
+  try {
+    JSON.parse(json.info);
+  } catch (error) {
+    return catchError(error as Error);
+  }
   const parsedInfo = JSON.parse(json.info) as ResultInfoType;
   const images: string[] = [];
   if ("image" in json) {

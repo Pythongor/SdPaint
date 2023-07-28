@@ -113,7 +113,7 @@ async def root():
     progress_json = api.progress_request()
     progress = progress_json.get('progress', None)
     if progress == 0.0:
-        return 1.0
+        return "NOT READY"
     return progress
 
 
