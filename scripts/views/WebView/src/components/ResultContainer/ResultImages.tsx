@@ -69,7 +69,7 @@ const ResultImages: React.FC<ResultImagesProps> = ({
         .then((response) => response.blob())
         .then((blob) => {
           const url = URL.createObjectURL(blob);
-          let img = new Image();
+          const img = new Image();
           img.src = url;
           img.onload = () => {
             URL.revokeObjectURL(url);
