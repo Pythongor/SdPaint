@@ -9,22 +9,23 @@ def rename_files(extension):
     for file in bundle_files:
         file_path = os.path.join(bundle_root, extension, file)
         new_file_path = re.sub(hash, "", file_path)
-        with open(file_path, "r") as f:
+        print(file_path)
+        with open(file_path, "r", encoding="utf8") as f:
             content = f.read()
             new_content = re.sub(hash, "", content)
         os.remove(file_path)
-        with open(new_file_path, "w") as f:
+        with open(new_file_path, "w", encoding="utf8") as f:
             f.write(new_content)
     return hash
 
 
 def rewrite_file(file_path):
-    with open(file_path) as f:
+    with open(file_path, encoding="utf8") as f:
         content = f.read()
         new_content = re.sub(js_hash, "", content)
         new_content = re.sub(css_hash, "", new_content)
 
-    with open(file_path, "w") as f:
+    with open(file_path, "w", encoding="utf8") as f:
         f.write(new_content)
 
 
