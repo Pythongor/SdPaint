@@ -1,4 +1,4 @@
-import React, { useCallback, useRef } from "react";
+import React, { useCallback } from "react";
 import { connect } from "react-redux";
 import { StateType } from "store/types";
 import {
@@ -31,12 +31,10 @@ type DispatchProps = typeof MDTP;
 type HotkeyWrapperProps = StateProps &
   DispatchProps & {
     children: React.ReactNode;
-    innerRef?: React.RefObject<HTMLElement>;
   };
 
 const HotkeyWrapper: React.FC<HotkeyWrapperProps> = ({
   children,
-  innerRef,
   modal,
   resultImages,
   canvasImage,
@@ -93,10 +91,10 @@ const HotkeyWrapper: React.FC<HotkeyWrapperProps> = ({
   const memoizedToggleViewer = useCallback(() => {
     if (modal === "imageViewer") {
       setModal(null);
-    } else {
+    } else if (resultImages.length) {
       setModal("imageViewer");
     }
-  }, [modal, setModal]);
+  }, [modal, setModal, resultImages]);
 
   const memoizedToggleSettings = useCallback(() => {
     if (modal === "settings") {

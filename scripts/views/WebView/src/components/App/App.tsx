@@ -84,7 +84,7 @@ const App: React.FC<AppProps> = ({
   }, [setCnConfig]);
 
   return (
-    <HotkeyWrapper innerRef={ref}>
+    <HotkeyWrapper>
       <div
         className={cn(styles.base, modal && styles.base__scrollLock)}
         ref={ref}
