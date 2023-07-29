@@ -33,8 +33,7 @@ bundle_root = os.path.join(os.getcwd(), "build", "static")
 
 js_hash = rename_files("js")
 css_hash = rename_files("css")
-manifest_link = '<link rel="manifest" href="./manifest.json"/>'
-strings_to_replace = [js_hash, css_hash, manifest_link]
+strings_to_replace = [js_hash, css_hash]
 html_file = os.path.join(os.getcwd(), "build", "index.html")
 manifest_file = os.path.join(os.getcwd(), "build", "asset-manifest.json")
 

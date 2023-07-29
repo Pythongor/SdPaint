@@ -56,7 +56,7 @@ export const PaintingCanvas: React.FC<PaintingCanvasProps> = ({
   useEffect(() => {
     if (!paintingRef?.current || !context) return;
     const currentImage = paintingRef.current.toDataURL();
-    if (canvasImage === "") {
+    if (!canvasImage) {
       clear(paintingRef, context);
     } else if (currentImage !== canvasImage) {
       const image = new Image();
