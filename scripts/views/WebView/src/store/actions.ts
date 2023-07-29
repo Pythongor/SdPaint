@@ -6,6 +6,7 @@ import {
   AudioSignalType,
   ModalType,
   ResultInfoType,
+  PopupType,
 } from "./types";
 
 // audio
@@ -103,6 +104,13 @@ export const setInstantGenerationMode = createAction(
   Actions.setInstantGenerationMode
 )<boolean | "switch">();
 
+export const addPopup = createAction(Actions.addPopup)<{
+  message: string;
+  popupType?: PopupType;
+}>();
+
+export const deletePopup = createAction(Actions.deletePopup)<number>();
+
 const actions = {
   setAudioEnabled,
   setAudioReady,
@@ -132,6 +140,8 @@ const actions = {
   setCnConfig,
   setScrollTop,
   setInstantGenerationMode,
+  addPopup,
+  deletePopup,
 };
 
 export default actions;

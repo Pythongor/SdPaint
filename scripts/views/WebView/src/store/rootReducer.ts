@@ -9,6 +9,7 @@ const initialState: Readonly<StateType> = {
   modal: null,
   isZenModeOn: false,
   cnProgress: 0,
+  popups: [],
   result: {
     images: [],
     imageSize: [512, 512],
@@ -337,4 +338,15 @@ export default createReducer<StateType, ActionType>(initialState)
     if (payload === "switch")
       return { ...state, instantGenerationMode: !state.instantGenerationMode };
     return { ...state, instantGenerationMode: payload };
+  })
+  .handleAction(actions.addPopup, (state, { payload }) => ({
+    ...state,
+    popups: [
+      ...state.popups,
+      { ...payload, id: Math.random(), popupType: payload.popupType || "info" },
+    ],
+  }))
+  .handleAction(actions.deletePopup, (state, { payload }) => {
+    const newPopups = [...state.popups].filter((popup) => popup.id !== payload);
+    return { ...state, popups: newPopups };
   });

@@ -20,6 +20,14 @@ export type BrushType = "pencil" | "line" | "rectangle" | "ellipse";
 
 export type AudioSignalType = "epic" | "ringtone" | "bounce";
 
+export type PopupType = "info" | "success" | "warning" | "error";
+
+export type PopupConfigType = {
+  message: string;
+  popupType: PopupType;
+  id: number;
+};
+
 export type ResultInfoType = {
   prompt: string;
   all_prompts: string[];
@@ -90,16 +98,17 @@ export type CanvasConfigType = {
 };
 
 export type StateType = Readonly<{
-  brushConfig: Readonly<BrushConfigType>;
-  scrollTop: number;
-  cnProgress: number;
-  modal: ModalType;
-  isZenModeOn: boolean;
-  canvas: Readonly<CanvasConfigType>;
-  result: Readonly<ResultConfigType>;
-  cnConfig: Readonly<CnConfigType>;
-  instantGenerationMode: boolean;
   audio: Readonly<AudioConfigType>;
+  brushConfig: Readonly<BrushConfigType>;
+  canvas: Readonly<CanvasConfigType>;
+  cnConfig: Readonly<CnConfigType>;
+  result: Readonly<ResultConfigType>;
+  cnProgress: number;
+  instantGenerationMode: boolean;
+  isZenModeOn: boolean;
+  modal: ModalType;
+  popups: PopupConfigType[];
+  scrollTop: number;
 }>;
 
 export enum Actions {
@@ -116,6 +125,7 @@ export enum Actions {
   setCanvasHeight = "CANVAS__SET_HEIGHT",
   increaseCanvasImageIndex = "CANVAS__INCREASE_IMAGE_INDEX",
   decreaseCanvasImageIndex = "CANVAS__DECREASE_IMAGE_INDEX",
+  setEmptyImage = "CANVAS__SET_EMPTY_IMAGE",
   setResultWidth = "RESULT__SET_WIDTH",
   setResultHeight = "RESULT__SET_HEIGHT",
   setResultImages = "RESULT__SET_IMAGES",
@@ -124,13 +134,14 @@ export enum Actions {
   setMultipleImagesMode = "RESULT__SET_MULTIPLE_IMAGES_MODE",
   setViewedImageIndex = "RESULT__SET_VIEWED_IMAGE_INDEX",
   setInputImageViewOpacity = "RESULT__SET_INPUT_IMAGE_VIEW_OPACITY",
+  setCnConfig = "SET_CONTROL_NET_CONFIG",
   setCnProgress = "SET_CONTROL_NET_PROGRESS",
   setInstantGenerationMode = "SET_INSTANT_GENERATION_MODE",
   setModal = "SET_MODAL",
-  setZenMode = "SET_ZEN_MODE",
-  setEmptyImage = "SET_EMPTY_IMAGE",
-  setCnConfig = "SET_CONTROL_NET_CONFIG",
   setScrollTop = "SET_SCROLL_TOP",
+  setZenMode = "SET_ZEN_MODE",
+  addPopup = "ADD_POPUP",
+  deletePopup = "DELETE_POPUP",
 }
 
 export type ActionType = ActType<typeof actions>;

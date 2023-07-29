@@ -5,7 +5,7 @@ import { getCnConfig, sendCnConfig } from "api";
 import { default as BrushInput } from "./components/BrushInput";
 import ToolsCheckboxes from "./components/ToolsCheckboxes";
 import { default as GenerateButton } from "./components/GenerateGroup";
-import { setCanvasImage, setCnConfig, setModal } from "store/actions";
+import { setCanvasImage, setCnConfig, setModal, addPopup } from "store/actions";
 import cn from "classnames";
 import styles from "./PaintingTools.module.scss";
 
@@ -34,14 +34,31 @@ const PaintingTools: React.FC<PaintingToolsProps> = ({
   setCanvasImage,
   setCnConfig,
   setModal,
+  addPopup,
 }) => {
   const loadConfig = () =>
     getCnConfig().then((fileConfig) => {
-      if ("error" in fileConfig) return;
+      if ("error" in fileConfig) {
+        addPopup({
+          message: `Config loaded with error: ${fileConfig.error}`,
+          popupType: "error",
+        });
+        return;
+      }
       setCnConfig(fileConfig);
+      addPopup({
+        message: "Config loaded successfully!",
+        popupType: "success",
+      });
     });
-  const saveConfig = useCallback(() => sendCnConfig(cnConfig), [cnConfig]);
-  const clear = useCallback(() => setCanvasImage(emptyImage), [emptyImage]);
+  const saveConfig = useCallback(() => {
+    sendCnConfig(cnConfig);
+    addPopup({ message: "Config saved successfully!", popupType: "success" });
+  }, [cnConfig, addPopup]);
+  const clear = useCallback(
+    () => setCanvasImage(emptyImage),
+    [emptyImage, setCanvasImage]
+  );
 
   return (
     <div className={styles.base}>
@@ -113,6 +130,6 @@ const MSTP = ({
   emptyImage,
 });
 
-const MDTP = { setCanvasImage, setCnConfig, setModal };
+const MDTP = { setCanvasImage, setCnConfig, setModal, addPopup };
 
 export default connect(MSTP, MDTP)(PaintingTools);

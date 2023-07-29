@@ -1,8 +1,9 @@
 import React, { useEffect, useRef } from "react";
 import {
-  ModalWrapper,
   ControlNetForm,
   MainSection,
+  ModalWrapper,
+  Popups,
   ZenControls,
 } from "components";
 import { connect } from "react-redux";
@@ -93,6 +94,7 @@ const App: React.FC<AppProps> = ({
         }
       >
         <ModalWrapper />
+        <Popups />
         <ControlNetForm />
         <MainSection />
         <ZenControls />

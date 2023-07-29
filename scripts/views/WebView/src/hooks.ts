@@ -1,4 +1,4 @@
-import { useEffect, useCallback, RefObject } from "react";
+import { useEffect, useCallback, RefObject, useState, useRef } from "react";
 
 const TEXT_INPUTS_TYPES = ["text", "number"];
 
@@ -106,4 +106,25 @@ export const useResize = (func: () => any, deps: any[] = []) => {
     return () => window.removeEventListener("resize", func);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [func, ...deps]);
+};
+
+export const useTimeUp = (initTime: number, step: number = 100) => {
+  const [isTimeUp, setIsTimeUp] = useState(initTime);
+  const refTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const decreaseLiveTime = useCallback(() => {
+    if (isTimeUp > 0) {
+      setIsTimeUp((value) => value - step);
+    } else if (refTimer.current) {
+      clearInterval(refTimer.current);
+    }
+  }, [isTimeUp, step]);
+  useEffect(() => {
+    refTimer.current = setInterval(decreaseLiveTime, step);
+    return () => {
+      if (refTimer.current) {
+        clearInterval(refTimer.current);
+      }
+    };
+  });
+  return isTimeUp <= 0;
 };
