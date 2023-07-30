@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { connect } from "react-redux";
 import { StateType } from "store/types";
-import { setCnConfig, setScrollTop } from "store/actions";
+import { setCnConfig, setScrollTop, addPopup } from "store/actions";
 import { getModels, getModules } from "../../api";
 import { Arrow } from "components/widgets";
 import ControlNetNumberInput from "./components/ControlNetNumberInput";
@@ -18,8 +18,16 @@ export const ControlNetForm: React.FC<CnFormProps> = ({
   isZenModeOn,
   setCnConfig,
   setScrollTop,
+  addPopup,
 }) => {
   const [isHidden, setHidden] = useState(isZenModeOn);
+
+  const memoizedGetModules = useCallback(
+    () => getModules(addPopup),
+    [addPopup]
+  );
+
+  const memoizedGetModels = useCallback(() => getModels(addPopup), [addPopup]);
 
   useEffect(() => {
     if (isZenModeOn) {
@@ -85,14 +93,14 @@ export const ControlNetForm: React.FC<CnFormProps> = ({
           title="ControlNet module"
           listName="modules"
           unitName="module"
-          getFunc={getModules}
+          getFunc={memoizedGetModules}
         />
         <ControlNetSelect
           name="Model"
           title="ControlNet model"
           listName="models"
           unitName="model"
-          getFunc={getModels}
+          getFunc={memoizedGetModels}
         />
       </div>
       <Arrow
@@ -110,6 +118,6 @@ const MSTP = ({ cnConfig, isZenModeOn }: StateType) => ({
   isZenModeOn,
 });
 
-const MDTP = { setCnConfig, setScrollTop };
+const MDTP = { setCnConfig, setScrollTop, addPopup };
 
 export default connect(MSTP, MDTP)(ControlNetForm);

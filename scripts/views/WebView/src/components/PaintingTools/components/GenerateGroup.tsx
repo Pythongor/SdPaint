@@ -9,6 +9,7 @@ import {
   setCnConfig,
   setMultipleImagesMode,
   setResultInfo,
+  addPopup,
 } from "store/actions";
 import { generate, handleAudioSignal } from "../generate";
 import cn from "classnames";
@@ -27,6 +28,7 @@ const GenerateGroup: React.FC<GenerateGroupProps> = ({
   setAudioReady,
   setMultipleImagesMode,
   setResultInfo,
+  addPopup,
 }) => {
   const audioFunc = useCallback(
     () => handleAudioSignal(audio, setAudioReady),
@@ -39,9 +41,17 @@ const GenerateGroup: React.FC<GenerateGroupProps> = ({
       setResultImages,
       setCnProgress,
       setResultInfo,
+      addPopup,
       audioFunc
     );
-  }, [paintImage, setResultImages, setCnProgress, setResultInfo, audioFunc]);
+  }, [
+    paintImage,
+    setResultImages,
+    setCnProgress,
+    setResultInfo,
+    audioFunc,
+    addPopup,
+  ]);
 
   return (
     <div className={styles.group}>
@@ -84,6 +94,7 @@ const MDTP = {
   setCnConfig,
   setMultipleImagesMode,
   setResultInfo,
+  addPopup,
 };
 
 export default connect(MSTP, MDTP)(GenerateGroup);

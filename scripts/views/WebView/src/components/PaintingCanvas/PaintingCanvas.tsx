@@ -7,6 +7,7 @@ import {
   setErasingByMouse,
   setAudioReady,
   setResultInfo,
+  addPopup,
 } from "store/actions";
 import { connect } from "react-redux";
 import { StateType } from "store/types";
@@ -35,6 +36,7 @@ export const PaintingCanvas: React.FC<PaintingCanvasProps> = ({
   setEmptyImage,
   setErasingByMouse,
   setAudioReady,
+  addPopup,
 }) => {
   const {
     ref: paintingRef,
@@ -51,7 +53,7 @@ export const PaintingCanvas: React.FC<PaintingCanvasProps> = ({
       const image = paintingRef.current.toDataURL();
       setEmptyImage(image);
     }
-  }, [paintingRef?.current, context, canvasImagesStack]);
+  }, [context, canvasImagesStack, paintingRef, setEmptyImage]);
 
   useEffect(() => {
     if (!paintingRef?.current || !context) return;
@@ -66,11 +68,11 @@ export const PaintingCanvas: React.FC<PaintingCanvasProps> = ({
         context.drawImage(image, 0, 0);
       };
     }
-  }, [canvasImage, paintingRef?.current, context, canvasSize]);
+  }, [canvasImage, context, canvasSize, paintingRef]);
 
   useEffect(() => {
     resize();
-  }, [paintingRef?.current, scrollTop]);
+  }, [resize, scrollTop, paintingRef]);
 
   const { onPointerDown, onPointerMove, onPointerUp, onPointerOut } =
     useBrushes({
@@ -87,6 +89,7 @@ export const PaintingCanvas: React.FC<PaintingCanvasProps> = ({
       setResultInfo,
       setErasingByMouse,
       setAudioReady,
+      addPopup,
     });
 
   return (
@@ -136,6 +139,7 @@ const MDTP = {
   setEmptyImage,
   setErasingByMouse,
   setAudioReady,
+  addPopup,
 };
 
 export default connect(MSTP, MDTP)(PaintingCanvas);

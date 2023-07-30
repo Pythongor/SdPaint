@@ -70,7 +70,17 @@ const usePrimitiveShapeBrush = ({
         });
       }
     },
-    [previewContext, mousePos, startPos, withBrushFill, kind]
+    [
+      previewContext,
+      previewRef,
+      getRect,
+      mousePos,
+      startPos,
+      drawFunc,
+      isErasing,
+      withBrushFill,
+      kind,
+    ]
   );
 
   const onPointerUpFunc = useCallback(
@@ -85,7 +95,7 @@ const usePrimitiveShapeBrush = ({
       });
       if (event.pointerType !== "mouse") context.closePath();
     },
-    [context, mousePos, startPos, isErasing, withBrushFill]
+    [context, getRect, mousePos, startPos, drawFunc, isErasing, withBrushFill]
   );
 
   return useBrush({

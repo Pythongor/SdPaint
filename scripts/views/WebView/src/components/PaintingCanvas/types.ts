@@ -1,5 +1,12 @@
-import { PayloadActionCreator } from "typesafe-actions";
-import { Actions, ResultInfoType } from "store/types";
+import {
+  addPopup,
+  setAudioReady,
+  setErasingByMouse,
+  setResultInfo,
+  setResultImages,
+  setCnProgress,
+  setCanvasImage,
+} from "store/actions";
 
 export type PointType = { x: number; y: number };
 
@@ -11,15 +18,13 @@ export type UseBrushProps = {
   mousePos: PointType;
   instantGenerationMode: boolean;
   setMouseCoordinates: (event: any) => PointType;
-  setCanvasImage: PayloadActionCreator<Actions.setCanvasImage, string>;
-  setCnProgress: PayloadActionCreator<Actions.setCnProgress, number>;
-  setResultImages: PayloadActionCreator<Actions.setResultImages, string[]>;
-  setResultInfo: PayloadActionCreator<
-    Actions.setResultInfo,
-    ResultInfoType | null
-  >;
-  setErasingByMouse: PayloadActionCreator<Actions.setErasingByMouse, boolean>;
-  setAudioReady: PayloadActionCreator<Actions.setAudioReady, boolean>;
+  setCanvasImage: typeof setCanvasImage;
+  setCnProgress: typeof setCnProgress;
+  setResultImages: typeof setResultImages;
+  setResultInfo: typeof setResultInfo;
+  setErasingByMouse: typeof setErasingByMouse;
+  setAudioReady: typeof setAudioReady;
+  addPopup: typeof addPopup;
 };
 
 export type CanvasInstructionProps = PointType & {

@@ -19,6 +19,7 @@ import {
   setAudioReady,
   setAudioEnabled,
   setMultipleImagesMode,
+  addPopup,
 } from "store/actions";
 import { useHotKeys } from "hooks";
 import { downloadImages } from "components/PaintingTools/PaintingTools";
@@ -58,6 +59,7 @@ const HotkeyWrapper: React.FC<HotkeyWrapperProps> = ({
   setAudioReady,
   setAudioEnabled,
   setMultipleImagesMode,
+  addPopup,
 }) => {
   const changeSeed = useCallback(
     (ascend?: boolean) => {
@@ -79,9 +81,17 @@ const HotkeyWrapper: React.FC<HotkeyWrapperProps> = ({
       setResultImages,
       setCnProgress,
       setResultInfo,
+      addPopup,
       audioFunc
     );
-  }, [canvasImage, setResultImages, setCnProgress, setResultInfo, audioFunc]);
+  }, [
+    canvasImage,
+    setResultImages,
+    setCnProgress,
+    setResultInfo,
+    audioFunc,
+    addPopup,
+  ]);
 
   const memoizedDownload = useCallback(
     () => downloadImages(resultImages),
@@ -105,15 +115,15 @@ const HotkeyWrapper: React.FC<HotkeyWrapperProps> = ({
   }, [modal, setModal]);
 
   const loadConfig = () => {
-    getCnConfig().then((fileConfig) => {
+    getCnConfig(addPopup).then((fileConfig) => {
       if ("error" in fileConfig) return;
       setCnConfig(fileConfig);
     });
   };
 
   const saveConfig = useCallback(() => {
-    sendCnConfig(cnConfig);
-  }, [cnConfig]);
+    sendCnConfig(cnConfig, addPopup);
+  }, [cnConfig, addPopup]);
 
   useHotKeys(
     {
@@ -122,7 +132,7 @@ const HotkeyWrapper: React.FC<HotkeyWrapperProps> = ({
       Equal: () => setBrushWidth("+"),
       Minus: () => setBrushWidth("-"),
       Delete: () => setCanvasImage(""),
-      Backspace: () => skipRendering(),
+      Backspace: () => skipRendering(addPopup),
       Backquote: () => changeSeed(true),
       Backquote_s: () => changeSeed(),
       KeyA: () => setAudioEnabled("switch"),
@@ -176,6 +186,7 @@ const MDTP = {
   setAudioReady,
   setAudioEnabled,
   setMultipleImagesMode,
+  addPopup,
 };
 
 export default connect(MSTP, MDTP)(HotkeyWrapper);

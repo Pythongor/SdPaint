@@ -57,7 +57,15 @@ export const useLineBrush = ({
         drawCircle(previewContext, true);
       }
     },
-    [context, previewContext, mousePos, startPos, isErasing]
+    [
+      context,
+      previewContext,
+      mousePos,
+      startPos,
+      isErasing,
+      drawCircle,
+      previewRef,
+    ]
   );
 
   const onPointerUpFunc = useCallback(() => {

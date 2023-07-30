@@ -37,7 +37,7 @@ const PaintingTools: React.FC<PaintingToolsProps> = ({
   addPopup,
 }) => {
   const loadConfig = () =>
-    getCnConfig().then((fileConfig) => {
+    getCnConfig(addPopup).then((fileConfig) => {
       if ("error" in fileConfig) {
         addPopup({
           message: `Config loaded with error: ${fileConfig.error}`,
@@ -52,7 +52,7 @@ const PaintingTools: React.FC<PaintingToolsProps> = ({
       });
     });
   const saveConfig = useCallback(() => {
-    sendCnConfig(cnConfig);
+    sendCnConfig(cnConfig, addPopup);
     addPopup({ message: "Config saved successfully!", popupType: "success" });
   }, [cnConfig, addPopup]);
   const clear = useCallback(

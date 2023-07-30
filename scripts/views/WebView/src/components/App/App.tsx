@@ -22,6 +22,7 @@ import {
   setCanvasHeight,
   setResultImagesCount,
   setMultipleImagesMode,
+  addPopup,
 } from "store/actions";
 import HotkeyWrapper from "./HotkeyWrapper";
 import cn from "classnames";
@@ -43,6 +44,7 @@ const App: React.FC<AppProps> = ({
   setCanvasHeight,
   setResultImagesCount,
   setMultipleImagesMode,
+  addPopup,
 }) => {
   const ref = useRef<HTMLDivElement>(null);
 
@@ -78,11 +80,11 @@ const App: React.FC<AppProps> = ({
   useEffect(() => {
     const storageConfig = extractDataFromConfig(getStorageConfig());
     setCnConfig(storageConfig);
-    getCnConfig().then((fileConfig) => {
+    getCnConfig(addPopup).then((fileConfig) => {
       if ("error" in fileConfig) return;
       setCnConfig(fileConfig);
     });
-  }, [setCnConfig]);
+  }, [setCnConfig, addPopup]);
 
   return (
     <HotkeyWrapper>
@@ -118,6 +120,7 @@ const MDTP = {
   setCanvasHeight,
   setResultImagesCount,
   setMultipleImagesMode,
+  addPopup,
 };
 
 export default connect(MSTP, MDTP)(App);

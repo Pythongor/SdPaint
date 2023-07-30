@@ -31,6 +31,7 @@ export const useBrush = ({
   onBrushTypeChangeFunc,
   afterPointerMoveFunc,
   onPointerUpFunc,
+  addPopup,
 }: Props) => {
   const [isDrawing, setIsDrawing] = useState(false);
   const { isErasing, brushType, audio } = useSelector((state: StateType) => ({
@@ -39,11 +40,15 @@ export const useBrush = ({
     audio: state.audio,
   }));
 
-  const audioFunc = () => handleAudioSignal(audio, setAudioReady);
+  const audioFunc = useCallback(
+    () => handleAudioSignal(audio, setAudioReady),
+    [audio, setAudioReady]
+  );
 
   useEffect(() => {
     setIsDrawing(false);
     onBrushTypeChangeFunc && onBrushTypeChangeFunc();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [brushType]);
 
   const switchBrushStyle = useCallback(() => {
@@ -61,7 +66,7 @@ export const useBrush = ({
         previewContext.strokeStyle = "white";
       }
     }
-  }, [previewContext, isDrawing, isErasing]);
+  }, [previewContext, previewRef, isDrawing, isErasing]);
 
   const onPointerDown: React.PointerEventHandler<HTMLCanvasElement> =
     useCallback(
@@ -87,11 +92,13 @@ export const useBrush = ({
       },
       [
         context,
-        paintingRef.current,
+        paintingRef,
         previewContext,
-        previewRef.current,
-        isErasing,
+        previewRef,
+        // isErasing,
         setMouseCoordinates,
+        afterPointerDownFunc,
+        setErasingByMouse,
       ]
     );
 
@@ -107,10 +114,12 @@ export const useBrush = ({
       },
       [
         previewContext,
-        previewRef?.current,
+        previewRef,
         setMouseCoordinates,
         afterPointerMoveFunc,
         isErasing,
+        isDrawing,
+        switchBrushStyle,
       ]
     );
 
@@ -130,6 +139,7 @@ export const useBrush = ({
           setResultImages,
           setCnProgress,
           setResultInfo,
+          addPopup,
           audioFunc
         );
       }
@@ -138,10 +148,18 @@ export const useBrush = ({
     [
       context,
       setMouseCoordinates,
-      paintingRef?.current,
+      paintingRef,
       instantGenerationMode,
-      mousePos,
       isErasing,
+      addPopup,
+      audioFunc,
+      isDrawing,
+      onPointerUpFunc,
+      setCanvasImage,
+      setCnProgress,
+      setErasingByMouse,
+      setResultImages,
+      setResultInfo,
     ]
   );
 
@@ -150,7 +168,7 @@ export const useBrush = ({
       clear(previewRef, previewContext);
       setIsDrawing(false);
       setErasingByMouse(false);
-    }, [previewContext, previewRef?.current]);
+    }, [previewContext, previewRef, setErasingByMouse]);
 
   return { onPointerDown, onPointerMove, onPointerUp, onPointerOut };
 };

@@ -17,6 +17,12 @@ export const useCanvas = () => {
     })
   );
 
+  const resize = useCallback(() => {
+    if (!ref?.current) return;
+    const { left, top } = ref.current.getBoundingClientRect();
+    setPos({ left, top });
+  }, [ref]);
+
   useEffect(() => {
     if (!context) return;
     if (brushType === "rectangle") {
@@ -41,7 +47,7 @@ export const useCanvas = () => {
     const canvasContext = ref?.current.getContext("2d");
     if (!canvasContext) return;
     setContext(canvasContext);
-  }, [ref?.current]);
+  }, [ref]);
 
   useEffect(() => {
     window.addEventListener("resize", resize);
@@ -51,7 +57,7 @@ export const useCanvas = () => {
       window.removeEventListener("resize", resize);
       window.removeEventListener("scroll", resize);
     };
-  }, []);
+  }, [resize]);
 
   const setMouseCoordinates = useCallback(
     (event) => {
@@ -62,14 +68,8 @@ export const useCanvas = () => {
       setMousePos(newPos);
       return newPos;
     },
-    [pos, mousePos]
+    [pos]
   );
-
-  const resize = useCallback(() => {
-    if (!ref?.current) return;
-    const { left, top } = ref.current.getBoundingClientRect();
-    setPos({ left, top });
-  }, [ref?.current]);
 
   return { ref, context, mousePos, resize, setMouseCoordinates };
 };
@@ -95,6 +95,7 @@ export const drawEllipse = ({
   );
   withStroke && context.stroke();
   withFill && context.fill();
+  context.beginPath();
 };
 
 export const drawRectangle = ({

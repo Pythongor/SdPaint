@@ -1,6 +1,7 @@
 import { AudioConfigType, AudioSignalType, ResultInfoType } from "store/types";
 import { PayloadActionCreator } from "typesafe-actions";
 import { Actions } from "store/types";
+import { addPopup } from "store/actions";
 import { sendImage, retryRequest, getImage, catchError } from "api";
 import { renewAudioContext } from "audio/synth";
 import {
@@ -50,13 +51,16 @@ export const generate = async (
     Actions.setResultInfo,
     ResultInfoType | null
   >,
+  addPopupAction: typeof addPopup,
   audioFunc: () => void
 ) => {
   if (!paintImage) return;
-  await sendImage(paintImage).catch(catchError);
+  await sendImage(paintImage).catch((error) =>
+    catchError(error, addPopupAction)
+  );
   await retryRequest({
     finalFunc: async () => {
-      const result = await getImage();
+      const result = await getImage(addPopupAction);
       if ("error" in result) {
         audioFunc();
         return;
@@ -72,5 +76,6 @@ export const generate = async (
       setCnProgress(isNaN(data) ? 100 : data * 100);
       return !!data;
     },
+    addPopup: addPopupAction,
   });
 };

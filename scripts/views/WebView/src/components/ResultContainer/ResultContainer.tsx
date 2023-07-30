@@ -2,15 +2,18 @@ import React from "react";
 import { StateType } from "store/types";
 import { connect } from "react-redux";
 import { skipRendering } from "api";
+import { addPopup } from "store/actions";
 import ResultImages from "./ResultImages";
 import styles from "./ResultContainer.module.scss";
 
 type StateProps = ReturnType<typeof MSTP>;
-type ResultCanvasProps = StateProps;
+type DispatchProps = typeof MDTP;
+type ResultCanvasProps = StateProps & DispatchProps;
 
 const ResultContainer: React.FC<ResultCanvasProps> = ({
   cnProgress,
   isZenModeOn,
+  addPopup,
 }) => {
   return (
     <div className={styles.base}>
@@ -28,7 +31,7 @@ const ResultContainer: React.FC<ResultCanvasProps> = ({
           {!isZenModeOn && (
             <div
               className={styles.loader}
-              onPointerDown={() => skipRendering()}
+              onPointerDown={() => skipRendering(addPopup)}
             ></div>
           )}
           <progress className={styles.progress} max="100" value={cnProgress}>
@@ -45,4 +48,6 @@ const MSTP = ({ cnProgress, isZenModeOn }: StateType) => ({
   isZenModeOn,
 });
 
-export default connect(MSTP)(ResultContainer);
+const MDTP = { addPopup };
+
+export default connect(MSTP, MDTP)(ResultContainer);

@@ -1,6 +1,9 @@
 import { addBase64Prefix, extractDataFromConfig } from "helpers";
 import { getStorageConfig } from "./storage";
 import { CnConfigType, ResultInfoType, ResultType } from "store/types";
+import { addPopup } from "store/actions";
+
+type AddPopupAction = typeof addPopup;
 
 export const url = "http://127.0.0.1:8000";
 
@@ -9,44 +12,51 @@ type CustomError = {
   ok: false;
 };
 
-export const catchError = (error: Error): CustomError => {
+export const catchError = (
+  error: Error,
+  addPopup: AddPopupAction
+): CustomError => {
   const { name, message } = error;
   console.error(`${name}: ${message}`);
+  addPopup({ message: `${name}: ${message}`, popupType: "error" });
   return { error, ok: false };
 };
 
-export const getModels = () => {
+export const getModels = (addPopup: AddPopupAction) => {
   return fetch(`${url}/models`).then(
     (response) => response.json().then((data) => ({ list: data })),
-    catchError
+    (error: Error) => catchError(error, addPopup)
   );
 };
 
-export const getModules = () =>
+export const getModules = (addPopup: AddPopupAction) =>
   fetch(`${url}/modules`).then(
     (response) =>
       response.json().then((data) => ({
         list: data.module_list,
         details: data.module_detail,
       })),
-    catchError
+    (error: Error) => catchError(error, addPopup)
   );
 
-export const getCnConfig = () => {
+export const getCnConfig = (addPopup: AddPopupAction) => {
   return fetch(`${url}/config`).then(
     (response) => response.json().then((data) => extractDataFromConfig(data)),
-    catchError
+    (error: Error) => catchError(error, addPopup)
   );
 };
 
-export const skipRendering = () => {
+export const skipRendering = (addPopup: AddPopupAction) => {
   return fetch(`${url}/skip`, { method: "post" }).then(
     (response) => response.json(),
-    catchError
+    (error: Error) => catchError(error, addPopup)
   );
 };
 
-export const sendCnConfig = async (config: CnConfigType) => {
+export const sendCnConfig = async (
+  config: CnConfigType,
+  addPopup: AddPopupAction
+) => {
   const { modules, models, ...cleanConfig } = config;
   try {
     return await fetch(`${url}/config`, {
@@ -54,7 +64,7 @@ export const sendCnConfig = async (config: CnConfigType) => {
       body: JSON.stringify(cleanConfig),
     });
   } catch (error) {
-    return catchError(error as Error);
+    return catchError(error as Error, addPopup);
   }
 };
 
@@ -64,6 +74,7 @@ type RetryRequestConfig = {
   timeout?: number;
   finalFunc: (data: any) => void;
   fetchFunc?: () => Promise<any>;
+  addPopup: AddPopupAction;
 };
 
 const retry = ({
@@ -72,6 +83,7 @@ const retry = ({
   timeout = 1,
   finalFunc,
   fetchFunc,
+  addPopup: AddPopupAction,
 }: RetryRequestConfig) => {
   if (timeout >= 500) {
     timeout = 500;
@@ -86,6 +98,7 @@ const retry = ({
             timeout,
             finalFunc,
             fetchFunc,
+            addPopup,
           })
         ),
       timeout
@@ -97,7 +110,9 @@ export const retryRequest = async (config: RetryRequestConfig) => {
   const {
     fetchFunc = async () => (await fetch(`${url}/server_status`)).json(),
   } = config;
-  const result = await fetchFunc().catch((error) => catchError(error));
+  const result = await fetchFunc().catch((error) =>
+    catchError(error, config.addPopup)
+  );
   if (config.retries === 0) return config.finalFunc(result);
   if (result && result?.ok === false) {
     return retry(config);
@@ -118,7 +133,7 @@ export const sendImage = (image: string) => {
   });
 };
 
-export const getImage = async () => {
+export const getImage = async (addPopup: AddPopupAction) => {
   const response = await fetch(`${url}/cn_image`);
   const json = (await response.json()) as Omit<ResultType, "info"> & {
     info: string;
@@ -126,7 +141,7 @@ export const getImage = async () => {
   try {
     JSON.parse(json.info);
   } catch (error) {
-    return catchError(error as Error);
+    return catchError(error as Error, addPopup);
   }
   const parsedInfo = JSON.parse(json.info) as ResultInfoType;
   const images: string[] = [];

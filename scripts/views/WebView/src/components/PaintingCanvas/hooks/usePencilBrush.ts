@@ -41,7 +41,7 @@ export const usePencilBrush = ({
     if (!context) return;
     drawCircle(context);
     context.beginPath();
-  }, [context, drawCircle, isErasing]);
+  }, [context, drawCircle]);
 
   const afterPointerMoveFunc = useCallback(
     (isDrawing: boolean) => {
