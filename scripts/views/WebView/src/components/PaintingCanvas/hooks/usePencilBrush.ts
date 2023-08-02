@@ -39,9 +39,9 @@ export const usePencilBrush = ({
 
   const afterPointerDownFunc = useCallback(() => {
     if (!context) return;
-    drawCircle(context);
+    !isErasing && drawCircle(context);
     context.beginPath();
-  }, [context, drawCircle]);
+  }, [context, drawCircle, isErasing]);
 
   const afterPointerMoveFunc = useCallback(
     (isDrawing: boolean) => {
@@ -51,19 +51,21 @@ export const usePencilBrush = ({
       drawCircle(previewContext, true);
 
       if (isDrawing && context) {
-        context.strokeStyle = isErasing ? "white" : "black";
+        if (isErasing) context.globalCompositeOperation = "destination-out";
         context.lineWidth = isErasing ? lineWidth * 2 : lineWidth;
         context.lineTo(mousePos.x, mousePos.y);
         context.stroke();
+        context.globalCompositeOperation = "source-over";
         context.lineWidth = lineWidth;
       }
       previewContext.lineWidth = lineWidth;
     },
     [previewContext, context, isErasing, mousePos, drawCircle]
   );
+
   const onPointerUpFunc = useCallback(() => {
     if (!context) return;
-    drawCircle(context);
+    !isErasing && drawCircle(context);
     context.beginPath();
   }, [context, drawCircle]);
 
