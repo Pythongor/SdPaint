@@ -99,6 +99,9 @@ const ellipseArc = ({
   context.stroke();
 };
 
+const dist = (point1: PointType, point2: PointType) =>
+  Math.sqrt((point1.x - point2.x) ** 2 + (point1.y - point2.y) ** 2);
+
 export const drawEllipse = ({
   context,
   x,
@@ -182,6 +185,28 @@ export const clearEllipse = ({
   });
   context.globalCompositeOperation = "source-over";
   context.beginPath();
+};
+
+export const clearSquaredLine = (
+  context: CanvasRenderingContext2D,
+  point1: PointType,
+  point2: PointType
+) => {
+  let pnt1 = point1,
+    pnt2 = point2;
+
+  if (point2.x < point1.x) {
+    pnt1 = point2;
+    pnt2 = point1;
+  }
+
+  const length = dist(pnt1, pnt2);
+
+  context.save();
+  context.translate(pnt1.x, pnt1.y);
+  context.rotate(Math.atan2(pnt2.y - pnt1.y, pnt2.x - pnt1.x));
+  context.clearRect(0, -context.lineWidth / 2, length, context.lineWidth);
+  context.restore();
 };
 
 export const getRectangleFrom2Points = (

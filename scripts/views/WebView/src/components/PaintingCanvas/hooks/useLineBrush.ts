@@ -4,7 +4,7 @@ import { StateType } from "store/types";
 import { getErasingState } from "store/selectors";
 import { UseBrushProps, PointType } from "../types";
 import { useBrush } from "./useBrush";
-import { drawEllipse, drawLine } from "../canvasHelpers";
+import { drawEllipse, drawLine, clearSquaredLine } from "../canvasHelpers";
 
 export const useLineBrush = ({
   previewRef,
@@ -14,8 +14,9 @@ export const useLineBrush = ({
   ...rest
 }: UseBrushProps) => {
   const [startPos, setStartPos] = useState({ x: 0, y: 0 });
-  const { isErasing } = useSelector((state: StateType) => ({
+  const { isErasing, brushWidth } = useSelector((state: StateType) => ({
     isErasing: getErasingState(state),
+    brushWidth: state.brushConfig.width,
   }));
 
   const drawCircle = useCallback(
@@ -25,10 +26,10 @@ export const useLineBrush = ({
       pos = mousePos
     ) => {
       if (!context) return;
-      const size = context.lineWidth / (isErasing ? 1 : 2);
+      const size = brushWidth / (isErasing ? 1 : 2);
       drawEllipse({ context, ...pos, width: size, height: size, withStroke });
     },
-    [mousePos, isErasing]
+    [mousePos, isErasing, brushWidth]
   );
 
   const onBrushTypeChangeFunc = () => setStartPos({ x: 0, y: 0 });
@@ -47,14 +48,15 @@ export const useLineBrush = ({
       if (!previewContext || !previewRef?.current) return;
       if (isDrawing && context) {
         context.strokeStyle = isErasing ? "white" : "black";
+        previewContext.lineWidth = isErasing ? brushWidth * 2 : brushWidth;
         drawCircle(previewContext, false, startPos);
         drawCircle(previewContext);
-        const lineWidth = previewContext.lineWidth;
-        previewContext.lineWidth = isErasing ? lineWidth * 2 : lineWidth;
         drawLine(previewContext, startPos, mousePos);
-        previewContext.lineWidth = lineWidth;
+        previewContext.lineWidth = brushWidth;
       } else {
+        previewContext.lineWidth = isErasing ? brushWidth * 2 : brushWidth;
         drawCircle(previewContext, true);
+        previewContext.lineWidth = brushWidth;
       }
     },
     [
@@ -65,16 +67,17 @@ export const useLineBrush = ({
       isErasing,
       drawCircle,
       previewRef,
+      brushWidth,
     ]
   );
 
   const onPointerUpFunc = useCallback(() => {
     if (!context) return;
-    const lineWidth = context.lineWidth;
-    context.lineWidth = isErasing ? lineWidth * 2 : lineWidth;
-    drawLine(context, startPos, mousePos);
-    context.lineWidth = lineWidth;
-  }, [context, mousePos, startPos, isErasing]);
+    const func = isErasing ? clearSquaredLine : drawLine;
+    context.lineWidth = isErasing ? brushWidth * 2 : brushWidth;
+    func(context, startPos, mousePos);
+    context.lineWidth = brushWidth;
+  }, [context, mousePos, startPos, isErasing, brushWidth]);
 
   return useBrush({
     previewRef,
