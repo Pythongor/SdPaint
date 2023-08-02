@@ -74,6 +74,31 @@ export const useCanvas = () => {
   return { ref, context, mousePos, resize, setMouseCoordinates };
 };
 
+const ellipseArc = ({
+  context,
+  x,
+  y,
+  width,
+  height,
+}: CanvasInstructionProps) => {
+  const w = width ?? context.lineWidth;
+  const h = height ?? context.lineWidth;
+  context.save();
+  context.translate(x, y);
+  if (w !== h) {
+    if (w > h) {
+      context.scale(Math.max(w, h) / Math.min(w, h), 1);
+    } else {
+      context.scale(1, Math.max(w, h) / Math.min(w, h));
+    }
+  }
+  context.beginPath();
+  context.arc(0, 0, Math.min(w, h), 0, 2 * Math.PI);
+  context.restore();
+  context.fill();
+  context.stroke();
+};
+
 export const drawEllipse = ({
   context,
   x,
@@ -122,6 +147,41 @@ export const drawLine = (
   context.moveTo(point1.x, point1.y);
   context.lineTo(point2.x, point2.y);
   context.stroke();
+};
+
+export const clearRectangle = ({
+  context,
+  x,
+  y,
+  width,
+  height,
+}: CanvasInstructionProps) => {
+  context.clearRect(
+    x,
+    y,
+    width ?? context.lineWidth,
+    height ?? context.lineWidth
+  );
+  context.beginPath();
+};
+
+export const clearEllipse = ({
+  context,
+  x,
+  y,
+  width,
+  height,
+}: CanvasInstructionProps) => {
+  context.globalCompositeOperation = "destination-out";
+  ellipseArc({
+    context,
+    x,
+    y,
+    width,
+    height,
+  });
+  context.globalCompositeOperation = "source-over";
+  context.beginPath();
 };
 
 export const getRectangleFrom2Points = (

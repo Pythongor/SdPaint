@@ -6,8 +6,10 @@ import { UseBrushProps, PointType } from "../types";
 import { useBrush } from "./useBrush";
 import {
   drawRectangle,
+  clearRectangle,
   getRectangleFrom2Points,
   drawEllipse,
+  clearEllipse,
   getEllipseFrom2Points,
 } from "../canvasHelpers";
 
@@ -16,11 +18,13 @@ type PrimitiveShapeProps = UseBrushProps & { kind: "rectangle" | "ellipse" };
 const shapeMap = {
   rectangle: {
     drawFunc: drawRectangle,
-    getRect: getRectangleFrom2Points,
+    getShape: getRectangleFrom2Points,
+    clearShape: clearRectangle,
   },
   ellipse: {
     drawFunc: drawEllipse,
-    getRect: getEllipseFrom2Points,
+    getShape: getEllipseFrom2Points,
+    clearShape: clearEllipse,
   },
 };
 
@@ -38,7 +42,7 @@ const usePrimitiveShapeBrush = ({
     isErasing: getErasingState(state),
     brushType: state.brushConfig.brushType,
   }));
-  const { drawFunc, getRect } = shapeMap[kind];
+  const { drawFunc, getShape, clearShape } = shapeMap[kind];
 
   const onBrushTypeChangeFunc = () => setStartPos({ x: 0, y: 0 });
 
@@ -50,7 +54,7 @@ const usePrimitiveShapeBrush = ({
     (isDrawing: boolean) => {
       if (!previewContext || !previewRef?.current) return;
       if (isDrawing) {
-        const rect = getRect(mousePos, startPos);
+        const rect = getShape(mousePos, startPos);
         drawFunc({
           context: previewContext,
           withStroke: true,
@@ -73,7 +77,7 @@ const usePrimitiveShapeBrush = ({
     [
       previewContext,
       previewRef,
-      getRect,
+      getShape,
       mousePos,
       startPos,
       drawFunc,
@@ -86,8 +90,9 @@ const usePrimitiveShapeBrush = ({
   const onPointerUpFunc = useCallback(
     (event: React.PointerEvent) => {
       if (!context) return;
-      const rect = getRect(mousePos, startPos);
-      drawFunc({
+      const rect = getShape(mousePos, startPos);
+      const func = isErasing ? clearShape : drawFunc;
+      func({
         context,
         withStroke: true,
         ...rect,
@@ -95,7 +100,7 @@ const usePrimitiveShapeBrush = ({
       });
       if (event.pointerType !== "mouse") context.closePath();
     },
-    [context, getRect, mousePos, startPos, drawFunc, isErasing, withBrushFill]
+    [context, getShape, mousePos, startPos, drawFunc, isErasing, withBrushFill]
   );
 
   return useBrush({
