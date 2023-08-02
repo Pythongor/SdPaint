@@ -22,8 +22,8 @@ def rename_files(extension):
 def rewrite_file(file_path):
     with open(file_path, encoding="utf8") as f:
         content = f.read()
-        for string in strings_to_replace:
-            new_content = re.sub(string, "", content)
+        new_content = re.sub(js_hash, "", content)
+        new_content = re.sub(css_hash, "", new_content)
 
     with open(file_path, "w", encoding="utf8") as f:
         f.write(new_content)
@@ -33,7 +33,6 @@ bundle_root = os.path.join(os.getcwd(), "build", "static")
 
 js_hash = rename_files("js")
 css_hash = rename_files("css")
-strings_to_replace = [js_hash, css_hash]
 html_file = os.path.join(os.getcwd(), "build", "index.html")
 manifest_file = os.path.join(os.getcwd(), "build", "asset-manifest.json")
 
