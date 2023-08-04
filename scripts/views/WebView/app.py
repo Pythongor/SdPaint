@@ -9,6 +9,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from scripts.common.state import State
 from scripts.common.cn_requests import Api
 from scripts.common.utils import payload_submit
+from scripts.views.WebView.mock.mock_responses import get_mock_data, mock_models
 
 
 app = FastAPI()
@@ -21,25 +22,33 @@ app.add_middleware(
     allow_headers=['*'],
 )
 
-sd_response = None,
+sd_response = None
+with_mocks = False
+mock_progress = 1
 
 state = State()
 api = Api(state)
 url = state.server.get('url', 'http://127.0.0.1:7860')
 
-if not state.configuration["config"]['controlnet_models']:
+if not state.configuration["config"]['controlnet_models'] and not with_mocks:
     api.fetch_controlnet_models(state)
 
 
 def send_request(data):
-    global sd_response
-    response = api.post_request(state)
-    if response["status_code"] == 200:
-        info = json.loads(response["info"])
-        input_image = data["config"]["controlnet_units"][0]["input_image"]
-        info["input_image"] = input_image
-        response["info"] = json.dumps(info)
-        sd_response = response
+    global sd_response, mock_progress
+    if with_mocks:
+        mock_progress = 1
+        sd_response = get_mock_data(data["config"])
+        mock_progress = 0
+    else:
+        response = api.post_request(state)
+        if response["status_code"] == 200:
+            print(response["info"])
+            info = json.loads(response["info"])
+            input_image = data["config"]["controlnet_units"][0]["input_image"]
+            info["input_image"] = input_image
+            response["info"] = json.dumps(info)
+            sd_response = response
     state.server["busy"] = False
 
 
@@ -78,11 +87,15 @@ async def root():
 
 @app.get('/models')
 async def root():
+    if with_mocks:
+        return mock_models
     return state.control_net["controlnet_models"]
 
 
 @app.get('/modules')
 async def root():
+    if with_mocks:
+        return ["none"]
     response = requests.get(url=f'{url}/controlnet/module_list')
     if response.ok:
         return response.json()
@@ -109,7 +122,8 @@ async def root(data: Request):
 async def root():
     if not state.server["busy"]:
         return
-
+    if with_mocks:
+        return mock_progress
     progress_json = api.progress_request()
     progress = progress_json.get('progress', None)
     if progress == 0.0:
