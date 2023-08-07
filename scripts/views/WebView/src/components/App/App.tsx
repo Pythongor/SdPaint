@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useCallback, useEffect, useRef } from "react";
 import {
   ControlNetForm,
   MainSection,
@@ -27,6 +27,8 @@ import {
 import HotkeyWrapper from "./HotkeyWrapper";
 import cn from "classnames";
 import styles from "./App.module.scss";
+
+type StorageConfigType = Awaited<ReturnType<typeof getCnConfig>>;
 
 type StateProps = ReturnType<typeof MSTP>;
 type DispatchProps = typeof MDTP;
@@ -77,13 +79,19 @@ const App: React.FC<AppProps> = ({
     setZenMode,
   ]);
 
+  const setConfig = useCallback(
+    (config: StorageConfigType) => {
+      if ("error" in config) return;
+      setCnConfig(config);
+      setMultipleImagesMode(getSettings().isMultipleImagesModeOn);
+    },
+    [setCnConfig, setMultipleImagesMode]
+  );
+
   useEffect(() => {
     const storageConfig = extractDataFromConfig(getStorageConfig());
     setCnConfig(storageConfig);
-    getCnConfig(addPopup).then((fileConfig) => {
-      if ("error" in fileConfig) return;
-      setCnConfig(fileConfig);
-    });
+    getCnConfig(addPopup).then(setConfig);
   }, [setCnConfig, addPopup]);
 
   return (
