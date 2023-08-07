@@ -18,15 +18,18 @@ def get_mock_image(width=512, height=512):
 
 
 def get_mock_data(config):
+    is_batch = config["batch_size"] > 1
+    is_single = config["batch_size"] == 1
+    all_seeds = [i + config["seed"] for i in range(0, config["batch_size"])]
     info = {
         "prompt": config["prompt"],
-        "all_prompts": [config["prompt"]],
+        "all_prompts": [config["prompt"]] * config["batch_size"],
         "negative_prompt": config["negative_prompt"],
-        "all_negative_prompts": [config["negative_prompt"]],
+        "all_negative_prompts": [config["negative_prompt"]] * config["batch_size"],
         "seed": config["seed"],
-        "all_seeds": [config["seed"]],
+        "all_seeds": all_seeds,
         "subseed": 2813829083,
-        "all_subseeds": [2813829083],
+        "all_subseeds": [2813829083] * config["batch_size"],
         "subseed_strength": 0,
         "width": config["width"],
         "height": config["height"],
@@ -52,8 +55,15 @@ def get_mock_data(config):
         "clip_skip": 1,
         "is_using_inpainting_conditioning": False
     }
-    return {
+
+    result = {
         "info": json.dumps(info),
-        "image": get_mock_image(config["width"], config["height"]),
         "status_code": 200
     }
+
+    image = get_mock_image(config["width"], config["height"])
+    if is_single:
+        result["image"] = image
+    elif is_batch:
+        result["batch_images"] = [image] * config["batch_size"]
+    return result

@@ -23,7 +23,7 @@ app.add_middleware(
 )
 
 sd_response = None
-with_mocks = False
+with_mocks = True
 mock_progress = 1
 
 state = State()
@@ -37,7 +37,7 @@ if not state.configuration["config"]['controlnet_models'] and not with_mocks:
 def send_request(data):
     global sd_response, mock_progress
     if with_mocks:
-        mock_progress = 1
+        mock_progress = 0.5
         sd_response = get_mock_data(data["config"])
         mock_progress = 0
     else:
@@ -95,7 +95,7 @@ async def root():
 @app.get('/modules')
 async def root():
     if with_mocks:
-        return ["none"]
+        return {"module_list": ["none"], "module_detail": None}
     response = requests.get(url=f'{url}/controlnet/module_list')
     if response.ok:
         return response.json()
