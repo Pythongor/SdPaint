@@ -21,6 +21,7 @@ def get_mock_data(config):
     is_batch = config["batch_size"] > 1
     is_single = config["batch_size"] == 1
     all_seeds = [i + config["seed"] for i in range(0, config["batch_size"])]
+
     info = {
         "prompt": config["prompt"],
         "all_prompts": [config["prompt"]] * config["batch_size"],
@@ -53,7 +54,8 @@ def get_mock_data(config):
         "styles": [],
         "job_timestamp": "20230803202648",
         "clip_skip": 1,
-        "is_using_inpainting_conditioning": False
+        "is_using_inpainting_conditioning": False,
+        "input_image": config["controlnet_units"][0]["input_image"]
     }
 
     result = {
