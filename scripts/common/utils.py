@@ -243,11 +243,6 @@ def payload_submit(state, image_string):
     if not json_data['controlnet_units']:
         json_data['controlnet_units'].append({})
 
-    if not json_data.get('controlnet_units', None):
-        json_data['controlnet_units'] = [{}]
-    if not json_data['controlnet_units']:
-        json_data['controlnet_units'].append({})
-
     json_data['controlnet_units'][0]['input_image'] = image_string
     json_data['controlnet_units'][0]['model'] = state.control_net["controlnet_model"]
     json_data['controlnet_units'][0]['weight'] = state.control_net["controlnet_weight"]
