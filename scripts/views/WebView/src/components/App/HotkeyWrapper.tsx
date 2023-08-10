@@ -70,6 +70,9 @@ const HotkeyWrapper: React.FC<HotkeyWrapperProps> = ({
     [cnConfig.seed, setCnConfig]
   );
 
+  const randomizeSeed = () =>
+    setCnConfig({ seed: Math.trunc(Math.random() * 2 ** 32 - 1) });
+
   const audioFunc = useCallback(
     () => handleAudioSignal(audio, setAudioReady),
     [audio, setAudioReady]
@@ -135,6 +138,7 @@ const HotkeyWrapper: React.FC<HotkeyWrapperProps> = ({
       Backspace: () => skipRendering(addPopup),
       Backquote: () => changeSeed(true),
       Backquote_s: () => changeSeed(),
+      Backquote_a: randomizeSeed,
       KeyA: () => setAudioEnabled("switch"),
       KeyC: loadConfig,
       KeyC_s: saveConfig,
