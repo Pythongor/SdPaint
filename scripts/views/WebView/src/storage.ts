@@ -14,6 +14,7 @@ export const defaultConfig = {
   width: 512,
   height: 512,
   negative_prompt: "",
+  tiling: false,
   controlnet_units: [
     {
       weight: 1.0,

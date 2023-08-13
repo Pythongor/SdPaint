@@ -24,6 +24,7 @@ export const state2config = ({
     negative_prompt,
     module,
     model,
+    tiling,
   },
   canvas: { size },
 }: StateType): ConfigType => {
@@ -38,6 +39,7 @@ export const state2config = ({
     cfg_scale,
     prompt,
     negative_prompt,
+    tiling,
     controlnet_units: [{ ...firstUnit, module, model }],
     width: size[0],
     height: size[1],

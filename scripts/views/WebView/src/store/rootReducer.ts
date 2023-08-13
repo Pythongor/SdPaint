@@ -13,11 +13,9 @@ const initialState: Readonly<StateType> = {
   result: {
     images: [],
     imageSize: [512, 512],
-    viewedImageIndex: 0,
     imagesCount: 4,
     isMultipleImagesModeOn: false,
     info: null,
-    inputImageViewOpacity: 0,
   },
   canvas: {
     imagesStack: [],
@@ -33,6 +31,11 @@ const initialState: Readonly<StateType> = {
     brushType: "pencil",
     withFill: false,
   },
+  viewer: {
+    viewedImageIndex: 0,
+    inputImageOpacity: 0,
+    withTiling: false,
+  },
   cnConfig: {
     seed: -1,
     prompt: "dark unexplored dungeon",
@@ -40,6 +43,7 @@ const initialState: Readonly<StateType> = {
     steps: 15,
     cfg_scale: 7,
     batch_size: 1,
+    tiling: false,
     models: ["control_v11p_sd15_scribble"],
     model: "control_v11p_sd15_scribble",
     modules: ["none"],
@@ -273,37 +277,44 @@ export default createReducer<StateType, ActionType>(initialState)
       },
     };
   })
-  .handleAction(actions.setViewedImageIndex, (state, { payload }) => ({
-    ...state,
-    result: {
-      ...state.result,
-      viewedImageIndex: payload,
-    },
-  }))
-  .handleAction(actions.setInputImageViewOpacity, (state, { payload }) => {
-    if (payload === "switch") {
-      const opacity = state.result.inputImageViewOpacity;
-      return {
-        ...state,
-        result: {
-          ...state.result,
-          inputImageViewOpacity: +(opacity < 1),
-        },
-      };
-    }
-    return {
-      ...state,
-      result: {
-        ...state.result,
-        inputImageViewOpacity: payload,
-      },
-    };
-  })
   .handleAction(actions.setResultInfo, (state, { payload }) => ({
     ...state,
     result: {
       ...state.result,
       info: payload,
+    },
+  }))
+  .handleAction(actions.setViewedImageIndex, (state, { payload }) => ({
+    ...state,
+    viewer: {
+      ...state.viewer,
+      viewedImageIndex: payload,
+    },
+  }))
+  .handleAction(actions.setInputImageViewOpacity, (state, { payload }) => {
+    if (payload === "switch") {
+      const opacity = state.viewer.inputImageOpacity;
+      return {
+        ...state,
+        viewer: {
+          ...state.viewer,
+          inputImageOpacity: +(opacity < 1),
+        },
+      };
+    }
+    return {
+      ...state,
+      viewer: {
+        ...state.viewer,
+        inputImageOpacity: payload,
+      },
+    };
+  })
+  .handleAction(actions.setTilingViewMode, (state, { payload }) => ({
+    ...state,
+    viewer: {
+      ...state.viewer,
+      withTiling: payload,
     },
   }))
   .handleAction(actions.setScrollTop, (state, { payload }) => ({

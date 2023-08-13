@@ -77,6 +77,7 @@ export const setMultipleImagesMode = createAction(
   Actions.setMultipleImagesMode
 )<boolean | "switch">();
 
+//viewer
 export const setViewedImageIndex = createAction(
   Actions.setViewedImageIndex
 )<number>();
@@ -84,6 +85,10 @@ export const setViewedImageIndex = createAction(
 export const setInputImageViewOpacity = createAction(
   Actions.setInputImageViewOpacity
 )<number | "switch">();
+
+export const setTilingViewMode = createAction(
+  Actions.setTilingViewMode
+)<boolean>();
 
 // other
 export const setScrollTop = createAction(Actions.setScrollTop)<number>();
@@ -134,6 +139,7 @@ const actions = {
   setResultInfo,
   setViewedImageIndex,
   setInputImageViewOpacity,
+  setTilingViewMode,
   setCnProgress,
   setModal,
   setZenMode,
