@@ -23,10 +23,10 @@ export const useLineBrush = ({
     (
       context: CanvasRenderingContext2D,
       withStroke?: boolean,
-      pos = mousePos
+      pos: PointType = mousePos
     ) => {
       if (!context) return;
-      const size = brushWidth / (isErasing ? 1 : 2);
+      const size = brushWidth * (isErasing ? 2 : 1);
       drawEllipse({ context, ...pos, width: size, height: size, withStroke });
     },
     [mousePos, isErasing, brushWidth]
@@ -48,13 +48,13 @@ export const useLineBrush = ({
       if (!previewContext || !previewRef?.current) return;
       if (isDrawing && context) {
         context.strokeStyle = isErasing ? "white" : "black";
-        previewContext.lineWidth = isErasing ? brushWidth * 2 : brushWidth;
+        previewContext.lineWidth = isErasing ? brushWidth * 4 : brushWidth * 2;
         drawCircle(previewContext, false, startPos);
         drawCircle(previewContext);
         drawLine(previewContext, startPos, mousePos);
         previewContext.lineWidth = brushWidth;
       } else {
-        previewContext.lineWidth = isErasing ? brushWidth * 2 : brushWidth;
+        previewContext.lineWidth = isErasing ? brushWidth * 4 : brushWidth * 2;
         drawCircle(previewContext, true);
         previewContext.lineWidth = brushWidth;
       }
@@ -74,7 +74,7 @@ export const useLineBrush = ({
   const onPointerUpFunc = useCallback(() => {
     if (!context) return;
     const func = isErasing ? clearSquaredLine : drawLine;
-    context.lineWidth = isErasing ? brushWidth * 2 : brushWidth;
+    context.lineWidth = isErasing ? brushWidth * 4 : brushWidth * 2;
     func(context, startPos, mousePos);
     context.lineWidth = brushWidth;
   }, [context, mousePos, startPos, isErasing, brushWidth]);
