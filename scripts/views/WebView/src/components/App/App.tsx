@@ -92,7 +92,7 @@ const App: React.FC<AppProps> = ({
     const storageConfig = extractDataFromConfig(getStorageConfig());
     setCnConfig(storageConfig);
     getCnConfig(addPopup).then(setConfig);
-  }, [setCnConfig, addPopup]);
+  }, [setCnConfig, addPopup, setConfig]);
 
   return (
     <HotkeyWrapper>

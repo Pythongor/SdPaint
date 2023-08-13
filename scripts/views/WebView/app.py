@@ -69,6 +69,7 @@ async def root(data: Request):
     json_data["steps"] = data["steps"]
     json_data["cfg_scale"] = data["cfg_scale"]
     json_data["batch_size"] = data["batch_size"]
+    json_data["tiling"] = data["tiling"]
     json_data["width"] = data["width"]
     json_data["height"] = data["height"]
     json_data["controlnet_units"][0]["module"] = data["module"]

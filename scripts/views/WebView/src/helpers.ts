@@ -10,6 +10,7 @@ export const extractDataFromConfig = ({
   controlnet_units: [{ module, model }],
   width,
   height,
+  tiling,
 }: ConfigType) => ({
   seed,
   steps,
@@ -21,6 +22,7 @@ export const extractDataFromConfig = ({
   batch_size,
   width,
   height,
+  tiling,
 });
 
 export const deepCopy = <T>(target: T): T => {
