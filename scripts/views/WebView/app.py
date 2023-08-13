@@ -1,4 +1,3 @@
-
 import json
 import requests
 import threading
@@ -23,7 +22,7 @@ app.add_middleware(
 )
 
 sd_response = None
-with_mocks = True
+with_mocks = False
 mock_progress = 1
 
 state = State()
@@ -47,6 +46,7 @@ def send_request(data):
             info = json.loads(response["info"])
             input_image = data["config"]["controlnet_units"][0]["input_image"]
             info["input_image"] = input_image
+            info["with_tiling"] = data["config"]["tiling"]
             response["info"] = json.dumps(info)
             sd_response = response
     state.server["busy"] = False
@@ -114,6 +114,7 @@ async def root(data: Request):
         state["main_json_data"]["width"] = data["config"]["width"]
         state["main_json_data"]["height"] = data["config"]["height"]
         state["main_json_data"]["batch_size"] = data["config"]["batch_size"]
+        state["main_json_data"]["tiling"] = data["config"]["tiling"]
         t = threading.Thread(target=send_request, args=[data])
         t.start()
 

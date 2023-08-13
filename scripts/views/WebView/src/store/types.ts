@@ -12,6 +12,7 @@ export type CnConfigType = {
   models: string[];
   module: string;
   modules: string[];
+  tiling: boolean;
 };
 
 export type ModalType = "imageViewer" | "settings" | null;
@@ -58,6 +59,7 @@ export type ResultInfoType = {
   job_timestamp: string;
   clip_skip: number;
   is_using_inpainting_conditioning: boolean;
+  with_tiling: boolean;
   [key: string]: any;
 };
 
@@ -83,11 +85,15 @@ export type BrushConfigType = {
 export type ResultConfigType = {
   images: string[];
   imageSize: [number, number];
-  viewedImageIndex: number;
   imagesCount: number;
   isMultipleImagesModeOn: boolean;
   info: ResultInfoType | null;
-  inputImageViewOpacity: number;
+};
+
+export type ViewerConfigType = {
+  viewedImageIndex: number;
+  inputImageOpacity: number;
+  withTiling: boolean;
 };
 
 export type CanvasConfigType = {
@@ -103,6 +109,7 @@ export type StateType = Readonly<{
   canvas: Readonly<CanvasConfigType>;
   cnConfig: Readonly<CnConfigType>;
   result: Readonly<ResultConfigType>;
+  viewer: Readonly<ViewerConfigType>;
   cnProgress: number;
   instantGenerationMode: boolean;
   isZenModeOn: boolean;
@@ -132,8 +139,9 @@ export enum Actions {
   setResultInfo = "RESULT__SET_INFO",
   setResultImagesCount = "RESULT__SET_IMAGES_COUNT",
   setMultipleImagesMode = "RESULT__SET_MULTIPLE_IMAGES_MODE",
-  setViewedImageIndex = "RESULT__SET_VIEWED_IMAGE_INDEX",
-  setInputImageViewOpacity = "RESULT__SET_INPUT_IMAGE_VIEW_OPACITY",
+  setViewedImageIndex = "VIEWER__SET_VIEWED_IMAGE_INDEX",
+  setInputImageViewOpacity = "VIEWER__SET_INPUT_IMAGE_VIEW_OPACITY",
+  setTilingViewMode = "VIEWER__SET_TILING_VIEW_MODE",
   setCnConfig = "SET_CONTROL_NET_CONFIG",
   setCnProgress = "SET_CONTROL_NET_PROGRESS",
   setInstantGenerationMode = "SET_INSTANT_GENERATION_MODE",

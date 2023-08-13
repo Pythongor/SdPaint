@@ -139,7 +139,6 @@ export const getImage = async (addPopup: AddPopupAction) => {
     info: string;
   };
   try {
-    console.log(json);
     JSON.parse(json.info);
   } catch (error) {
     return catchError(error as Error, addPopup);

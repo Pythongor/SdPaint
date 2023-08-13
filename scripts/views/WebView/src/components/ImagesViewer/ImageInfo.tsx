@@ -1,27 +1,39 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { StateType } from "store/types";
 import { connect } from "react-redux";
-import { setViewedImageIndex, setInputImageViewOpacity } from "store/actions";
+import {
+  setViewedImageIndex,
+  setInputImageViewOpacity,
+  setTilingViewMode,
+} from "store/actions";
 import cn from "classnames";
 import styles from "./ImagesViewer.module.scss";
 import { Arrow } from "components/widgets";
 
+type OwnProps = {
+  isHidden: boolean;
+  setHidden: React.Dispatch<React.SetStateAction<boolean>>;
+};
 type StateProps = ReturnType<typeof MSTP>;
 type DispatchProps = typeof MDTP;
-type ImageViewerProps = StateProps & DispatchProps;
+type ImageViewerProps = StateProps & DispatchProps & OwnProps;
 
 const ImageInfo: React.FC<ImageViewerProps> = ({
+  isHidden,
+  setHidden,
   info,
+  withTiling,
   viewedImageIndex,
-  inputImageViewOpacity,
+  inputImageOpacity,
   setInputImageViewOpacity,
+  setTilingViewMode,
 }) => {
-  const [isHidden, setHidden] = useState(true);
   useEffect(
     () => () => {
       setInputImageViewOpacity(0);
+      setTilingViewMode(false);
     },
-    [setInputImageViewOpacity]
+    [setInputImageViewOpacity, setTilingViewMode]
   );
   if (!info) return null;
   const {
@@ -34,9 +46,9 @@ const ImageInfo: React.FC<ImageViewerProps> = ({
     cfg_scale,
     steps,
     input_image,
+    with_tiling,
     // infotexts,
   } = info;
-  // console.log(infotexts[viewedImageIndex]);
 
   const infoRows: [string, string, string][] = [
     [
@@ -98,11 +110,27 @@ const ImageInfo: React.FC<ImageViewerProps> = ({
               type="range"
               min="0"
               max="10"
-              value={inputImageViewOpacity * 10}
+              value={inputImageOpacity * 10}
               onChange={onSliderInput}
               title="Set brush width"
             ></input>
           </div>
+          {with_tiling && (
+            <div className={styles.info_row}>
+              <label className={styles.info_value}>
+                Tile view
+                <input
+                  type="checkbox"
+                  className={styles.info_checkbox}
+                  checked={withTiling}
+                  onChange={(event) => {
+                    setTilingViewMode(event.currentTarget.checked);
+                    console.log(withTiling);
+                  }}
+                />
+              </label>
+            </div>
+          )}
           {infoRows.map(([key, value, title]) => (
             <div className={styles.info_row} key={key}>
               <div className={styles.info_key} title={title}>
@@ -127,13 +155,19 @@ const ImageInfo: React.FC<ImageViewerProps> = ({
 };
 
 const MSTP = ({
-  result: { info, viewedImageIndex, inputImageViewOpacity },
+  result: { info },
+  viewer: { viewedImageIndex, inputImageOpacity, withTiling },
 }: StateType) => ({
   info,
   viewedImageIndex,
-  inputImageViewOpacity,
+  inputImageOpacity,
+  withTiling,
 });
 
-const MDTP = { setViewedImageIndex, setInputImageViewOpacity };
+const MDTP = {
+  setViewedImageIndex,
+  setInputImageViewOpacity,
+  setTilingViewMode,
+};
 
 export default connect(MSTP, MDTP)(ImageInfo);

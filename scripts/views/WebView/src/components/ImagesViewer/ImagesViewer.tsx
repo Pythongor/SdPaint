@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { StateType } from "store/types";
 import { connect } from "react-redux";
 import { setViewedImageIndex } from "store/actions";
@@ -15,9 +15,12 @@ const ImagesViewer: React.FC<ImageViewerProps> = ({
   viewedImageIndex,
   setViewedImageIndex,
   info,
-  inputImageViewOpacity,
+  inputImageOpacity,
+  withTiling,
 }) => {
+  const [isInfoHidden, setInfoHidden] = useState(true);
   const itemsRef = useRef<(HTMLDivElement | null)[]>([]);
+
   useEffect(() => {
     if (viewedImageIndex > images.length - 1) setViewedImageIndex(0);
   }, [images, setViewedImageIndex, viewedImageIndex]);
@@ -32,15 +35,57 @@ const ImagesViewer: React.FC<ImageViewerProps> = ({
 
   return (
     <div className={styles.base}>
-      <ImageInfo />
-      <div className={styles.imageContainer}>
-        <img className={styles.image} src={images[viewedImageIndex]} alt="" />
-        <img
-          className={styles.inputImage}
-          src={info ? info.input_image : ""}
-          style={{ opacity: inputImageViewOpacity }}
-          alt=""
-        />
+      <ImageInfo isHidden={isInfoHidden} setHidden={setInfoHidden} />
+      <div
+        className={cn(
+          styles.imageContainer,
+          withTiling && styles.imageContainer__tiling,
+          images.length > 1 && styles.imageContainer__multiple,
+          isInfoHidden && styles.imageContainer__infoHidden
+        )}
+      >
+        {withTiling ? (
+          Array(9)
+            .fill("")
+            .map(() => (
+              <div
+                className={cn(styles.imageWrapper, styles.imageWrapper__tiling)}
+                style={{
+                  aspectRatio: withTiling
+                    ? info?.width &&
+                      info?.height &&
+                      `${info?.width} / ${info?.height}`
+                    : 0,
+                }}
+              >
+                <img
+                  className={styles.image}
+                  src={images[viewedImageIndex]}
+                  alt=""
+                />
+                <img
+                  className={styles.inputImage}
+                  src={info ? info.input_image : ""}
+                  style={{ opacity: inputImageOpacity }}
+                  alt=""
+                />
+              </div>
+            ))
+        ) : (
+          <div className={cn(styles.imageWrapper)}>
+            <img
+              className={styles.image}
+              src={images[viewedImageIndex]}
+              alt=""
+            />
+            <img
+              className={styles.inputImage}
+              src={info ? info.input_image : ""}
+              style={{ opacity: inputImageOpacity }}
+              alt=""
+            />
+          </div>
+        )}
       </div>
       {images.length > 1 && (
         <div
@@ -71,13 +116,15 @@ const ImagesViewer: React.FC<ImageViewerProps> = ({
 
 const MSTP = ({
   modal,
-  result: { images, viewedImageIndex, info, inputImageViewOpacity },
+  result: { images, info },
+  viewer: { viewedImageIndex, inputImageOpacity, withTiling },
 }: StateType) => ({
   modal,
   images,
   viewedImageIndex,
   info,
-  inputImageViewOpacity,
+  withTiling,
+  inputImageOpacity,
 });
 
 const MDTP = { setViewedImageIndex };

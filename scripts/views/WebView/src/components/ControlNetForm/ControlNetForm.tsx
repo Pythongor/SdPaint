@@ -6,6 +6,7 @@ import { getModels, getModules } from "../../api";
 import { Arrow } from "components/widgets";
 import ControlNetNumberInput from "./components/ControlNetNumberInput";
 import ControlNetSelect from "./components/ControlNetSelect";
+import ControlNetCheckbox from "./components/ControlNetCheckbox";
 import cn from "classnames";
 import styles from "./ControlNetForm.module.scss";
 
@@ -101,6 +102,11 @@ export const ControlNetForm: React.FC<CnFormProps> = ({
           listName="models"
           unitName="model"
           getFunc={memoizedGetModels}
+        />
+        <ControlNetCheckbox
+          id="tiling"
+          name="Tiling"
+          title="Image generated with tiling can cover the space without joints"
         />
       </div>
       <Arrow
