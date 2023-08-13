@@ -25,7 +25,7 @@ export const usePencilBrush = ({
 
   const drawCircle = useCallback(
     (context: CanvasRenderingContext2D, withStroke?: boolean) => {
-      if (!context || isErasing) return;
+      if (!context) return;
       drawEllipse({
         context,
         ...mousePos,
@@ -34,20 +34,22 @@ export const usePencilBrush = ({
         withStroke,
       });
     },
-    [mousePos, isErasing]
+    [mousePos]
   );
 
   const afterPointerDownFunc = useCallback(() => {
-    if (!context) return;
+    if (!context || isErasing) return;
+    drawCircle(context);
     context.beginPath();
-  }, [context, drawCircle]);
+  }, [context, drawCircle, isErasing]);
 
   const afterPointerMoveFunc = useCallback(
     (isDrawing: boolean) => {
       if (!previewContext) return;
       const lineWidth = previewContext.lineWidth;
       previewContext.lineWidth = isErasing ? lineWidth * 2 : lineWidth;
-      !isErasing && drawCircle(previewContext, true);
+      // previewContext.strokeStyle = "black";
+      drawCircle(previewContext, true);
 
       if (isDrawing && context) {
         if (isErasing) context.globalCompositeOperation = "destination-out";
