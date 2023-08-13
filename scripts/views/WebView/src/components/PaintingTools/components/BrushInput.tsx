@@ -27,7 +27,9 @@ const BrushInput: React.FC<BrushInputProps> = ({
   setBrushFilling,
 }) => {
   const isPrimitiveShape = ["ellipse", "rectangle"].includes(brushType);
-  const sampleWidth = isPrimitiveShape && withBrushFill ? 10 : realBrushWidth;
+  const baseSampleWidth =
+    isPrimitiveShape && withBrushFill ? 10 : realBrushWidth;
+  const sampleWidth = isErasing ? baseSampleWidth * 2 : baseSampleWidth;
   const fixedBrushWidth = sampleWidth === 50 ? 51 : sampleWidth;
   const onSliderInput = (event: React.FormEvent<HTMLInputElement>) =>
     setBrushWidth(+event.currentTarget.value);
