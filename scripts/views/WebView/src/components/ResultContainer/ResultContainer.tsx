@@ -46,10 +46,7 @@ const ResultContainer: React.FC<ResultCanvasProps> = ({
 const MSTP = ({
   root: { isZenModeOn },
   controlNet: { progress },
-}: StateType) => ({
-  cnProgress: progress,
-  isZenModeOn,
-});
+}: StateType) => ({ cnProgress: progress, isZenModeOn });
 
 const MDTP = { addPopup };
 

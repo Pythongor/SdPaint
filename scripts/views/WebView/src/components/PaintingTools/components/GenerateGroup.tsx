@@ -2,15 +2,8 @@ import React, { useCallback } from "react";
 import { connect } from "react-redux";
 import { StateType } from "store/types";
 import { getCanvasImage } from "store/selectors";
-import { addPopup } from "store/actions";
-import {
-  setResultImages,
-  setMultipleImagesMode,
-  setResultInfo,
-} from "store/result/actions";
-import { setAudioReady } from "store/audio/actions";
-import { setCnProgress, setCnConfig } from "store/controlNet/actions";
-import { generate, handleAudioSignal } from "../generate";
+import { setMultipleImagesMode } from "store/result/actions";
+import { useGenerate } from "../generate";
 import cn from "classnames";
 import styles from "../PaintingTools.module.scss";
 
@@ -21,36 +14,13 @@ type GenerateGroupProps = StateProps & DispatchProps;
 const GenerateGroup: React.FC<GenerateGroupProps> = ({
   paintImage,
   isMultipleModeOn,
-  audio,
-  setResultImages,
-  setCnProgress,
-  setAudioReady,
   setMultipleImagesMode,
-  setResultInfo,
-  addPopup,
 }) => {
-  const audioFunc = useCallback(
-    () => handleAudioSignal(audio, setAudioReady),
-    [audio, setAudioReady]
-  );
+  const generate = useGenerate();
 
   const onPointerDown = useCallback(() => {
-    generate(
-      paintImage,
-      setResultImages,
-      setCnProgress,
-      setResultInfo,
-      addPopup,
-      audioFunc
-    );
-  }, [
-    paintImage,
-    setResultImages,
-    setCnProgress,
-    setResultInfo,
-    audioFunc,
-    addPopup,
-  ]);
+    generate(paintImage);
+  }, [generate, paintImage]);
 
   return (
     <div className={styles.group}>
@@ -82,18 +52,9 @@ const GenerateGroup: React.FC<GenerateGroupProps> = ({
 const MSTP = (state: StateType) => ({
   paintImage: getCanvasImage(state),
   imagesCount: state.controlNet.config.batch_size,
-  audio: state.audio,
   isMultipleModeOn: state.result.isMultipleImagesModeOn,
 });
 
-const MDTP = {
-  setResultImages,
-  setCnProgress,
-  setAudioReady,
-  setCnConfig,
-  setMultipleImagesMode,
-  setResultInfo,
-  addPopup,
-};
+const MDTP = { setMultipleImagesMode };
 
 export default connect(MSTP, MDTP)(GenerateGroup);

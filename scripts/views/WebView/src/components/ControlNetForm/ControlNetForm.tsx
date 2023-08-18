@@ -123,10 +123,7 @@ export const ControlNetForm: React.FC<CnFormProps> = ({
 const MSTP = ({
   root: { isZenModeOn },
   controlNet: { config },
-}: StateType) => ({
-  cnConfig: config,
-  isZenModeOn,
-});
+}: StateType) => ({ cnConfig: config, isZenModeOn });
 
 const MDTP = { setCnConfig, setScrollTop, addPopup };
 

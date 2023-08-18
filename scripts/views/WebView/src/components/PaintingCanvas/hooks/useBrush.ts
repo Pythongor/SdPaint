@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import { StateType } from "store/types";
 import { getErasingState } from "store/selectors";
 import { UseBrushProps, PointType } from "../types";
-import { generate, handleAudioSignal } from "components/PaintingTools/generate";
+import { useGenerate } from "components/PaintingTools/generate";
 import { clear } from "../canvasHelpers";
 
 type Props = UseBrushProps & {
@@ -21,28 +21,20 @@ export const useBrush = ({
   instantGenerationMode,
   setMouseCoordinates,
   setCanvasImage,
-  setCnProgress,
-  setResultImages,
-  setResultInfo,
   setErasingByMouse,
-  setAudioReady,
   afterPointerDownFunc,
   onBrushTypeChangeFunc,
   afterPointerMoveFunc,
   onPointerUpFunc,
-  addPopup,
 }: Props) => {
   const [isDrawing, setIsDrawing] = useState(false);
-  const { isErasing, brushType, audio } = useSelector((state: StateType) => ({
+  const { isErasing, brushType } = useSelector((state: StateType) => ({
     isErasing: getErasingState(state),
     brushType: state.brush.brushType,
     audio: state.audio,
   }));
 
-  const audioFunc = useCallback(
-    () => handleAudioSignal(audio, setAudioReady),
-    [audio, setAudioReady]
-  );
+  const generate = useGenerate();
 
   useEffect(() => {
     setIsDrawing(false);
@@ -94,7 +86,6 @@ export const useBrush = ({
         paintingRef,
         previewContext,
         previewRef,
-        // isErasing,
         setMouseCoordinates,
         afterPointerDownFunc,
         setErasingByMouse,
@@ -133,14 +124,7 @@ export const useBrush = ({
       const paintImage = paintingRef.current.toDataURL();
       setCanvasImage(paintImage);
       if (instantGenerationMode) {
-        generate(
-          paintImage,
-          setResultImages,
-          setCnProgress,
-          setResultInfo,
-          addPopup,
-          audioFunc
-        );
+        generate(paintImage);
       }
       setErasingByMouse(false);
     },
@@ -150,15 +134,11 @@ export const useBrush = ({
       paintingRef,
       instantGenerationMode,
       isErasing,
-      addPopup,
-      audioFunc,
+      generate,
       isDrawing,
       onPointerUpFunc,
       setCanvasImage,
-      setCnProgress,
       setErasingByMouse,
-      setResultImages,
-      setResultInfo,
     ]
   );
 

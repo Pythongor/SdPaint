@@ -8,7 +8,7 @@ import {
   setModal,
   addPopup,
 } from "store/actions";
-import { setAudioReady, setAudioEnabled } from "store/audio/actions";
+import { setAudioEnabled } from "store/audio/actions";
 import {
   setBrushWidth,
   setBrushType,
@@ -20,17 +20,13 @@ import {
   increaseCanvasImageIndex,
   setCanvasImage,
 } from "store/canvas/actions";
-import { setCnProgress, setCnConfig } from "store/controlNet/actions";
-import {
-  setResultImages,
-  setResultInfo,
-  setMultipleImagesMode,
-} from "store/result/actions";
+import { setCnConfig } from "store/controlNet/actions";
+import { setMultipleImagesMode } from "store/result/actions";
 
 import { useHotKeys } from "hooks";
 import { downloadImages } from "components/PaintingTools/PaintingTools";
 import { getCanvasImage } from "store/selectors";
-import { generate, handleAudioSignal } from "components/PaintingTools/generate";
+import { useGenerate } from "components/PaintingTools/generate";
 import { getCnConfig, sendCnConfig, skipRendering } from "api";
 
 type StateProps = ReturnType<typeof MSTP>;
@@ -47,7 +43,6 @@ const HotkeyWrapper: React.FC<HotkeyWrapperProps> = ({
   canvasImage,
   cnConfig,
   isZenModeOn,
-  audio,
   decreaseCanvasImageIndex,
   increaseCanvasImageIndex,
   setCanvasImage,
@@ -56,17 +51,15 @@ const HotkeyWrapper: React.FC<HotkeyWrapperProps> = ({
   setBrushFilling,
   setErasingBySwitch,
   setInstantGenerationMode,
-  setResultImages,
-  setResultInfo,
-  setCnProgress,
   setCnConfig,
   setZenMode,
   setModal,
-  setAudioReady,
   setAudioEnabled,
   setMultipleImagesMode,
   addPopup,
 }) => {
+  const generate = useGenerate();
+
   const changeSeed = useCallback(
     (ascend?: boolean) => {
       if (ascend) {
@@ -79,28 +72,9 @@ const HotkeyWrapper: React.FC<HotkeyWrapperProps> = ({
   const randomizeSeed = () =>
     setCnConfig({ seed: Math.trunc(Math.random() * 2 ** 32 - 1) });
 
-  const audioFunc = useCallback(
-    () => handleAudioSignal(audio, setAudioReady),
-    [audio, setAudioReady]
-  );
-
   const memoizedGenerate = useCallback(() => {
-    generate(
-      canvasImage,
-      setResultImages,
-      setCnProgress,
-      setResultInfo,
-      addPopup,
-      audioFunc
-    );
-  }, [
-    canvasImage,
-    setResultImages,
-    setCnProgress,
-    setResultInfo,
-    audioFunc,
-    addPopup,
-  ]);
+    generate(canvasImage);
+  }, [generate, canvasImage]);
 
   const memoizedDownload = useCallback(
     () => downloadImages(resultImages),
@@ -175,7 +149,6 @@ const MSTP = (state: StateType) => ({
   canvasImage: getCanvasImage(state),
   cnConfig: state.controlNet.config,
   isZenModeOn: state.root.isZenModeOn,
-  audio: state.audio,
 });
 
 const MDTP = {
@@ -187,13 +160,9 @@ const MDTP = {
   setBrushType,
   setErasingBySwitch,
   setInstantGenerationMode,
-  setResultImages,
-  setResultInfo,
-  setCnProgress,
   setCnConfig,
   setZenMode,
   setModal,
-  setAudioReady,
   setAudioEnabled,
   setMultipleImagesMode,
   addPopup,

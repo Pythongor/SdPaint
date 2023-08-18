@@ -51,9 +51,6 @@ export const CanvasResizer: React.FC<CanvasResizerProps> = ({
 
 const MSTP = ({ canvas: { size } }: StateType) => ({ canvasSize: size });
 
-const MDTP = {
-  setCanvasWidth,
-  setCanvasHeight,
-};
+const MDTP = { setCanvasWidth, setCanvasHeight };
 
 export default connect(MSTP, MDTP)(CanvasResizer);

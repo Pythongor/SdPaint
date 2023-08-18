@@ -1,9 +1,11 @@
-import { ResultInfoType, ResultActions } from "store/result/types";
+import { useCallback } from "react";
+import { ResultInfoType } from "store/result/types";
 import { AudioStateType, AudioSignalType } from "store/audio/types";
 import { PayloadActionCreator } from "typesafe-actions";
 import { AudioActions } from "store/audio/types";
-import { ControlNetActions } from "store/controlNet/types";
 import { addPopup } from "store/actions";
+import { setCnProgress } from "store/controlNet/actions";
+import { setResultImages, setResultInfo } from "store/result/actions";
 import { sendImage, retryRequest, getImage, catchError } from "api";
 import { renewAudioContext } from "audio/synth";
 import {
@@ -12,6 +14,9 @@ import {
   playBounceSignal,
 } from "audio/signals";
 import { start } from "tone";
+import { useDispatch, useSelector } from "react-redux";
+import { PopupConfigType, StateType } from "store/types";
+import { setAudioReady } from "store/audio/actions";
 
 const playSignal = (signalType: AudioSignalType) => {
   if (signalType === "epic") {
@@ -45,42 +50,51 @@ export const handleAudioSignal = (
   }
 };
 
-export const generate = async (
-  paintImage: string,
-  setResultImages: PayloadActionCreator<
-    ResultActions.setResultImages,
-    string[]
-  >,
-  setCnProgress: PayloadActionCreator<ControlNetActions.setCnProgress, number>,
-  setResultInfo: PayloadActionCreator<
-    ResultActions.setResultInfo,
-    ResultInfoType | null
-  >,
-  addPopupAction: typeof addPopup,
-  audioFunc: () => void
-) => {
-  if (!paintImage) return;
-  await sendImage(paintImage).catch((error) =>
-    catchError(error, addPopupAction)
+export const useGenerate = () => {
+  const dispatch = useDispatch();
+  const audio = useSelector(({ audio }: StateType) => audio);
+
+  const dispatchResultImages = (payload: string[]) =>
+    dispatch(setResultImages(payload));
+  const dispatchCnProgress = (payload: number) =>
+    dispatch(setCnProgress(payload));
+  const dispatchResultInfo = (payload: ResultInfoType | null) =>
+    dispatch(setResultInfo(payload));
+  const dispatchPopup = (payload: Omit<PopupConfigType, "id">) =>
+    dispatch(addPopup(payload));
+  const dispatchAudioReady = (payload: boolean) =>
+    dispatch(setAudioReady(payload));
+
+  const audioFunc = () => handleAudioSignal(audio, dispatchAudioReady);
+
+  return useCallback(
+    async (paintImage: string) => {
+      if (!paintImage) return;
+      await sendImage(paintImage).catch((error) =>
+        catchError(error, dispatchPopup)
+      );
+      await retryRequest({
+        finalFunc: async () => {
+          const result = await getImage(dispatchPopup);
+          if ("error" in result) {
+            audioFunc();
+            return;
+          }
+          const { images, info, status_code } = result;
+          if (status_code === 200) {
+            dispatchResultImages(images);
+            dispatchResultInfo(info);
+          }
+          audioFunc();
+        },
+        progressFunc: (data) => {
+          dispatchCnProgress(isNaN(data) ? 100 : data * 100);
+          return !!data;
+        },
+        addPopup: dispatchPopup,
+      });
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [audio]
   );
-  await retryRequest({
-    finalFunc: async () => {
-      const result = await getImage(addPopupAction);
-      if ("error" in result) {
-        audioFunc();
-        return;
-      }
-      const { images, info, status_code } = result;
-      if (status_code === 200) {
-        setResultImages(images);
-        setResultInfo(info);
-      }
-      audioFunc();
-    },
-    progressFunc: (data) => {
-      setCnProgress(isNaN(data) ? 100 : data * 100);
-      return !!data;
-    },
-    addPopup: addPopupAction,
-  });
 };

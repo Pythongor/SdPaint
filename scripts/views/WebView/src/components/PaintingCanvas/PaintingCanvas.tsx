@@ -1,10 +1,6 @@
 import React, { useEffect } from "react";
-import { addPopup } from "store/actions";
-import { setResultImages, setResultInfo } from "store/result/actions";
-import { setAudioReady } from "store/audio/actions";
 import { setErasingByMouse } from "store/brush/actions";
 import { setCanvasImage, setEmptyImage } from "store/canvas/actions";
-import { setCnProgress } from "store/controlNet/actions";
 import { connect } from "react-redux";
 import { StateType } from "store/types";
 import { useBrushes } from "./hooks/useBrushes";
@@ -26,13 +22,8 @@ export const PaintingCanvas: React.FC<PaintingCanvasProps> = ({
   isZenModeOn,
   canvasSize,
   setCanvasImage,
-  setCnProgress,
-  setResultImages,
-  setResultInfo,
   setEmptyImage,
   setErasingByMouse,
-  setAudioReady,
-  addPopup,
 }) => {
   const {
     ref: paintingRef,
@@ -80,12 +71,7 @@ export const PaintingCanvas: React.FC<PaintingCanvasProps> = ({
       instantGenerationMode,
       setMouseCoordinates,
       setCanvasImage,
-      setCnProgress,
-      setResultImages,
-      setResultInfo,
       setErasingByMouse,
-      setAudioReady,
-      addPopup,
     });
 
   return (
@@ -127,15 +113,6 @@ const MSTP = (state: StateType) => ({
   canvasSize: state.canvas.size,
 });
 
-const MDTP = {
-  setCanvasImage,
-  setCnProgress,
-  setResultImages,
-  setResultInfo,
-  setEmptyImage,
-  setErasingByMouse,
-  setAudioReady,
-  addPopup,
-};
+const MDTP = { setCanvasImage, setEmptyImage, setErasingByMouse };
 
 export default connect(MSTP, MDTP)(PaintingCanvas);

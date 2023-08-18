@@ -1,5 +1,5 @@
 import { createAction } from "typesafe-actions";
-import { Actions, ModalType, PopupType } from "./types";
+import { Actions, ModalType, PopupConfigType } from "./types";
 
 export const setScrollTop = createAction(Actions.setScrollTop)<number>();
 
@@ -13,10 +13,9 @@ export const setInstantGenerationMode = createAction(
   Actions.setInstantGenerationMode
 )<boolean | "switch">();
 
-export const addPopup = createAction(Actions.addPopup)<{
-  message: string;
-  popupType?: PopupType;
-}>();
+export const addPopup = createAction(Actions.addPopup)<
+  Omit<PopupConfigType, "id">
+>();
 
 export const deletePopup = createAction(Actions.deletePopup)<number>();
 
