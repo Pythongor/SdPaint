@@ -18,7 +18,6 @@ export const useBrush = ({
   previewRef,
   context,
   previewContext,
-  mousePos,
   instantGenerationMode,
   setMouseCoordinates,
   setCanvasImage,
@@ -36,7 +35,7 @@ export const useBrush = ({
   const [isDrawing, setIsDrawing] = useState(false);
   const { isErasing, brushType, audio } = useSelector((state: StateType) => ({
     isErasing: getErasingState(state),
-    brushType: state.brushConfig.brushType,
+    brushType: state.brush.brushType,
     audio: state.audio,
   }));
 

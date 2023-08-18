@@ -1,14 +1,10 @@
 import React, { useEffect } from "react";
-import {
-  setCanvasImage,
-  setResultImages,
-  setCnProgress,
-  setEmptyImage,
-  setErasingByMouse,
-  setAudioReady,
-  setResultInfo,
-  addPopup,
-} from "store/actions";
+import { addPopup } from "store/actions";
+import { setResultImages, setResultInfo } from "store/result/actions";
+import { setAudioReady } from "store/audio/actions";
+import { setErasingByMouse } from "store/brush/actions";
+import { setCanvasImage, setEmptyImage } from "store/canvas/actions";
+import { setCnProgress } from "store/controlNet/actions";
 import { connect } from "react-redux";
 import { StateType } from "store/types";
 import { useBrushes } from "./hooks/useBrushes";
@@ -124,10 +120,10 @@ export const PaintingCanvas: React.FC<PaintingCanvasProps> = ({
 const MSTP = (state: StateType) => ({
   canvasImage: getCanvasImage(state),
   canvasImagesStack: state.canvas.imagesStack,
-  scrollTop: state.scrollTop,
-  instantGenerationMode: state.instantGenerationMode,
-  brushType: state.brushConfig.brushType,
-  isZenModeOn: state.isZenModeOn,
+  scrollTop: state.root.scrollTop,
+  instantGenerationMode: state.root.instantGenerationMode,
+  brushType: state.brush.brushType,
+  isZenModeOn: state.root.isZenModeOn,
   canvasSize: state.canvas.size,
 });
 

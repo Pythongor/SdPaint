@@ -1,12 +1,9 @@
-import {
-  addPopup,
-  setAudioReady,
-  setErasingByMouse,
-  setResultInfo,
-  setResultImages,
-  setCnProgress,
-  setCanvasImage,
-} from "store/actions";
+import { addPopup } from "store/actions";
+import { setResultInfo, setResultImages } from "store/result/actions";
+import { setAudioReady } from "store/audio/actions";
+import { setErasingByMouse } from "store/brush/actions";
+import { setCanvasImage } from "store/canvas/actions";
+import { setCnProgress } from "store/controlNet/actions";
 
 export type PointType = { x: number; y: number };
 

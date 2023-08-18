@@ -1,7 +1,8 @@
 import React, { useEffect, useCallback } from "react";
 import { StateType } from "store/types";
 import { connect } from "react-redux";
-import { setCnConfig, addPopup } from "store/actions";
+import { addPopup } from "store/actions";
+import { setCnConfig } from "store/controlNet/actions";
 import { retryRequest } from "api";
 import styles from "../ControlNetForm.module.scss";
 
@@ -21,7 +22,7 @@ const ControlNetSelect: React.FC<CnSelectProps> = ({
   title,
   listName,
   unitName,
-  cnConfig,
+  config,
   getFunc,
   setCnConfig,
   addPopup,
@@ -53,10 +54,10 @@ const ControlNetSelect: React.FC<CnSelectProps> = ({
       <select
         className={styles.select}
         onChange={onChange}
-        value={cnConfig[unitName]}
+        value={config[unitName]}
       >
-        {cnConfig[listName] &&
-          cnConfig[listName].map((name) => (
+        {config[listName] &&
+          config[listName].map((name) => (
             <option key={name} value={name} className={styles.option}>
               {name}
             </option>
@@ -66,7 +67,7 @@ const ControlNetSelect: React.FC<CnSelectProps> = ({
   );
 };
 
-const MSTP = ({ cnConfig }: StateType) => ({ cnConfig });
+const MSTP = ({ controlNet: { config } }: StateType) => ({ config });
 
 const MDTP = { setCnConfig, addPopup };
 

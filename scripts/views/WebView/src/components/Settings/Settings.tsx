@@ -1,12 +1,10 @@
 import React from "react";
-import { AudioSignalType, StateType } from "store/types";
+import { StateType } from "store/types";
+import { AudioSignalType } from "store/audio/types";
 import { connect } from "react-redux";
-import {
-  setInstantGenerationMode,
-  setAudioEnabled,
-  setAudioSignalType,
-  setResultImagesCount,
-} from "store/actions";
+import { setInstantGenerationMode } from "store/actions";
+import { setResultImagesCount } from "store/result/actions";
+import { setAudioEnabled, setAudioSignalType } from "store/audio/actions";
 import styles from "./Settings.module.scss";
 
 type StateProps = ReturnType<typeof MSTP>;
@@ -97,7 +95,7 @@ const Settings: React.FC<ImageViewerProps> = ({
 };
 
 const MSTP = ({
-  instantGenerationMode,
+  root: { instantGenerationMode },
   audio: { isEnabled, signalType },
   result: { imagesCount },
 }: StateType) => ({

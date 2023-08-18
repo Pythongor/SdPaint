@@ -7,7 +7,7 @@ import { UseBrushProps } from "../types";
 
 export const useBrushes = (props: UseBrushProps) => {
   const brushType = useSelector(
-    ({ brushConfig: { brushType } }: StateType) => brushType
+    ({ brush: { brushType } }: StateType) => brushType
   );
   const pencilProps = usePencilBrush(props);
   const lineProps = useLineBrush(props);

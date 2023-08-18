@@ -5,7 +5,9 @@ import { getCnConfig, sendCnConfig } from "api";
 import { default as BrushInput } from "./components/BrushInput";
 import ToolsCheckboxes from "./components/ToolsCheckboxes";
 import { default as GenerateButton } from "./components/GenerateGroup";
-import { setCanvasImage, setCnConfig, setModal, addPopup } from "store/actions";
+import { setModal, addPopup } from "store/actions";
+import { setCnConfig } from "store/controlNet/actions";
+import { setCanvasImage } from "store/canvas/actions";
 import cn from "classnames";
 import styles from "./PaintingTools.module.scss";
 
@@ -122,11 +124,11 @@ const PaintingTools: React.FC<PaintingToolsProps> = ({
 
 const MSTP = ({
   result: { images },
-  cnConfig,
   canvas: { emptyImage },
+  controlNet: { config },
 }: StateType) => ({
   resultImages: images,
-  cnConfig,
+  cnConfig: config,
   emptyImage,
 });
 

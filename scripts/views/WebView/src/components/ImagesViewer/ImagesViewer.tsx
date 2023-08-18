@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { StateType } from "store/types";
 import { connect } from "react-redux";
-import { setViewedImageIndex } from "store/actions";
+import { setViewedImageIndex } from "store/viewer/actions";
 import cn from "classnames";
 import ImageInfo from "./ImageInfo";
 import styles from "./ImagesViewer.module.scss";
@@ -115,7 +115,7 @@ const ImagesViewer: React.FC<ImageViewerProps> = ({
 };
 
 const MSTP = ({
-  modal,
+  root: { modal },
   result: { images, info },
   viewer: { viewedImageIndex, inputImageOpacity, withTiling },
 }: StateType) => ({

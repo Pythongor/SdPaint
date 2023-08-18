@@ -17,6 +17,6 @@ const MainSection: React.FC<StateProps> = ({ isZenModeOn }) => {
   );
 };
 
-const MSTP = ({ isZenModeOn }: StateType) => ({ isZenModeOn });
+const MSTP = ({ root: { isZenModeOn } }: StateType) => ({ isZenModeOn });
 
 export default connect(MSTP)(MainSection);

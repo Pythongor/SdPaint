@@ -3,7 +3,7 @@ import { ConfigType, SettingsType, getStorageConfig } from "storage";
 
 const brushWidthMap = [1, 2, 3, 5, 10, 15, 20, 30, 40, 50];
 
-export const getRealBrushWidth = ({ brushConfig: { width } }: StateType) =>
+export const getRealBrushWidth = ({ brush: { width } }: StateType) =>
   brushWidthMap[width - 1];
 
 export const getCanvasImage = ({
@@ -11,20 +11,22 @@ export const getCanvasImage = ({
 }: StateType) => imagesStack[currentImageIndex];
 
 export const getErasingState = ({
-  brushConfig: { isErasingByMouse, isErasingBySwitch },
+  brush: { isErasingByMouse, isErasingBySwitch },
 }: StateType) => isErasingByMouse || isErasingBySwitch;
 
 export const state2config = ({
-  cnConfig: {
-    seed,
-    steps,
-    batch_size,
-    cfg_scale,
-    prompt,
-    negative_prompt,
-    module,
-    model,
-    tiling,
+  controlNet: {
+    config: {
+      seed,
+      steps,
+      batch_size,
+      cfg_scale,
+      prompt,
+      negative_prompt,
+      module,
+      model,
+      tiling,
+    },
   },
   canvas: { size },
 }: StateType): ConfigType => {
@@ -47,8 +49,7 @@ export const state2config = ({
 };
 
 export const state2settings = ({
-  instantGenerationMode,
-  isZenModeOn,
+  root: { instantGenerationMode, isZenModeOn },
   audio: { isEnabled, signalType },
   canvas: { size },
   result: { imagesCount, isMultipleImagesModeOn },

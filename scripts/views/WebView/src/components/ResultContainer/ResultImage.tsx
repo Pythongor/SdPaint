@@ -1,7 +1,9 @@
 import React from "react";
 import { StateType } from "store/types";
 import { connect } from "react-redux";
-import { setModal, setViewedImageIndex, setCnConfig } from "store/actions";
+import { setModal } from "store/actions";
+import { setViewedImageIndex } from "store/viewer/actions";
+import { setCnConfig } from "store/controlNet/actions";
 import { RESULT_IMAGES_GRID_TYPES } from "components/Settings/Settings";
 import cn from "classnames";
 import styles from "./ResultContainer.module.scss";
@@ -69,7 +71,9 @@ const ResultImage = ({
 
 const MSTP = ({
   result: { images, imageSize, info },
-  cnConfig: { seed },
+  controlNet: {
+    config: { seed },
+  },
 }: StateType) => ({
   images,
   imageSize,

@@ -1,6 +1,7 @@
 import { addBase64Prefix, extractDataFromConfig } from "helpers";
 import { getStorageConfig } from "./storage";
-import { CnConfigType, ResultInfoType, ResultType } from "store/types";
+import { ResultInfoType, ResultType } from "store/result/types";
+import { CnConfigType } from "store/controlNet/types";
 import { addPopup } from "store/actions";
 
 type AddPopupAction = typeof addPopup;

@@ -50,7 +50,7 @@ const ModalWrapper: React.FC<ImageViewerProps> = ({ modal, setModal }) => {
   );
 };
 
-const MSTP = ({ modal }: StateType) => ({ modal });
+const MSTP = ({ root: { modal } }: StateType) => ({ modal });
 
 const MDTP = { setModal };
 

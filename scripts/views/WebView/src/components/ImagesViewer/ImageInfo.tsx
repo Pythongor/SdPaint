@@ -5,7 +5,7 @@ import {
   setViewedImageIndex,
   setInputImageViewOpacity,
   setTilingViewMode,
-} from "store/actions";
+} from "store/viewer/actions";
 import cn from "classnames";
 import styles from "./ImagesViewer.module.scss";
 import { Arrow } from "components/widgets";

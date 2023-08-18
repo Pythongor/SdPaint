@@ -1,7 +1,8 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { StateType } from "store/types";
 import { connect } from "react-redux";
-import { setResultWidth, setResultHeight, setCnConfig } from "store/actions";
+import { setResultWidth, setResultHeight } from "store/result/actions";
+import { setCnConfig } from "store/controlNet/actions";
 import { useResize } from "hooks";
 import ResultImage from "./ResultImage";
 import cn from "classnames";
@@ -103,12 +104,12 @@ const ResultImages: React.FC<ResultImagesProps> = ({
 };
 
 const MSTP = ({
-  cnProgress,
-  result: { images, imageSize },
-  isZenModeOn,
+  root: { isZenModeOn },
   canvas: { size },
+  controlNet: { progress },
+  result: { images, imageSize },
 }: StateType) => ({
-  cnProgress,
+  cnProgress: progress,
   images,
   imageSize,
   isZenModeOn,

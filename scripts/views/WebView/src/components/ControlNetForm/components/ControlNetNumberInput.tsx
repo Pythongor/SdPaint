@@ -1,6 +1,6 @@
 import React, { useCallback } from "react";
 import { connect } from "react-redux";
-import { setCnConfig } from "store/actions";
+import { setCnConfig } from "store/controlNet/actions";
 import styles from "../ControlNetForm.module.scss";
 
 type OwnProps = {

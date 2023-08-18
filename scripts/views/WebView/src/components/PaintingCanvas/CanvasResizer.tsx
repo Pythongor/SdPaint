@@ -1,5 +1,5 @@
 import React from "react";
-import { setCanvasWidth, setCanvasHeight } from "store/actions";
+import { setCanvasWidth, setCanvasHeight } from "store/canvas/actions";
 import { connect } from "react-redux";
 import { StateType } from "store/types";
 import cn from "classnames";

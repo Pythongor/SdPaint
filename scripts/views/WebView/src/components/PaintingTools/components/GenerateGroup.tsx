@@ -2,15 +2,14 @@ import React, { useCallback } from "react";
 import { connect } from "react-redux";
 import { StateType } from "store/types";
 import { getCanvasImage } from "store/selectors";
+import { addPopup } from "store/actions";
 import {
   setResultImages,
-  setCnProgress,
-  setAudioReady,
-  setCnConfig,
   setMultipleImagesMode,
   setResultInfo,
-  addPopup,
-} from "store/actions";
+} from "store/result/actions";
+import { setAudioReady } from "store/audio/actions";
+import { setCnProgress, setCnConfig } from "store/controlNet/actions";
 import { generate, handleAudioSignal } from "../generate";
 import cn from "classnames";
 import styles from "../PaintingTools.module.scss";
@@ -82,7 +81,7 @@ const GenerateGroup: React.FC<GenerateGroupProps> = ({
 
 const MSTP = (state: StateType) => ({
   paintImage: getCanvasImage(state),
-  imagesCount: state.cnConfig.batch_size,
+  imagesCount: state.controlNet.config.batch_size,
   audio: state.audio,
   isMultipleModeOn: state.result.isMultipleImagesModeOn,
 });

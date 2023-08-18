@@ -43,8 +43,11 @@ const ResultContainer: React.FC<ResultCanvasProps> = ({
   );
 };
 
-const MSTP = ({ cnProgress, isZenModeOn }: StateType) => ({
-  cnProgress,
+const MSTP = ({
+  root: { isZenModeOn },
+  controlNet: { progress },
+}: StateType) => ({
+  cnProgress: progress,
   isZenModeOn,
 });
 

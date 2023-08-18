@@ -1,7 +1,8 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { connect } from "react-redux";
 import { StateType } from "store/types";
-import { setCnConfig, setScrollTop, addPopup } from "store/actions";
+import { setScrollTop, addPopup } from "store/actions";
+import { setCnConfig } from "store/controlNet/actions";
 import { getModels, getModules } from "../../api";
 import { Arrow } from "components/widgets";
 import ControlNetNumberInput from "./components/ControlNetNumberInput";
@@ -119,8 +120,11 @@ export const ControlNetForm: React.FC<CnFormProps> = ({
   );
 };
 
-const MSTP = ({ cnConfig, isZenModeOn }: StateType) => ({
-  cnConfig,
+const MSTP = ({
+  root: { isZenModeOn },
+  controlNet: { config },
+}: StateType) => ({
+  cnConfig: config,
   isZenModeOn,
 });
 

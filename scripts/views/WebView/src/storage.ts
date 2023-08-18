@@ -1,4 +1,4 @@
-import { AudioSignalType } from "store/types";
+import { AudioSignalType } from "store/audio/types";
 
 export type ConfigType = typeof defaultConfig;
 export type SettingsType = typeof defaultSettings;

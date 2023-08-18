@@ -16,7 +16,7 @@ export const useLineBrush = ({
   const [startPos, setStartPos] = useState({ x: 0, y: 0 });
   const { isErasing, brushWidth } = useSelector((state: StateType) => ({
     isErasing: getErasingState(state),
-    brushWidth: state.brushConfig.width,
+    brushWidth: state.brush.width,
   }));
 
   const drawCircle = useCallback(

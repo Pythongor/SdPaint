@@ -33,7 +33,7 @@ export const ToolsCheckboxes: React.FC<ToolsCheckboxesProps> = ({
   );
 };
 
-const MSTP = ({ isZenModeOn }: StateType) => ({ isZenModeOn });
+const MSTP = ({ root: { isZenModeOn } }: StateType) => ({ isZenModeOn });
 
 const MDTP = { setZenMode };
 

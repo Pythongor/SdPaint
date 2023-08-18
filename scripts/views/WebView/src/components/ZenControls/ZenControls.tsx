@@ -1,17 +1,19 @@
 import React, { useState } from "react";
 import ZenSelect from "./ZenSelect";
-import { BrushType, StateType } from "store/types";
+import { StateType } from "store/types";
+import { BrushType } from "store/brush/types";
 import { connect } from "react-redux";
+
+import { setInstantGenerationMode, setZenMode } from "store/actions";
+import { setAudioEnabled } from "store/audio/actions";
 import {
   setBrushWidth,
   setBrushFilling,
   setBrushType,
   setErasingBySwitch,
-  setInstantGenerationMode,
-  setZenMode,
-  setAudioEnabled,
-  setMultipleImagesMode,
-} from "store/actions";
+} from "store/brush/actions";
+import { setMultipleImagesMode } from "store/result/actions";
+
 import { getErasingState } from "store/selectors";
 import cn from "classnames";
 import styles from "./ZenControls.module.scss";
@@ -139,12 +141,12 @@ const ZenIndicator: React.FC<ResultCanvasProps> = ({
 };
 
 const MSTP = (state: StateType) => ({
-  brushType: state.brushConfig.brushType,
-  brushWidth: state.brushConfig.width,
-  withBrushFill: state.brushConfig.withFill,
-  isZenModeOn: state.isZenModeOn,
+  brushType: state.brush.brushType,
+  brushWidth: state.brush.width,
+  withBrushFill: state.brush.withFill,
+  isZenModeOn: state.root.isZenModeOn,
   isErasing: getErasingState(state),
-  instantGenerationMode: state.instantGenerationMode,
+  instantGenerationMode: state.root.instantGenerationMode,
   audioEnabled: state.audio.isEnabled,
   isMultipleModeOn: state.result.isMultipleImagesModeOn,
 });

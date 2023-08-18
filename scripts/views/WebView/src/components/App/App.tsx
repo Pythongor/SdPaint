@@ -15,15 +15,15 @@ import {
   setScrollTop,
   setInstantGenerationMode,
   setZenMode,
-  setCnConfig,
-  setAudioEnabled,
-  setAudioSignalType,
-  setCanvasWidth,
-  setCanvasHeight,
-  setResultImagesCount,
-  setMultipleImagesMode,
   addPopup,
 } from "store/actions";
+import { setAudioEnabled, setAudioSignalType } from "store/audio/actions";
+import { setCanvasWidth, setCanvasHeight } from "store/canvas/actions";
+import { setCnConfig } from "store/controlNet/actions";
+import {
+  setResultImagesCount,
+  setMultipleImagesMode,
+} from "store/result/actions";
 import HotkeyWrapper from "./HotkeyWrapper";
 import cn from "classnames";
 import styles from "./App.module.scss";
@@ -94,6 +94,8 @@ const App: React.FC<AppProps> = ({
     getCnConfig(addPopup).then(setConfig);
   }, [setCnConfig, addPopup, setConfig]);
 
+  console.log("modal", modal);
+
   return (
     <HotkeyWrapper>
       <div
@@ -113,7 +115,7 @@ const App: React.FC<AppProps> = ({
   );
 };
 
-const MSTP = ({ modal }: StateType) => ({
+const MSTP = ({ root: { modal } }: StateType) => ({
   modal,
 });
 

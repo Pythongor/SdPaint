@@ -1,6 +1,8 @@
-import { AudioConfigType, AudioSignalType, ResultInfoType } from "store/types";
+import { ResultInfoType, ResultActions } from "store/result/types";
+import { AudioStateType, AudioSignalType } from "store/audio/types";
 import { PayloadActionCreator } from "typesafe-actions";
-import { Actions } from "store/types";
+import { AudioActions } from "store/audio/types";
+import { ControlNetActions } from "store/controlNet/types";
 import { addPopup } from "store/actions";
 import { sendImage, retryRequest, getImage, catchError } from "api";
 import { renewAudioContext } from "audio/synth";
@@ -22,8 +24,8 @@ const playSignal = (signalType: AudioSignalType) => {
 };
 
 export const handleAudioSignal = (
-  { isEnabled, isReady, signalType }: AudioConfigType,
-  setAudioReady: PayloadActionCreator<Actions.setAudioReady, boolean>
+  { isEnabled, isReady, signalType }: AudioStateType,
+  setAudioReady: PayloadActionCreator<AudioActions.setAudioReady, boolean>
 ) => {
   if (!isEnabled) {
     if (isReady) {
@@ -45,10 +47,13 @@ export const handleAudioSignal = (
 
 export const generate = async (
   paintImage: string,
-  setResultImages: PayloadActionCreator<Actions.setResultImages, string[]>,
-  setCnProgress: PayloadActionCreator<Actions.setCnProgress, number>,
+  setResultImages: PayloadActionCreator<
+    ResultActions.setResultImages,
+    string[]
+  >,
+  setCnProgress: PayloadActionCreator<ControlNetActions.setCnProgress, number>,
   setResultInfo: PayloadActionCreator<
-    Actions.setResultInfo,
+    ResultActions.setResultInfo,
     ResultInfoType | null
   >,
   addPopupAction: typeof addPopup,

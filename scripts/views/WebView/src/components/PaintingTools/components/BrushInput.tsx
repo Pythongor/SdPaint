@@ -1,12 +1,13 @@
 import React from "react";
 import { connect } from "react-redux";
-import { StateType, BrushType } from "store/types";
+import { StateType } from "store/types";
+import { BrushType } from "store/brush/types";
 import {
   setBrushWidth,
   setErasingBySwitch,
   setBrushType,
   setBrushFilling,
-} from "store/actions";
+} from "store/brush/actions";
 import { getErasingState, getRealBrushWidth } from "store/selectors";
 import cn from "classnames";
 import styles from "../PaintingTools.module.scss";
@@ -137,10 +138,10 @@ const BrushInput: React.FC<BrushInputProps> = ({
 const MSTP = (state: StateType) => {
   return {
     isErasing: getErasingState(state),
-    brushType: state.brushConfig.brushType,
-    withBrushFill: state.brushConfig.withFill,
+    brushType: state.brush.brushType,
+    withBrushFill: state.brush.withFill,
     realBrushWidth: getRealBrushWidth(state),
-    brushWidth: state.brushConfig.width,
+    brushWidth: state.brush.width,
   };
 };
 

@@ -1,26 +1,32 @@
 import React, { useCallback } from "react";
 import { connect } from "react-redux";
 import { StateType } from "store/types";
+
+import {
+  setInstantGenerationMode,
+  setZenMode,
+  setModal,
+  addPopup,
+} from "store/actions";
+import { setAudioReady, setAudioEnabled } from "store/audio/actions";
+import {
+  setBrushWidth,
+  setBrushType,
+  setErasingBySwitch,
+  setBrushFilling,
+} from "store/brush/actions";
 import {
   decreaseCanvasImageIndex,
   increaseCanvasImageIndex,
   setCanvasImage,
-  setBrushWidth,
-  setBrushType,
-  setErasingBySwitch,
-  setInstantGenerationMode,
+} from "store/canvas/actions";
+import { setCnProgress, setCnConfig } from "store/controlNet/actions";
+import {
   setResultImages,
   setResultInfo,
-  setCnProgress,
-  setCnConfig,
-  setBrushFilling,
-  setZenMode,
-  setModal,
-  setAudioReady,
-  setAudioEnabled,
   setMultipleImagesMode,
-  addPopup,
-} from "store/actions";
+} from "store/result/actions";
+
 import { useHotKeys } from "hooks";
 import { downloadImages } from "components/PaintingTools/PaintingTools";
 import { getCanvasImage } from "store/selectors";
@@ -164,11 +170,11 @@ const HotkeyWrapper: React.FC<HotkeyWrapperProps> = ({
 };
 
 const MSTP = (state: StateType) => ({
-  modal: state.modal,
+  modal: state.root.modal,
   resultImages: state.result.images,
   canvasImage: getCanvasImage(state),
-  cnConfig: state.cnConfig,
-  isZenModeOn: state.isZenModeOn,
+  cnConfig: state.controlNet.config,
+  isZenModeOn: state.root.isZenModeOn,
   audio: state.audio,
 });
 

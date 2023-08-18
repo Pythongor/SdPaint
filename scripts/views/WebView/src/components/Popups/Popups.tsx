@@ -49,6 +49,6 @@ const Popups: React.FC<StateProps> = ({ popups }) => {
   );
 };
 
-const MSTP = ({ popups }: StateType) => ({ popups });
+const MSTP = ({ root: { popups } }: StateType) => ({ popups });
 
 export default connect(MSTP)(Popups);

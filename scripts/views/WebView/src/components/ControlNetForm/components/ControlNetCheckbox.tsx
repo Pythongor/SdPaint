@@ -1,13 +1,13 @@
 import React, { useCallback } from "react";
 import { connect } from "react-redux";
-import { setCnConfig } from "store/actions";
+import { setCnConfig } from "store/controlNet/actions";
 import { StateType } from "store/types";
 import styles from "../ControlNetForm.module.scss";
 
 type OwnProps = {
   name: string;
   title: string;
-  id: keyof StateType["cnConfig"];
+  id: keyof StateType["controlNet"]["config"];
 };
 type StateProps = ReturnType<typeof MSTP>;
 type DispatchProps = typeof MDTP;
@@ -45,7 +45,7 @@ const ControlNetCheckbox: React.FC<CnCheckboxProps> = ({
   );
 };
 
-const MSTP = ({ cnConfig }: StateType) => ({ cnConfig });
+const MSTP = ({ controlNet: { config } }: StateType) => ({ cnConfig: config });
 
 const MDTP = { setCnConfig };
 

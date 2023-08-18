@@ -38,9 +38,9 @@ const usePrimitiveShapeBrush = ({
 }: PrimitiveShapeProps) => {
   const [startPos, setStartPos] = useState({ x: 0, y: 0 });
   const { isErasing, withBrushFill } = useSelector((state: StateType) => ({
-    withBrushFill: state.brushConfig.withFill,
+    withBrushFill: state.brush.withFill,
     isErasing: getErasingState(state),
-    brushType: state.brushConfig.brushType,
+    brushType: state.brush.brushType,
   }));
   const { drawFunc, getShape, clearShape } = shapeMap[kind];
 
