@@ -11,22 +11,18 @@ const initialState: Readonly<ResultStateType> = {
 };
 
 export default createReducer<ResultStateType, ResultActionType>(initialState)
-  .handleAction(actions.setResultImages, (state, { payload }) => ({
-    ...state,
-    images: payload,
-  }))
-  .handleAction(actions.setResultWidth, (state, { payload }) => ({
-    ...state,
-    imageSize: [payload, state.imageSize[1]],
-  }))
-  .handleAction(actions.setResultHeight, (state, { payload }) => ({
-    ...state,
-    imageSize: [state.imageSize[0], payload],
-  }))
-  .handleAction(actions.setResultImagesCount, (state, { payload }) => ({
-    ...state,
-    imagesCount: payload,
-  }))
+  .handleAction(actions.setResultImages, (state, { payload }) => {
+    return { ...state, images: payload };
+  })
+  .handleAction(actions.setResultWidth, (state, { payload }) => {
+    return { ...state, imageSize: [payload, state.imageSize[1]] };
+  })
+  .handleAction(actions.setResultHeight, (state, { payload }) => {
+    return { ...state, imageSize: [state.imageSize[0], payload] };
+  })
+  .handleAction(actions.setResultImagesCount, (state, { payload }) => {
+    return { ...state, imagesCount: payload };
+  })
   .handleAction(actions.setMultipleImagesMode, (state, { payload }) => {
     if (payload === "switch")
       return {
@@ -38,7 +34,6 @@ export default createReducer<ResultStateType, ResultActionType>(initialState)
       isMultipleImagesModeOn: payload,
     };
   })
-  .handleAction(actions.setResultInfo, (state, { payload }) => ({
-    ...state,
-    info: payload,
-  }));
+  .handleAction(actions.setResultInfo, (state, { payload }) => {
+    return { ...state, info: payload };
+  });

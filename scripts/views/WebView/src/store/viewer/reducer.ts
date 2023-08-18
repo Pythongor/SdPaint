@@ -9,10 +9,9 @@ const initialState: Readonly<ViewerStateType> = {
 };
 
 export default createReducer<ViewerStateType, ViewerActionType>(initialState)
-  .handleAction(actions.setViewedImageIndex, (state, { payload }) => ({
-    ...state,
-    viewedImageIndex: payload,
-  }))
+  .handleAction(actions.setViewedImageIndex, (state, { payload }) => {
+    return { ...state, viewedImageIndex: payload };
+  })
   .handleAction(actions.setInputImageViewOpacity, (state, { payload }) => {
     if (payload === "switch") {
       const opacity = state.inputImageOpacity;
@@ -26,7 +25,6 @@ export default createReducer<ViewerStateType, ViewerActionType>(initialState)
       inputImageOpacity: payload,
     };
   })
-  .handleAction(actions.setTilingViewMode, (state, { payload }) => ({
-    ...state,
-    withTiling: payload,
-  }));
+  .handleAction(actions.setTilingViewMode, (state, { payload }) => {
+    return { ...state, withTiling: payload };
+  });

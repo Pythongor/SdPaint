@@ -40,10 +40,9 @@ export default createReducer<BrushStateType, BrushActionType>(initialState)
       width: payload,
     };
   })
-  .handleAction(actions.setBrushType, (state, { payload }) => ({
-    ...state,
-    brushType: payload,
-  }))
+  .handleAction(actions.setBrushType, (state, { payload }) => {
+    return { ...state, brushType: payload };
+  })
   .handleAction(actions.setBrushFilling, (state, { payload }) => {
     if (
       !["ellipse", "rectangle"].includes(state.brushType) ||

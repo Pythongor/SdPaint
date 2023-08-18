@@ -22,13 +22,11 @@ const initialState: Readonly<ControlNetStateType> = {
 const reducer = createReducer<ControlNetStateType, ControlNetActionType>(
   initialState
 )
-  .handleAction(actions.setCnProgress, (state, { payload }) => ({
-    ...state,
-    progress: payload,
-  }))
-  .handleAction(actions.setCnConfig, (state, { payload }) => ({
-    ...state,
-    config: { ...state.config, ...payload },
-  }));
+  .handleAction(actions.setCnProgress, (state, { payload }) => {
+    return { ...state, progress: payload };
+  })
+  .handleAction(actions.setCnConfig, (state, { payload }) => {
+    return { ...state, config: { ...state.config, ...payload } };
+  });
 
 export default reducer;

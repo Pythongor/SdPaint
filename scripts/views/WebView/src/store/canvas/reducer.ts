@@ -57,15 +57,13 @@ export default createReducer<CanvasStateType, CanvasActionType>(initialState)
     );
     return { ...state, currentImageIndex };
   })
-  .handleAction(actions.decreaseCanvasImageIndex, (state) => {
-    const currentImageIndex = Math.max(0, state.currentImageIndex - 1);
-    return { ...state, currentImageIndex };
-  })
-  .handleAction(actions.setCanvasWidth, (state, { payload }) => ({
+  .handleAction(actions.decreaseCanvasImageIndex, (state) => ({
     ...state,
-    size: [payload, state.size[1]],
+    currentImageIndex: Math.max(0, state.currentImageIndex - 1),
   }))
-  .handleAction(actions.setCanvasHeight, (state, { payload }) => ({
-    ...state,
-    size: [state.size[0], payload],
-  }));
+  .handleAction(actions.setCanvasWidth, (state, { payload }) => {
+    return { ...state, size: [payload, state.size[1]] };
+  })
+  .handleAction(actions.setCanvasHeight, (state, { payload }) => {
+    return { ...state, size: [state.size[0], payload] };
+  });

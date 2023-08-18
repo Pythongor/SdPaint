@@ -18,10 +18,9 @@ const initialState: Readonly<RootStateType> = {
 };
 
 const rootReducer = createReducer<RootStateType, ActionType>(initialState)
-  .handleAction(actions.setScrollTop, (state, { payload }) => ({
-    ...state,
-    scrollTop: payload,
-  }))
+  .handleAction(actions.setScrollTop, (state, { payload }) => {
+    return { ...state, scrollTop: payload };
+  })
   .handleAction(actions.setModal, (state, { payload }) => {
     return { ...state, modal: payload };
   })
@@ -50,10 +49,10 @@ const rootReducer = createReducer<RootStateType, ActionType>(initialState)
       { ...payload, id: Math.random(), popupType: payload.popupType || "info" },
     ],
   }))
-  .handleAction(actions.deletePopup, (state, { payload }) => {
-    const newPopups = [...state.popups].filter((popup) => popup.id !== payload);
-    return { ...state, popups: newPopups };
-  });
+  .handleAction(actions.deletePopup, (state, { payload }) => ({
+    ...state,
+    popups: [...state.popups].filter((popup) => popup.id !== payload),
+  }));
 
 const reducer: Reducer<CombinedState<StateType>> = combineReducers({
   root: rootReducer,

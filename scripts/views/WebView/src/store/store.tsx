@@ -9,7 +9,7 @@ import { ViewerActionType } from "./viewer/types";
 import { setCnConfig } from "./controlNet/actions";
 import { syncStorageConfig, syncSettings } from "storage";
 import { state2config, state2settings } from "./selectors";
-import reducer from "./rootReducer";
+import reducer from "./reducer";
 import { PayloadActionCreator } from "typesafe-actions";
 
 type ActionType =
