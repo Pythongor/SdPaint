@@ -192,6 +192,10 @@ class State:
             with open(self.json_file, "w") as f:
                 json.dump(settings, f, indent=4)
 
+        samplers = self.api.get_samplers()
+        self.samplers["list"] = list(map(lambda x: x["name"], samplers))
+        self.samplers["sampler"] = self.samplers["list"][0]
+
     def update_webui_config(self):
         """
             Update webui configuration from the API.
