@@ -74,19 +74,19 @@
   }
 
   .arrow__top & {
-    transform: rotate(-90deg);
+    transform: rotate(90deg);
   }
 
   .arrow__top.arrow__off & {
-    transform: rotate(90deg);
+    transform: rotate(-90deg);
   }
 
   .arrow__bottom & {
-    transform: rotate(90deg);
+    transform: rotate(-90deg);
   }
 
   .arrow__bottom.arrow__off & {
-    transform: rotate(-90deg);
+    transform: rotate(90deg);
   }
 
   .arrow__left.arrow__off & {
