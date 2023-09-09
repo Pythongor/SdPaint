@@ -1,4 +1,5 @@
 import json
+import functools
 
 from .cn_requests import Api
 from .utils import load_config, update_size
@@ -87,6 +88,45 @@ class State:
         self.update_config()
         self.update_settings()
         self.update_webui_config()
+    
+    def update_samplers(self):
+        """
+            Update samplers list from available samplers.
+        """
+
+        def get_sampler_priority(smp):
+            priorities = {
+                "Euler": -2,
+                "PLMS": -2,
+                "Heun": -1,
+                "LMS": -1,
+                "DPM": 1,
+                "DPM2": 3,
+                "Karras": 3,
+                "UniPC": 3,
+                "++": 4,
+                "DDIM": 4,
+            }
+            priority = 0
+            for weight in priorities:
+                if weight in smp:
+                    priority += priorities[weight]
+            # ancestral samplers are more random
+            if " a " in smp or smp.endswith("a"):
+                priority -= 2
+            return priority
+
+        def cmp_samplers(s1, s2):
+            return get_sampler_priority(s2) - get_sampler_priority(s1)
+
+        samplers_data = self.api.get_samplers()
+        samplers_names = list(map(lambda x: x["name"], samplers_data))
+        samplers_names.sort(key=functools.cmp_to_key(cmp_samplers))
+        if len(samplers_names) == 0:
+            samplers_names = self.configuration["config"].get("samplers", ["DDIM"])
+        self.samplers["list"] = samplers_names
+        self.samplers["sampler"] = self.samplers["list"][0]
+        self.samplers["sampler"] = 'DPM++ 2S a Karras'
 
     def update_config(self, preload=False):
         """
@@ -111,9 +151,7 @@ class State:
         self.render["hr_upscaler"] = self.render["hr_upscalers"][0]
         self.render["denoising_strengths"] = self.configuration["config"].get("denoising_strengths", [0.6])
         self.render["denoising_strength"] = self.render["denoising_strengths"][0]
-
-        self.samplers["list"] = self.configuration["config"].get("samplers", ["DDIM"])
-        self.samplers["sampler"] = self.samplers["list"][0]
+        self.update_samplers()
 
         self.detectors["list"] = self.configuration["config"].get('detectors', ('lineart',))
         self.detectors["detector"] = self.detectors["list"][0]
@@ -191,10 +229,6 @@ class State:
             settings['controlnet_units'][0]['model'] = self.control_net["controlnet_models"][0]
             with open(self.json_file, "w") as f:
                 json.dump(settings, f, indent=4)
-
-        samplers = self.api.get_samplers()
-        self.samplers["list"] = list(map(lambda x: x["name"], samplers))
-        self.samplers["sampler"] = self.samplers["list"][0]
 
     def update_webui_config(self):
         """
